@@ -1,0 +1,239 @@
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Avatar from "../../assets/newVendor.png";
+
+const AllVendors = () => {
+  const navigate = useNavigate();
+  const [hasNewRequests, setHasNewRequests] = useState(false);
+
+  const vendors = [
+    {
+      date: "Aug 2 2024",
+      fullname: "Michael Farasin",
+      shopname: "Crest Store",
+      businesstype: "Grocery",
+      businessEmail: "mykefabson@gmail.com",
+      status: "Active",
+    },
+    {
+      date: "Aug 2 2024",
+      fullname: "Toyosi Ayo",
+      shopname: "TT Store",
+      businesstype: "Fashion",
+      businessEmail: "toyosiayo@gmail.com",
+      status: "Active",
+    },
+    {
+      date: "Aug 2 2024",
+      fullname: "Henry Cayson",
+      shopname: "Sexcei",
+      businesstype: "Grocery",
+      businessEmail: "henryajtal@gmail.com",
+      status: "Active",
+    },
+    {
+      date: "Aug 1 2024",
+      fullname: "Adeyemi Farasin",
+      shopname: "Cyphercresent Stores",
+      businesstype: "Electronics",
+      businessEmail: "adeyemi@gmail.com",
+      status: "Blocked",
+    },
+    {
+      date: "Aug 2 2024",
+      fullname: "Michael Farasin",
+      shopname: "Crest Store",
+      businesstype: "Grocery",
+      businessEmail: "mykefabson@gmail.com",
+      status: "Deactivated",
+    },
+    {
+      date: "Aug 1 2024",
+      fullname: "Adeyemi Farasin",
+      shopname: "Cyphercresent Stores",
+      businesstype: "Electronics",
+      businessEmail: "adeyemi@gmail.com",
+      status: "Inactive",
+    },
+    {
+      date: "Aug 2 2024",
+      fullname: "Michael Farasin",
+      shopname: "Crest Store",
+      businesstype: "Grocery",
+      businessEmail: "mykefabson@gmail.com",
+      status: "Deactivated",
+    },
+    {
+      date: "Aug 1 2024",
+      fullname: "Adeyemi Farasin",
+      shopname: "Cyphercresent Stores",
+      businesstype: "Electronics",
+      businessEmail: "adeyemi@gmail.com",
+      status: "Active",
+    },
+    {
+      date: "Aug 2 2024",
+      fullname: "Michael Farasin",
+      shopname: "Crest Store",
+      businesstype: "Grocery",
+      businessEmail: "mykefabson@gmail.com",
+      status: "Inactive",
+    },
+    {
+      date: "Aug 1 2024",
+      fullname: "Adeyemi Farasin",
+      shopname: "Cyphercresent Stores",
+      businesstype: "Electronics",
+      businessEmail: "adeyemi@gmail.com",
+      status: "Blocked",
+    },
+    {
+      date: "Aug 1 2024",
+      fullname: "Adeyemi Farasin",
+      shopname: "Cyphercresent Stores",
+      businesstype: "Electronics",
+      businessEmail: "adeyemi@gmail.com",
+      status: "Deactivated",
+    },
+  ];
+
+  useEffect(() => {
+    const checkForNewRequests = () => {
+      setTimeout(() => {
+        const newRequestsExist = true;
+        setHasNewRequests(newRequestsExist);
+      }, 1000);
+    };
+
+    checkForNewRequests();
+  }, []);
+
+  const handleViewMore = (vendor) => {
+    // Navigate to the new page and pass the data through state
+    console.log("handleViewDetails called with:", vendor);
+    navigate("/vendorDetails", { state: { vendor } });
+  };
+
+  const getStatusStyles = (status) => {
+    switch (status.toLowerCase()) {
+      case "active":
+        return {
+          bgColor: "bg-[#088D2D]/[12%]",
+          textColor: "text-[#088D2D]",
+          dotColor: "bg-[#088D2D]",
+        };
+      case "blocked":
+        return {
+          bgColor: "bg-[#FB1010]/[12%]",
+          textColor: "text-[#FB1010]",
+          dotColor: "bg-[#FB1010]",
+        };
+      case "inactive":
+        return {
+          bgColor: "bg-[#8A8D08]/[12%]",
+          textColor: "text-[#8A8D08]",
+          dotColor: "bg-[#8A8D08]",
+        };
+      case "deactivated":
+        return {
+          bgColor: "bg-[#F58634]/[12%]",
+          textColor: "text-[#F58634]",
+          dotColor: "bg-[#F58634]",
+        };
+      default:
+        return {
+          bgColor: "bg-gray-200",
+          textColor: "text-gray-800",
+        };
+    }
+  };
+
+  return (
+    <>
+      {hasNewRequests ? (
+        <div className="w-full flex flex-col">
+          <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+            <p className="">New Vendors</p>
+            <Link
+              to="/createVendors"
+              className="text-white bg-[#359E52] text-base p-3 rounded-xl"
+            >
+              Create Vendor
+            </Link>
+          </div>
+          <div className="my-10 w-full bg-white p-3">
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white font-primaryRegular">
+                <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
+                  <tr>
+                    <th className="text-center p-3">Date</th>
+                    <th className="text-center p-3">Full Name</th>
+                    <th className="text-center p-3">Shop Name</th>
+                    <th className="text-center p-3">Business Type</th>
+                    <th className="text-center p-3">Business Email</th>
+                    <th className="text-center p-3">Status</th>
+                    <th className="text-center p-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vendors.map((vendor, index) => {
+                    const { bgColor, textColor, dotColor } = getStatusStyles(
+                      vendor.status
+                    );
+                    return (
+                      <tr
+                        key={index}
+                        className="border text-xs font-primaryMedium mb-4"
+                      >
+                        <td className="p-4 text-center">{vendor.date}</td>
+                        <td className="p-4 text-center">{vendor.fullname}</td>
+                        <td className="p-4 text-center">{vendor.shopname}</td>
+                        <td className="p-4 text-center">
+                          {vendor.businesstype}
+                        </td>
+                        <td className="p-4 text-center">
+                          {vendor.businessEmail}
+                        </td>
+                        <td className="p-4 text-center">
+                          <div
+                            className={`w-full h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
+                          >
+                            <div
+                              className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
+                            />
+                            <p className={`${textColor} text-xs`}>
+                              {vendor.status}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="p-4 text-center">
+                          <button
+                            onClick={() => handleViewMore(vendor)}
+                            className="text-[#359E52] hover:underline"
+                          >
+                            View more
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center p-6">
+          <div className="text-xl font-primaryRegular">
+            No Available Vendors
+          </div>
+          <div className="my-10 md:p-10">
+            <img src={Avatar} alt="no-new-vendor" className="w-full h-full" />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default AllVendors;

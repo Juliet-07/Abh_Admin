@@ -6,9 +6,9 @@ import Scrollbar from "./Scrollbar";
 import { BsChevronDown } from "react-icons/bs";
 import { MdDashboard } from "react-icons/md";
 import { GiBookmark } from "react-icons/gi";
-import { FaBusinessTime } from "react-icons/fa";
+import { FaUserTie } from "react-icons/fa";
 import { FcManager } from "react-icons/fc";
-import { IoMdSchool } from "react-icons/io";
+import { TbTruckDelivery } from "react-icons/tb";
 import { SiFormstack } from "react-icons/si";
 
 const Layout = ({ children }) => {
@@ -26,32 +26,38 @@ const Layout = ({ children }) => {
     },
     {
       title: "User Management",
-      icon: <FaBusinessTime />,
-      path: "/businessProcesses",
+      icon: <FaUserTie />,
       submenu: true,
       submenuItems: [
-        { title: "All Users", path: "/businessProcesses/all-users" },
-        { title: "All Vendors", path: "/businessProcesses/all-vendors" },
-        { title: "Staff", path: "/businessProcesses/staff" },
+        { title: "New Vendor (0)", path: "/newVendors" },
+        { title: "All Vendors", path: "/allVendors" },
+        { title: "Customers", path: "/businessProcesses/staff" },
       ],
     },
     {
       title: "Product Management",
       icon: <SiFormstack />,
-      path: "/forms",
       submenu: true,
       submenuItems: [
         { title: "Categories", path: "/forms/categories" },
+        { title: "New Products", path: "/forms/all-products" },
         { title: "All Products", path: "/forms/all-products" },
-        { title: "Draft Products", path: "/forms/draft-products" },
-        { title: "Low and Out of Stock", path: "/forms/low-out-of-stock" },
-        { title: "Inventory", path: "/forms/inventory" },
+        { title: "Draft Products", path: "/forms/low-out-of-stock" },
+        { title: "Discount", path: "/forms/inventory" },
+      ],
+    },
+    {
+      title: "Inventory",
+      icon: <SiFormstack />,
+      submenu: true,
+      submenuItems: [
+        { title: "All Inventory", path: "/forms/categories" },
+        { title: "Restock", path: "/forms/all-products" },
       ],
     },
     {
       title: "Order Management",
-      icon: <IoMdSchool />,
-      path: "/premiumKnowledgeExchange",
+      icon: <TbTruckDelivery />,
       submenu: true,
       submenuItems: [
         { title: "Orders", path: "/premiumKnowledgeExchange/orders" },
@@ -68,6 +74,10 @@ const Layout = ({ children }) => {
 
   const activeLink =
     "mx-4 flex justify-start items-center text-[#359E52] text-xl space-x-1 font-primarySemibold bg-[#F1FAF2] rounded-xl";
+
+  const activeSubLink =
+    "mx-4 flex justify-start items-center text-[#359E52] text-sm space-x-1 font-primarySemibold rounded-xl";
+
   const normalLink =
     "mt-3 mx-4 flex justify-start items-center space-x-1 font-primaryRegular text-gray-500";
 
@@ -78,29 +88,41 @@ const Layout = ({ children }) => {
   const SidebarLinks = ({ menu, index }) => {
     return (
       <>
-        <NavLink
-          to={menu.path}
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-          onClick={() => menu.submenu && toggleSubmenu(index)}
-        >
-          <li
-            className={`flex items-center gap-x-2 cursor-pointer p-3 hover:text-[#359E52] hover:font-primaryBold rounded-md mt-2 ${
-              menu.spacing ? "mt-10" : "mt-0"
-            }`}
-          >
-            <span className="text-xl block float-left">{menu.icon}</span>
-            <span className="text-sm font-medium duration-200">
-              {menu.title}
-            </span>
-            {menu.submenu && (
+        {menu.submenu ? (
+          <div className={normalLink} onClick={() => toggleSubmenu(index)}>
+            <li
+              className={`flex items-center gap-x-2 cursor-pointer p-3 hover:text-[#359E52] hover:font-primaryBold rounded-md mt-2 ${
+                menu.spacing ? "mt-10" : "mt-0"
+              }`}
+            >
+              <span className="text-xl block float-left">{menu.icon}</span>
+              <span className="text-sm font-medium duration-200">
+                {menu.title}
+              </span>
               <BsChevronDown
                 className={`ml-auto transition-transform ${
                   submenuOpen[index] && "rotate-180"
                 }`}
               />
-            )}
-          </li>
-        </NavLink>
+            </li>
+          </div>
+        ) : (
+          <NavLink
+            to={menu.path}
+            className={({ isActive }) => (isActive ? activeLink : normalLink)}
+          >
+            <li
+              className={`flex items-center gap-x-2 cursor-pointer p-3 hover:text-[#359E52] hover:font-primaryBold rounded-md mt-2 ${
+                menu.spacing ? "mt-10" : "mt-0"
+              }`}
+            >
+              <span className="text-xl block float-left">{menu.icon}</span>
+              <span className="text-sm font-medium duration-200">
+                {menu.title}
+              </span>
+            </li>
+          </NavLink>
+        )}
         {menu.submenu && submenuOpen[index] && (
           <ul className="ml-6">
             {menu.submenuItems.map((submenuItem, subIndex) => (
@@ -108,10 +130,10 @@ const Layout = ({ children }) => {
                 key={subIndex}
                 to={submenuItem.path}
                 className={({ isActive }) =>
-                  isActive ? activeLink : normalLink
+                  isActive ? activeSubLink : normalLink
                 }
               >
-                <li className="text-gray-500 flex items-center gap-x-2 cursor-pointer p-2 hover:text-white hover:font-primaryRegular rounded-md">
+                <li className="flex items-center gap-x-2 cursor-pointer p-2 hover:text-[#359E52] hover:font-primaryRegular rounded-md">
                   <span className="text-sm font-medium">
                     {submenuItem.title}
                   </span>
@@ -153,7 +175,7 @@ const Layout = ({ children }) => {
 
         {/* content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="h-full pt-20 p-5 md:p-4">{children}</div>
+          <div className="h-full pt-20 p-5 md:p-4 bg-gray-100">{children}</div>
         </main>
       </div>
     </div>

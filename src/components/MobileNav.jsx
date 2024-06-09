@@ -39,18 +39,16 @@ const MobileNavigation = () => {
     {
       title: "User Management",
       icon: <FaBusinessTime />,
-      path: "/businessProcesses",
       submenu: true,
       submenuItems: [
-        { title: "All Users", path: "/businessProcesses/all-users" },
-        { title: "All Vendors", path: "/businessProcesses/all-vendors" },
-        { title: "Staff", path: "/businessProcesses/staff" },
+        { title: "New Vendor (0)", path: "/newVendors" },
+        { title: "All Vendors", path: "/allVendors" },
+        { title: "Customers", path: "/businessProcesses/staff" },
       ],
     },
     {
       title: "Product Management",
       icon: <SiFormstack />,
-      path: "/forms",
       submenu: true,
       submenuItems: [
         { title: "Categories", path: "/forms/categories" },
@@ -63,7 +61,6 @@ const MobileNavigation = () => {
     {
       title: "Order Management",
       icon: <IoMdSchool />,
-      path: "/premiumKnowledgeExchange",
       submenu: true,
       submenuItems: [
         { title: "Orders", path: "/premiumKnowledgeExchange/orders" },
@@ -80,35 +77,51 @@ const MobileNavigation = () => {
 
   const activeLink =
     "mx-4 flex justify-start items-center text-white text-xl space-x-1 font-primarySemibold bg-green-500 rounded-xl";
+
+  const activeSubLink =
+    "mx-4 flex justify-start items-center text-[#359E52] text-sm space-x-1 font-primarySemibold rounded-xl";
+
   const normalLink =
     "hover:bg-emerald-500 mt-3 mx-4 flex justify-start items-center space-x-1 font-primaryRegular";
 
   const SidebarLinks = ({ menu, index }) => {
     return (
       <>
-        <NavLink
-          to={menu.path}
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-          onClick={() => menu.submenu && toggleSubmenu(index)}
-        >
-          <li
-            className={`text-gray-500 flex items-center gap-x-2 cursor-pointer p-3 hover:text-white hover:font-primaryRegular rounded-md mt-2 ${
-              menu.spacing ? "mt-10" : "mt-0"
-            }`}
-          >
-            <span className="text-xl block float-left">{menu.icon}</span>
-            <span className="text-sm font-medium duration-200">
-              {menu.title}
-            </span>
-            {menu.submenu && (
+        {menu.submenu ? (
+          <div className={normalLink} onClick={() => toggleSubmenu(index)}>
+            <li
+              className={`flex items-center gap-x-2 cursor-pointer p-3 hover:text-[#359E52] hover:font-primaryBold rounded-md mt-2 ${
+                menu.spacing ? "mt-10" : "mt-0"
+              }`}
+            >
+              <span className="text-xl block float-left">{menu.icon}</span>
+              <span className="text-sm font-medium duration-200">
+                {menu.title}
+              </span>
               <BsChevronDown
                 className={`ml-auto transition-transform ${
                   submenuOpen[index] && "rotate-180"
                 }`}
               />
-            )}
-          </li>
-        </NavLink>
+            </li>
+          </div>
+        ) : (
+          <NavLink
+            to={menu.path}
+            className={({ isActive }) => (isActive ? activeLink : normalLink)}
+          >
+            <li
+              className={`flex items-center gap-x-2 cursor-pointer p-3 hover:text-[#359E52] hover:font-primaryBold rounded-md mt-2 ${
+                menu.spacing ? "mt-10" : "mt-0"
+              }`}
+            >
+              <span className="text-xl block float-left">{menu.icon}</span>
+              <span className="text-sm font-medium duration-200">
+                {menu.title}
+              </span>
+            </li>
+          </NavLink>
+        )}
         {menu.submenu && submenuOpen[index] && (
           <ul className="ml-6">
             {menu.submenuItems.map((submenuItem, subIndex) => (
@@ -116,10 +129,10 @@ const MobileNavigation = () => {
                 key={subIndex}
                 to={submenuItem.path}
                 className={({ isActive }) =>
-                  isActive ? activeLink : normalLink
+                  isActive ? activeSubLink : normalLink
                 }
               >
-                <li className="text-gray-500 flex items-center gap-x-2 cursor-pointer p-2 hover:text-white hover:font-primaryRegular rounded-md">
+                <li className="flex items-center gap-x-2 cursor-pointer p-2 hover:text-[#359E52] hover:font-primaryRegular rounded-md">
                   <span className="text-sm font-medium">
                     {submenuItem.title}
                   </span>
@@ -139,7 +152,6 @@ const MobileNavigation = () => {
     localStorage.clear();
     navigate("/");
   };
-
 
   return (
     <div className="w-full md:hidden flex justify-between items-center h-[60px] mx-auto px-4 md:px-10 2xl:px-20 text-gray-600 fixed z-10 bg-white">
