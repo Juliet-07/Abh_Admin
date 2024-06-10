@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const CreateVendor = () => {
-  const navigate = useNavigate;
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const token = localStorage.getItem("adminToken");
-  //   console.log(token,"token")
   const { handleSubmit } = useForm();
+  const [docx, setDocx] = useState({});
 
   const initialValues = {
     firstName: "",
     lastName: "",
     store: "",
+    address: "",
     country: "",
     city: "",
     state: "",
-    // dob: "2024-06-08T14:15:58.631Z",
     email: "",
     phoneNumber: "",
     alternatePhoneNumber: "",
@@ -28,209 +28,309 @@ const CreateVendor = () => {
 
   const [createVendorDetails, setCreateVendorDetails] = useState(initialValues);
 
-  //   const { email, password } = loginDetails;
+  const {
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    store,
+    country,
+    state,
+    city,
+    address,
+    alternatePhoneNumber,
+    businessType,
+    nationalIdentificationNumber,
+    taxIdentificationNumber,
+    cacRegistrationNumber,
+  } = createVendorDetails;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCreateVendorDetails({ ...createVendorDetails, [name]: value });
   };
 
-  const [loading, setLoading] = useState(false);
-  const handleCreateVendor = async () => {
-    setLoading(true);
+  const handleFileUpload = (e) => {
+    console.log(e.target.files);
+    const docx = e.target.files[0];
+    setDocx(docx);
+  };
+
+  const handleCreateVendor = () => {
     const url = `${apiURL}/vendors`;
-    try {
-      const response = await axios.post(url, createVendorDetails, {
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("store", store);
+    formData.append("country", country);
+    formData.append("address", address);
+    formData.append("city", city);
+    formData.append("state", state);
+    formData.append("email", email);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("alternatePhoneNumber", alternatePhoneNumber);
+    formData.append("businessType", businessType);
+    formData.append(
+      "nationalIdentificationNumber",
+      nationalIdentificationNumber
+    );
+    formData.append("taxIdentificationNumber", taxIdentificationNumber);
+    formData.append("file", docx);
+    formData.append("cacRegistrationNumber", cacRegistrationNumber);
+    axios
+      .post(url, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-type": "application/json; charset=UTF-8",
         },
+      })
+      .then((response) => {
+        console.log(response, "response from creating data");
       });
-      console.log(response, "response");
-      // navigate("/dashboard"); // Navigate to dashboard on successful login
-    } catch (error) {
-      console.error("Error in API call:", error);
-    } finally {
-      setLoading(false);
-    }
   };
+
   return (
-    <div className="w-full p-5 border bg-white overflow-auto">
-      <div className="flex flex-col items-center justify-center">
-        <div className="my-4 font-primarySemibold text-xl md:text-2xl">
-          Create a new Vendor
+    <>
+      <div className="w-full p-5 border bg-white overflow-auto">
+        <div className="flex flex-col items-center justify-center">
+          <div className="my-4 font-primarySemibold text-xl md:text-2xl">
+            Create a new Vendor
+          </div>
+          <form
+            onSubmit={handleSubmit(handleCreateVendor)}
+            className="w-full md:w-[70%] font-primaryRegular text-[#0C1415]"
+          >
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                <label className="tracking-wide font-medium mb-2">
+                  First Name
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  type="text"
+                  placeholder="Enter First Name"
+                  name="firstName"
+                  value={firstName}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-full md:w-1/2 px-3">
+                <label className="tracking-wide font-medium mb-2">
+                  Last Name
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  type="text"
+                  placeholder="Enter Last Name"
+                  name="lastName"
+                  value={lastName}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                Shop Name
+              </label>
+              <input
+                type="text"
+                name="store"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="CAC registered name"
+                value={store}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                Shop Address
+              </label>
+              <input
+                type="text"
+                name="address"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="Enter location here"
+                value={address}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                <label
+                  className="tracking-wide font-medium mb-2"
+                  for="grid-city"
+                >
+                  City
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  id="grid-city"
+                  type="text"
+                  placeholder="Enter City"
+                  name="city"
+                  value={city}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-full md:w-1/3 px-3 mb-4 md:mb-0">
+                <label
+                  className="tracking-wide font-medium mb-2"
+                  for="grid-state"
+                >
+                  State
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  id="grid-state"
+                  type="text"
+                  placeholder="Enter State"
+                  name="state"
+                  value={state}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-full md:w-1/3 px-3">
+                <label
+                  className="tracking-wide font-medium mb-2"
+                  for="grid-country"
+                >
+                  Country
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  id="grid-country"
+                  type="text"
+                  placeholder="Enter State"
+                  name="country"
+                  value={country}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                <label
+                  className="tracking-wide font-medium mb-2"
+                  for="grid-phone"
+                >
+                  Business Phone Number
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  id="grid-phone"
+                  type="text"
+                  placeholder="Enter Phone Number"
+                  name="phoneNumber"
+                  value={phoneNumber}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-full md:w-1/2 px-3">
+                <label
+                  className="tracking-wide font-medium mb-2"
+                  for="grid-alt"
+                >
+                  Alternate Phone Number
+                </label>
+                <input
+                  className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                  id="grid-alt"
+                  type="text"
+                  name="alternatePhoneNumber"
+                  value={alternatePhoneNumber}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                Business Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="Input business email"
+                value={email}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                Business Type
+              </label>
+              <input
+                type="text"
+                name="businessType"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="Ex: Fashion"
+                value={businessType}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                National Identification Number
+              </label>
+              <input
+                type="text"
+                name="nationalIdentificationNumber"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="Input NIN"
+                value={nationalIdentificationNumber}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                Tax Identification Number
+              </label>
+              <input
+                type="number"
+                name="taxIdentificationNumber"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="Input TIN"
+                value={taxIdentificationNumber}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="tracking-wide font-medium mb-2">
+                CAC Registration Number
+              </label>
+              <input
+                type="number"
+                name="cacRegistrationNumber"
+                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
+                placeholder="Input CAC Number"
+                value={cacRegistrationNumber}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="tracking-wide font-medium mb-2">
+                CAC Document
+              </label>
+              <input
+                type="file"
+                name="docx"
+                onChange={handleFileUpload}
+                multiple
+                className="px-3"
+              />
+            </div>
+            <div className="w-full flex items-center justify-center my-6">
+              <button
+                type="submit"
+                className="w-[395px] h-[50px] bg-[#4CBD6B] rounded-xl text-white font-semibold"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
-        <form className="w-full md:w-[70%] font-primaryRegular text-[#0C1415]">
-          <div className="flex flex-wrap -mx-3 mb-4">
-            <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-              <label
-                className="tracking-wide font-medium mb-2"
-                for="grid-first-name"
-              >
-                First Name
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-first-name"
-                type="text"
-                placeholder="Enter First Name"
-              />
-            </div>
-            <div className="w-full md:w-1/2 px-3">
-              <label
-                className="tracking-wide font-medium mb-2"
-                for="grid-last-name"
-              >
-                Last Name
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-last-name"
-                type="text"
-                placeholder="Enter Last Name"
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="tracking-wide font-medium mb-2">Shop Name</label>
-            <input
-              type="text"
-              name=""
-              className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-              placeholder="CAC registered name"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="tracking-wide font-medium mb-2">
-              Shop Address
-            </label>
-            <input
-              type="text"
-              name=""
-              className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-              placeholder="Enter location here"
-            />
-          </div>
-          <div className="flex flex-wrap -mx-3 mb-4">
-            <div className="w-full md:w-1/3 px-3 mb-4 md:mb-0">
-              <label className="tracking-wide font-medium mb-2" for="grid-city">
-                City
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-city"
-                type="text"
-                placeholder="Enter City"
-              />
-            </div>
-            <div className="w-full md:w-1/3 px-3 mb-4 md:mb-0">
-              <label
-                className="tracking-wide font-medium mb-2"
-                for="grid-state"
-              >
-                State
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-state"
-                type="text"
-                placeholder="Enter State"
-              />
-            </div>
-            <div className="w-full md:w-1/3 px-3">
-              <label
-                className="tracking-wide font-medium mb-2"
-                for="grid-country"
-              >
-                Country
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-country"
-                type="text"
-                placeholder="Enter State"
-              />
-            </div>
-          </div>
-          <div className="flex flex-wrap -mx-3 mb-4">
-            <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-              <label
-                className="tracking-wide font-medium mb-2"
-                for="grid-phone"
-              >
-                Business Phone Number
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-phone"
-                type="text"
-                // placeholder="Enter First Name"
-              />
-            </div>
-            <div className="w-full md:w-1/2 px-3">
-              <label className="tracking-wide font-medium mb-2" for="grid-alt">
-                Alternate Phone Number
-              </label>
-              <input
-                className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-                id="grid-alt"
-                type="text"
-                // placeholder="Enter Last Name"
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="tracking-wide font-medium mb-2">
-              Business Email
-            </label>
-            <input
-              type="text"
-              name=""
-              className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-              placeholder="Input business email"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="tracking-wide font-medium mb-2">
-              Business Type
-            </label>
-            <input
-              type="text"
-              name=""
-              className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-              placeholder="Ex: Fashion"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="tracking-wide font-medium mb-2">
-              National Identification Number
-            </label>
-            <input
-              type="text"
-              name=""
-              className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-              placeholder="Input NIN"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="tracking-wide font-medium mb-2">
-              Tax Identification Number
-            </label>
-            <input
-              type="number"
-              name=""
-              className="w-full bg-white border border-[#C1C6C5] p-4 leading-tight focus:outline-none placeholder:text-[#C1C6C5]"
-              placeholder="Input TIN"
-            />
-          </div>
-          <div className="w-full flex items-center justify-center my-6">
-            <button className="w-[395px] h-[50px] bg-[#4CBD6B] rounded-xl text-white font-semibold">
-              Submit
-            </button>
-          </div>
-        </form>
       </div>
-    </div>
+    </>
   );
 };
 

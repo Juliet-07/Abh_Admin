@@ -1,115 +1,83 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Avatar from "../../assets/newVendor.png";
-import { CheckIcon, XIcon } from "@heroicons/react/solid";
+import { CheckIcon } from "@heroicons/react/solid";
 import { FcCancel } from "react-icons/fc";
+import { format } from "date-fns";
 
 const NewVendors = () => {
-  const [hasNewRequests, setHasNewRequests] = useState(false);
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("adminToken");
   const [showPreview, setPreview] = useState(false);
   const [showApproval, setApproval] = useState(false);
   const [showDecline, setDecline] = useState(false);
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [pendingVendors, setPendingVendors] = useState([]);
 
-  const vendors = [
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: "7, Kingsway, Otawa, NY",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: " Ontario, Canada",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: "7, Kingsway, Otawa, NY",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: " Ontario, Canada",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: "7, Kingsway, Otawa, NY",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: " Ontario, Canada",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: "7, Kingsway, Otawa, NY",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      businessPhone: "0812210011",
-      shopAddress: " Ontario, Canada",
-    },
-  ];
-
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "MMMM dd, yyyy");
+  };
+  
   useEffect(() => {
-    const checkForNewRequests = () => {
-      setTimeout(() => {
-        const newRequestsExist = true;
-        setHasNewRequests(newRequestsExist);
-      }, 1000);
+    const getAllVendors = () => {
+      axios
+        .get(`${apiURL}/vendors?filter.status=PENDING`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setPendingVendors(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
     };
 
-    checkForNewRequests();
-  }, []);
+    getAllVendors();
+  }, [apiURL, token]);
 
   const handleViewMore = (vendor) => {
     setSelectedVendor(vendor);
     setPreview(true);
   };
 
+  const manageVendorStatus = (vendorId, status) => {
+    const url = `${apiURL}/vendors/manage-account-status/${vendorId}`;
+    axios
+      .put(
+        url,
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Vendor status updated:", response.data);
+        // Update the state to reflect the change
+        setPendingVendors((prevVendors) =>
+          prevVendors.filter((vendor) => vendor.id !== vendorId)
+        );
+      })
+      .catch((error) => {
+        console.error("Error updating vendor status:", error);
+      });
+  };
+
   const handleApprove = () => {
-    console.log("Vendor approved:", selectedVendor);
+    manageVendorStatus(selectedVendor.id, "ACTIVE");
     setPreview(false);
     setApproval(true);
   };
 
   const handleDecline = () => {
-    console.log("Vendor declined:", selectedVendor);
+    manageVendorStatus(selectedVendor.id, "DECLINED");
     setPreview(false);
     setDecline(true);
   };
@@ -118,81 +86,73 @@ const NewVendors = () => {
     <>
       {showPreview && selectedVendor && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
-          <div className="w-[90%] max-w-[800px] h-screen bg-white p-4 rounded-xl flex flex-col items-center justify-center overflow-y-auto">
+          <div className="w-[90%] max-w-[800px] h-screen bg-white rounded-xl flex flex-col items-center justify-center overflow-y-auto">
             <div className="w-full md:px-10 font-primaryRegular">
-              <div className="text-xl font-bold mb-4 text-center">
+              <div className="text-xl font-bold my-2 text-center">
                 Vendor Details
               </div>
-              <div className="grid gap-6">
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Date & Time Registered</p>
-                  <p>{selectedVendor.date}</p>
+              <div className="grid">
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Date & Time Registered</strong>
+                  <p>{formatDate(selectedVendor.createdAt)}</p>
                 </div>
-                {/* 2 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Full Name</p>
-                  <p>{selectedVendor.fullname}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Full Name</strong>
+                  <p>
+                    {selectedVendor.firstName + " " + selectedVendor.lastName}
+                  </p>
                 </div>
-                {/* 3 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Shop Name</p>
-                  <p>{selectedVendor.shopname}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Shop Name</strong>
+                  <p>{selectedVendor.store}</p>
                 </div>
-                {/* 4 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Business Email</p>
-                  <p>{selectedVendor.businessEmail}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Business Email</strong>
+                  <p>{selectedVendor.email}</p>
                 </div>
-                {/* 5 */}
                 <div className="flex justify-between">
-                  <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                    <p>Business Phone Number</p>
-                    <p>{selectedVendor.businessPhone}</p>
+                  <div className="grid border-b border-b-[#C1C6C5] py-2">
+                    <strong>Business Phone Number</strong>
+                    <p>{selectedVendor.phoneNumber}</p>
                   </div>
-                  <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                    <p>Alternate Phone Number</p>
-                    <p>{selectedVendor.businessPhone}</p>
+                  <div className="grid border-b border-b-[#C1C6C5] py-2">
+                    <strong>Alternate Phone Number</strong>
+                    <p>{selectedVendor.alternatePhoneNumber}</p>
                   </div>
                 </div>
-                {/* 6 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Shop Address</p>
-                  <p>{selectedVendor.shopAddress}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Shop Address</strong>
+                  <p>{selectedVendor.address}</p>
                 </div>
-                {/* 7 */}
                 <div className="flex justify-between">
-                  <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                    <p>Shop Residing Country</p>
-                    <p>{selectedVendor.shopAddress}</p>
+                  <div className="grid border-b border-b-[#C1C6C5] py-2">
+                    <strong>Shop Residing Country</strong>
+                    <p>{selectedVendor.country}</p>
                   </div>
                   <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                    <p>City</p>
-                    <p>{selectedVendor.shopAddress}</p>
+                    <strong>City</strong>
+                    <p>{selectedVendor.city}</p>
                   </div>
                   <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                    <p>State</p>
-                    <p>{selectedVendor.shopAddress}</p>
+                    <strong>State</strong>
+                    <p>{selectedVendor.state}</p>
                   </div>
                 </div>
-                {/* 8 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Business Type</p>
-                  <p>{selectedVendor.businesstype}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Business Type</strong>
+                  <p>{selectedVendor.businessType}</p>
                 </div>
-                {/* 9 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>National Identification Number</p>
-                  <p>{selectedVendor.date}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>National Identification Number</strong>
+                  <p>{selectedVendor.nationalIdentificationNumber}</p>
                 </div>
-                {/* 10 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>Tax Identification Number</p>
-                  <p>{selectedVendor.date}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>Tax Identification Number</strong>
+                  <p>{selectedVendor.taxIdentificationNumber}</p>
                 </div>
-                {/* 11 */}
-                <div className="grid gap-4 border-b border-b-[#C1C6C5] py-2">
-                  <p>CAC Registration Number</p>
-                  <p>{selectedVendor.date}</p>
+                <div className="grid border-b border-b-[#C1C6C5] py-2">
+                  <strong>CAC Registration Number</strong>
+                  <p>{selectedVendor.cacRegistrationNumber}</p>
                 </div>
               </div>
 
@@ -216,10 +176,7 @@ const NewVendors = () => {
       )}
 
       {showApproval && (
-        <div
-          // onClick={()=> setPreview(false)}
-          className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular"
-        >
+        <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
           <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
             <div className="w-[50px] h-[50px] rounded-[100px] border-[#08932E] border-2 flex flex-col items-center  justify-center">
               <CheckIcon width={30} height={30} color="#08932E" />
@@ -239,10 +196,7 @@ const NewVendors = () => {
       )}
 
       {showDecline && (
-        <div
-          // onClick={()=> setPreview(false)}
-          className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular"
-        >
+        <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
           <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
             <FcCancel size={60} />
             <p className="text-center">
@@ -259,7 +213,7 @@ const NewVendors = () => {
         </div>
       )}
 
-      {hasNewRequests ? (
+      {pendingVendors.length > 0 ? (
         <div className="w-full flex flex-col">
           <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
             <p className="">New Vendors</p>
@@ -286,22 +240,22 @@ const NewVendors = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {vendors.map((vendor, index) => (
+                  {pendingVendors.map((vendor, index) => (
                     <tr
                       key={index}
                       className="border text-xs font-primaryMedium mb-4"
                     >
-                      <td className="p-4 text-center">{vendor.date}</td>
-                      <td className="p-4 text-center">{vendor.fullname}</td>
-                      <td className="p-4 text-center">{vendor.shopname}</td>
-                      <td className="p-4 text-center">{vendor.businesstype}</td>
                       <td className="p-4 text-center">
-                        {vendor.businessEmail}
+                        {formatDate(vendor.createdAt)}
                       </td>
                       <td className="p-4 text-center">
-                        {vendor.businessPhone}
+                        {vendor.firstName + " " + vendor.lastName}
                       </td>
-                      <td className="p-4 text-center">{vendor.shopAddress}</td>
+                      <td className="p-4 text-center">{vendor.store}</td>
+                      <td className="p-4 text-center">{vendor.businessType}</td>
+                      <td className="p-4 text-center">{vendor.email}</td>
+                      <td className="p-4 text-center">{vendor.phoneNumber}</td>
+                      <td className="p-4 text-center">{vendor.address}</td>
                       <td className="p-4 text-center">
                         <button
                           onClick={() => handleViewMore(vendor)}

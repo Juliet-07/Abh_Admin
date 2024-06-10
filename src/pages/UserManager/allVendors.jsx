@@ -1,115 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../assets/newVendor.png";
+import axios from "axios";
+import { format } from "date-fns";
 
 const AllVendors = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
-  const [hasNewRequests, setHasNewRequests] = useState(false);
+  const token = localStorage.getItem("adminToken");
+  const [vendors, setVendors] = useState([]);
 
-  const vendors = [
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      status: "Active",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Toyosi Ayo",
-      shopname: "TT Store",
-      businesstype: "Fashion",
-      businessEmail: "toyosiayo@gmail.com",
-      status: "Active",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Henry Cayson",
-      shopname: "Sexcei",
-      businesstype: "Grocery",
-      businessEmail: "henryajtal@gmail.com",
-      status: "Active",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      status: "Blocked",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      status: "Deactivated",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      status: "Inactive",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      status: "Deactivated",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      status: "Active",
-    },
-    {
-      date: "Aug 2 2024",
-      fullname: "Michael Farasin",
-      shopname: "Crest Store",
-      businesstype: "Grocery",
-      businessEmail: "mykefabson@gmail.com",
-      status: "Inactive",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      status: "Blocked",
-    },
-    {
-      date: "Aug 1 2024",
-      fullname: "Adeyemi Farasin",
-      shopname: "Cyphercresent Stores",
-      businesstype: "Electronics",
-      businessEmail: "adeyemi@gmail.com",
-      status: "Deactivated",
-    },
-  ];
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "MMMM dd, yyyy");
+  };
 
   useEffect(() => {
-    const checkForNewRequests = () => {
-      setTimeout(() => {
-        const newRequestsExist = true;
-        setHasNewRequests(newRequestsExist);
-      }, 1000);
+    const getAllVendors = () => {
+      axios
+        .get(`${apiURL}/vendors`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setVendors(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
     };
 
-    checkForNewRequests();
+    getAllVendors();
   }, []);
 
   const handleViewMore = (vendor) => {
-    // Navigate to the new page and pass the data through state
     console.log("handleViewDetails called with:", vendor);
     navigate("/vendorDetails", { state: { vendor } });
   };
@@ -150,10 +76,10 @@ const AllVendors = () => {
 
   return (
     <>
-      {hasNewRequests ? (
+      {vendors.length > 0 ? (
         <div className="w-full flex flex-col">
           <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
-            <p className="">New Vendors</p>
+            <p className="">All Vendors</p>
             <Link
               to="/createVendors"
               className="text-white bg-[#359E52] text-base p-3 rounded-xl"
@@ -185,15 +111,17 @@ const AllVendors = () => {
                         key={index}
                         className="border text-xs font-primaryMedium mb-4"
                       >
-                        <td className="p-4 text-center">{vendor.date}</td>
-                        <td className="p-4 text-center">{vendor.fullname}</td>
-                        <td className="p-4 text-center">{vendor.shopname}</td>
                         <td className="p-4 text-center">
-                          {vendor.businesstype}
+                          {formatDate(vendor.createdAt)}
                         </td>
                         <td className="p-4 text-center">
-                          {vendor.businessEmail}
+                          {vendor.firstName + " " + vendor.lastName}
                         </td>
+                        <td className="p-4 text-center">{vendor.store}</td>
+                        <td className="p-4 text-center">
+                          {vendor.businessType}
+                        </td>
+                        <td className="p-4 text-center">{vendor.email}</td>
                         <td className="p-4 text-center">
                           <div
                             className={`w-full h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
