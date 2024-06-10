@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
       icon: <SiFormstack />,
       submenu: true,
       submenuItems: [
-        { title: "Categories", path: "/forms/categories" },
+        { title: "Categories", path: "/categories" },
         { title: "New Products", path: "/forms/all-products" },
         { title: "All Products", path: "/forms/all-products" },
         { title: "Draft Products", path: "/forms/low-out-of-stock" },
