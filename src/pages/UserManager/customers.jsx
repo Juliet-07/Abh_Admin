@@ -2,46 +2,42 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../assets/newVendor.png";
 import axios from "axios";
-import { format } from "date-fns";
 
-const AllVendors = () => {
+const Customers = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
-  const [vendors, setVendors] = useState([]);
-
-  const formatDate = (dateString) => {
-    return format(new Date(dateString), "MMMM dd, yyyy");
-  };
+  const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    const getAllVendors = () => {
+    const getCustomers = () => {
       axios
-        .get(`${apiURL}/vendors`, {
+        .get(`${apiURL}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-type": "application/json; charset=UTF-8",
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setVendors(response.data.data.data);
+          console.log(response.data.data);
+          setCustomers(response.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
         });
     };
 
-    getAllVendors();
+    getCustomers();
   }, []);
 
-  const handleViewMore = (vendor) => {
-    console.log("handleViewDetails called with:", vendor);
-    navigate("/vendorDetails", { state: { vendor } });
+  const handleViewMore = (customer) => {
+    console.log("handleViewDetails called with:", customer);
+    navigate("/customerDetails", { state: { customer } });
   };
 
   const getStatusStyles = (status) => {
-    switch (status.toLowerCase()) {
+    // switch (status.toLowerCase()) {
+    switch (status) {
       case "active":
         return {
           bgColor: "bg-[#088D2D]/[12%]",
@@ -54,19 +50,7 @@ const AllVendors = () => {
           textColor: "text-[#FB1010]",
           dotColor: "bg-[#FB1010]",
         };
-      case "pending":
-        return {
-          bgColor: "bg-[#FB1010]/[12%]",
-          textColor: "text-[#FB1010]",
-          dotColor: "bg-[#FB1010]",
-        };
       case "inactive":
-        return {
-          bgColor: "bg-[#8A8D08]/[12%]",
-          textColor: "text-[#8A8D08]",
-          dotColor: "bg-[#8A8D08]",
-        };
-        case "declined":
         return {
           bgColor: "bg-[#8A8D08]/[12%]",
           textColor: "text-[#8A8D08]",
@@ -88,53 +72,46 @@ const AllVendors = () => {
 
   return (
     <>
-      {vendors.length > 0 ? (
+      {customers.length > 0 ? (
         <div className="w-full flex flex-col">
           <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
-            <p className="">All Vendors</p>
-            <Link
-              to="/createVendors"
-              className="text-white bg-[#359E52] text-base p-3 rounded-xl"
-            >
-              Create Vendor
-            </Link>
+            <p className="">Customers ({customers.length})</p>
+            <div></div>
           </div>
           <div className="my-10 w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
                   <tr>
-                    <th className="text-center p-3">Date</th>
-                    <th className="text-center p-3">Full Name</th>
-                    <th className="text-center p-3">Shop Name</th>
-                    <th className="text-center p-3">Business Type</th>
-                    <th className="text-center p-3">Business Email</th>
-                    <th className="text-center p-3">Status</th>
+                    <th className="text-center p-3">Customer Name</th>
+                    <th className="text-center p-3">Email</th>
+                    <th className="text-center p-3">Phone Number</th>
+                    <th className="text-center p-3">Shipping Address</th>
+                    {/* <th className="text-center p-3">Status</th> */}
                     <th className="text-center p-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {vendors.map((vendor, index) => {
-                    const { bgColor, textColor, dotColor } = getStatusStyles(
-                      vendor.status
-                    );
+                  {customers.map((customer, index) => {
+                    // const { bgColor, textColor, dotColor } = getStatusStyles(
+                    //   customer.status
+                    // );
                     return (
                       <tr
                         key={index}
                         className="border text-xs font-primaryMedium mb-4"
                       >
                         <td className="p-4 text-center">
-                          {formatDate(vendor.createdAt)}
+                          {customer.firstName + " " + customer.lastName}
+                        </td>
+                        <td className="p-4 text-center">{customer.email}</td>
+                        <td className="p-4 text-center">
+                          {customer.phoneNumber}
                         </td>
                         <td className="p-4 text-center">
-                          {vendor.firstName + " " + vendor.lastName}
+                          {customer.shippingAddress}
                         </td>
-                        <td className="p-4 text-center">{vendor.store}</td>
-                        <td className="p-4 text-center">
-                          {vendor.businessType}
-                        </td>
-                        <td className="p-4 text-center">{vendor.email}</td>
-                        <td className="p-4 text-center">
+                        {/* <td className="p-4 text-center">
                           <div
                             className={`w-full h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
                           >
@@ -142,13 +119,13 @@ const AllVendors = () => {
                               className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
                             />
                             <p className={`${textColor} text-xs`}>
-                              {vendor.status}
+                              {customer.status}
                             </p>
                           </div>
-                        </td>
+                        </td> */}
                         <td className="p-4 text-center">
                           <button
-                            onClick={() => handleViewMore(vendor)}
+                            onClick={() => handleViewMore(customer)}
                             className="text-[#359E52] hover:underline"
                           >
                             View more
@@ -165,7 +142,7 @@ const AllVendors = () => {
       ) : (
         <div className="w-full h-full flex flex-col items-center justify-center p-6">
           <div className="text-xl font-primaryRegular">
-            No Available Vendors
+            No Registered Customers
           </div>
           <div className="my-10 md:p-10">
             <img src={Avatar} alt="no-new-vendor" className="w-full h-full" />
@@ -176,4 +153,4 @@ const AllVendors = () => {
   );
 };
 
-export default AllVendors;
+export default Customers;

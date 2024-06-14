@@ -38,6 +38,12 @@ const VendorDetails = () => {
           textColor: "text-[#FB1010]",
           dotColor: "bg-[#FB1010]",
         };
+        case "pending":
+        return {
+          bgColor: "bg-[#FB1010]/[12%]",
+          textColor: "text-[#FB1010]",
+          dotColor: "bg-[#FB1010]",
+        };
       case "inactive":
         return {
           bgColor: "bg-[#8A8D08]/[12%]",
@@ -45,6 +51,12 @@ const VendorDetails = () => {
           dotColor: "bg-[#8A8D08]",
         };
       case "deactivated":
+        return {
+          bgColor: "bg-[#F58634]/[12%]",
+          textColor: "text-[#F58634]",
+          dotColor: "bg-[#F58634]",
+        };
+        case "declined":
         return {
           bgColor: "bg-[#F58634]/[12%]",
           textColor: "text-[#F58634]",

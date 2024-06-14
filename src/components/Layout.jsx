@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 import Navbar from "./Navbar";
 import MobileNavigation from "./MobileNav";
 import Scrollbar from "./Scrollbar";
@@ -12,6 +13,11 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { SiFormstack } from "react-icons/si";
 
 const Layout = ({ children }) => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("adminToken");
+  const [vendors, setVendors] = useState([]);
+  const [pendingProducts, setPendingProducts] = useState([]);
+
   const [submenuOpen, setSubmenuOpen] = useState({});
 
   const toggleSubmenu = (index) => {
@@ -29,9 +35,9 @@ const Layout = ({ children }) => {
       icon: <FaUserTie />,
       submenu: true,
       submenuItems: [
-        { title: "New Vendor (0)", path: "/newVendors" },
+        { title: `New Vendors (${vendors.length})`, path: "/newVendors" },
         { title: "All Vendors", path: "/allVendors" },
-        { title: "Customers", path: "/businessProcesses/staff" },
+        { title: "Customers", path: "/customers" },
       ],
     },
     {
@@ -40,36 +46,41 @@ const Layout = ({ children }) => {
       submenu: true,
       submenuItems: [
         { title: "Categories", path: "/categories" },
-        { title: "New Products", path: "/forms/all-products" },
-        { title: "All Products", path: "/forms/all-products" },
-        { title: "Draft Products", path: "/forms/low-out-of-stock" },
-        { title: "Discount", path: "/forms/inventory" },
+        {
+          title: `New Products (${pendingProducts.length})`,
+          path: "/newProducts",
+        },
+        { title: "All Products", path: "/allProducts" },
+        // { title: "Draft Products", path: "/forms/low-out-of-stock" },
+        // { title: "Discount", path: "/forms/inventory" },
       ],
     },
     {
       title: "Inventory",
       icon: <SiFormstack />,
-      submenu: true,
-      submenuItems: [
-        { title: "All Inventory", path: "/forms/categories" },
-        { title: "Restock", path: "/forms/all-products" },
-      ],
+      path: "/inventory",
+      // submenu: true,
+      // submenuItems: [
+      //   { title: "All Inventory", path: "/forms/categories" },
+      //   { title: "Restock", path: "/forms/all-products" },
+      // ],
     },
     {
       title: "Order Management",
       icon: <TbTruckDelivery />,
       submenu: true,
       submenuItems: [
-        { title: "Orders", path: "/premiumKnowledgeExchange/orders" },
-        { title: "Transaction", path: "/premiumKnowledgeExchange/transaction" },
+        { title: "All Orders", path: "/allOrders" },
+        { title: "Track Orders", path: "/tracker" },
+        { title: "Transactions", path: "/transactions" },
       ],
     },
     {
       title: "Analytics",
       icon: <GiBookmark />,
-      path: "/policies",
+      path: "/analytics",
     },
-    { title: "Settings", path: "/manager", icon: <FcManager /> },
+    // { title: "Settings", path: "/manager", icon: <FcManager /> },
   ];
 
   const activeLink =
@@ -146,6 +157,43 @@ const Layout = ({ children }) => {
     );
   };
 
+  useEffect(() => {
+    const getAllVendors = () => {
+      axios
+        .get(`${apiURL}/vendors?filter.status=PENDING`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setVendors(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+    const getAllProducts = () => {
+      axios
+        .get(`${apiURL}/products?filter.status=PENDING`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setPendingProducts(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getAllProducts();
+    getAllVendors();
+  }, []);
   return (
     <div className="flex min-h-screen flex-col bg-gray-100 transition-colors duration-150">
       <Navbar onToggleSidebar={handleToggleSidebar} />

@@ -1,14 +1,16 @@
-import React, { Fragment, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from "react";
+import axios from "axios";
+import { Link, NavLink } from "react-router-dom";
 import Logo from "../components/Logo";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Scrollbar from "./Scrollbar";
 import { BsChevronDown } from "react-icons/bs";
 import { MdDashboard } from "react-icons/md";
 import { GiBookmark } from "react-icons/gi";
-import { FaBusinessTime } from "react-icons/fa";
+import { FaUserTie } from "react-icons/fa";
 import { FcManager } from "react-icons/fc";
-import { IoMdSchool } from "react-icons/io";
+import { FaBell } from "react-icons/fa";
+import { TbTruckDelivery } from "react-icons/tb";
 import { SiFormstack } from "react-icons/si";
 import {
   Menu,
@@ -20,6 +22,11 @@ import {
 import { IoPersonSharp } from "react-icons/io5";
 
 const MobileNavigation = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("adminToken");
+  const [vendors, setVendors] = useState([]);
+  const [pendingProducts, setPendingProducts] = useState([]);
+
   const [nav, setNav] = useState(false);
   const handleNav = () => {
     setNav(!nav);
@@ -38,12 +45,12 @@ const MobileNavigation = () => {
     },
     {
       title: "User Management",
-      icon: <FaBusinessTime />,
+      icon: <FaUserTie />,
       submenu: true,
       submenuItems: [
-        { title: "New Vendor (0)", path: "/newVendors" },
+        { title: `New Vendors (${vendors.length})`, path: "/newVendors" },
         { title: "All Vendors", path: "/allVendors" },
-        { title: "Customers", path: "/businessProcesses/staff" },
+        { title: "Customers", path: "/customers" },
       ],
     },
     {
@@ -51,28 +58,42 @@ const MobileNavigation = () => {
       icon: <SiFormstack />,
       submenu: true,
       submenuItems: [
-        { title: "Categories", path: "/forms/categories" },
-        { title: "All Products", path: "/forms/all-products" },
-        { title: "Draft Products", path: "/forms/draft-products" },
-        { title: "Low and Out of Stock", path: "/forms/low-out-of-stock" },
-        { title: "Inventory", path: "/forms/inventory" },
+        { title: "Categories", path: "/categories" },
+        {
+          title: `New Products (${pendingProducts.length})`,
+          path: "/newProducts",
+        },
+        { title: "All Products", path: "/allProducts" },
+        // { title: "Draft Products", path: "/forms/low-out-of-stock" },
+        // { title: "Discount", path: "/forms/inventory" },
       ],
     },
     {
+      title: "Inventory",
+      icon: <SiFormstack />,
+      path: "/inventory",
+      // submenu: true,
+      // submenuItems: [
+      //   { title: "All Inventory", path: "/forms/categories" },
+      //   { title: "Restock", path: "/forms/all-products" },
+      // ],
+    },
+    {
       title: "Order Management",
-      icon: <IoMdSchool />,
+      icon: <TbTruckDelivery />,
       submenu: true,
       submenuItems: [
-        { title: "Orders", path: "/premiumKnowledgeExchange/orders" },
-        { title: "Transaction", path: "/premiumKnowledgeExchange/transaction" },
+        { title: "All Orders", path: "/allOrders" },
+        { title: "Track Orders", path: "/tracker" },
+        { title: "Transactions", path: "/transactions" },
       ],
     },
     {
       title: "Analytics",
       icon: <GiBookmark />,
-      path: "/policies",
+      path: "/analytics",
     },
-    { title: "Settings", path: "/manager", icon: <FcManager /> },
+    { title: "Notifications", path: "/notifications", icon: <FaBell /> },
   ];
 
   const activeLink =
@@ -145,13 +166,48 @@ const MobileNavigation = () => {
     );
   };
 
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
   const logout = () => {
     localStorage.clear();
     navigate("/");
   };
+
+  useEffect(() => {
+    const getAllVendors = () => {
+      axios
+        .get(`${apiURL}/vendors?filter.status=PENDING`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setVendors(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+    const getAllProducts = () => {
+      axios
+        .get(`${apiURL}/products?filter.status=PENDING`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setPendingProducts(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getAllProducts();
+    getAllVendors();
+  }, []);
 
   return (
     <div className="w-full md:hidden flex justify-between items-center h-[60px] mx-auto px-4 md:px-10 2xl:px-20 text-gray-600 fixed z-10 bg-white">
@@ -210,19 +266,14 @@ const MobileNavigation = () => {
         >
           <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none font-primaryRegular">
             <MenuItem>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Your Profile
-                </a>
-              )}
+              <Link
+                to="/profile"
+                className="block px-4 py-2 text-sm text-gray-700"
+              >
+                Your Profile
+              </Link>
             </MenuItem>
-            <MenuItem>
+            {/* <MenuItem>
               {({ active }) => (
                 <a
                   href="#"
@@ -234,19 +285,14 @@ const MobileNavigation = () => {
                   Settings
                 </a>
               )}
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem>
-              {({ active }) => (
-                <button
-                  onClick={logout}
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Logout
-                </button>
-              )}
+              <button
+                onClick={logout}
+                className="block px-4 py-2 text-sm text-gray-700"
+              >
+                Logout
+              </button>
             </MenuItem>
           </MenuItems>
         </Transition>

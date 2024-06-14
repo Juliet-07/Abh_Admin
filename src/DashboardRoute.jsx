@@ -6,6 +6,17 @@ import CreateVendor from "./pages/UserManager/createVendor";
 import AllVendors from "./pages/UserManager/allVendors";
 import VendorDetails from "./pages/UserManager/vendorDetails";
 import Categories from "./pages/ProductManager/categories";
+import NewProducts from "./pages/ProductManager/newProducts";
+import AllProducts from "./pages/ProductManager/allProducts";
+import CustomerDetails from "./pages/UserManager/customerDetails";
+import Customers from "./pages/UserManager/customers";
+import TrackOrders from "./pages/OrderManager/trackOrders";
+import AllOrders from "./pages/OrderManager/allOrders";
+import Transactions from "./pages/OrderManager/transactions";
+import Analytics from "./pages/analytics";
+import Profile from "./pages/profile";
+import Notifications from "./pages/notifications";
+import Inventory from "./pages/inventory";
 
 function DashboardRoute() {
   return (
@@ -18,6 +29,17 @@ function DashboardRoute() {
           <Route path="/allVendors" element={<AllVendors />} />
           <Route path="/vendorDetails" element={<VendorDetails />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/newProducts" element={<NewProducts />} />
+          <Route path="/allProducts" element={<AllProducts />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/customerDetails" element={<CustomerDetails />} />
+          <Route path="/tracker" element={<TrackOrders />} />
+          <Route path="/allOrders" element={<AllOrders />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/inventory" element={<Inventory />} />
         </Routes>
       </Layout>
     </>
