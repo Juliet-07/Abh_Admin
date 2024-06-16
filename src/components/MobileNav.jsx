@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import Logo from "../components/Logo";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Scrollbar from "./Scrollbar";
-import { BsChevronDown } from "react-icons/bs";
+import { BsChevronDown, BsBarChartLineFill } from "react-icons/bs";
 import { MdDashboard } from "react-icons/md";
 import { GiBookmark } from "react-icons/gi";
 import { FaUserTie } from "react-icons/fa";
@@ -64,20 +64,21 @@ const MobileNavigation = () => {
           path: "/newProducts",
         },
         { title: "All Products", path: "/allProducts" },
+        { title: "Inventory", path: "/inventory" },
         // { title: "Draft Products", path: "/forms/low-out-of-stock" },
         // { title: "Discount", path: "/forms/inventory" },
       ],
     },
-    {
-      title: "Inventory",
-      icon: <SiFormstack />,
-      path: "/inventory",
-      // submenu: true,
-      // submenuItems: [
-      //   { title: "All Inventory", path: "/forms/categories" },
-      //   { title: "Restock", path: "/forms/all-products" },
-      // ],
-    },
+    // {
+    //   title: "Inventory",
+    //   icon: <SiFormstack />,
+    //   path: "/inventory",
+    //   // submenu: true,
+    //   // submenuItems: [
+    //   //   { title: "All Inventory", path: "/forms/categories" },
+    //   //   { title: "Restock", path: "/forms/all-products" },
+    //   // ],
+    // },
     {
       title: "Order Management",
       icon: <TbTruckDelivery />,
@@ -90,7 +91,7 @@ const MobileNavigation = () => {
     },
     {
       title: "Analytics",
-      icon: <GiBookmark />,
+      icon: <BsBarChartLineFill />,
       path: "/analytics",
     },
     { title: "Notifications", path: "/notifications", icon: <FaBell /> },

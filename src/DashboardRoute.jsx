@@ -16,7 +16,8 @@ import Transactions from "./pages/OrderManager/transactions";
 import Analytics from "./pages/analytics";
 import Profile from "./pages/profile";
 import Notifications from "./pages/notifications";
-import Inventory from "./pages/inventory";
+import Inventory from "./pages/ProductManager/inventory";
+import OrderDetails from "./pages/OrderManager/orderDetails";
 
 function DashboardRoute() {
   return (
@@ -35,6 +36,7 @@ function DashboardRoute() {
           <Route path="/customerDetails" element={<CustomerDetails />} />
           <Route path="/tracker" element={<TrackOrders />} />
           <Route path="/allOrders" element={<AllOrders />} />
+          <Route path="/orderDetails" element={<OrderDetails />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/profile" element={<Profile />} />

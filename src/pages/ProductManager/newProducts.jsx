@@ -298,7 +298,7 @@ const NewProducts = () => {
                       <td className="p-4 text-center">
                         {formatDate(product.createdAt)}
                       </td>
-                      <td className="p-4 text-center">
+                      <td className="p-4">
                         <div className="flex flex-wrap items-center justify-center gap-3">
                           <div className="w-10 h-10">
                             <img
@@ -309,7 +309,7 @@ const NewProducts = () => {
                           </div>
                           <div className="grid">
                             <p>{product.name}</p>
-                            <p>{product.productType}</p>
+                            <p>{product?.category?.name}</p>
                           </div>
                         </div>
                       </td>

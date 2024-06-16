@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import MobileNavigation from "./MobileNav";
 import Scrollbar from "./Scrollbar";
-import { BsChevronDown } from "react-icons/bs";
+import { BsChevronDown, BsBarChartLineFill } from "react-icons/bs";
 import { MdDashboard } from "react-icons/md";
 import { GiBookmark } from "react-icons/gi";
 import { FaUserTie } from "react-icons/fa";
@@ -51,20 +51,21 @@ const Layout = ({ children }) => {
           path: "/newProducts",
         },
         { title: "All Products", path: "/allProducts" },
+        { title: "Inventory", path: "/inventory" },
         // { title: "Draft Products", path: "/forms/low-out-of-stock" },
         // { title: "Discount", path: "/forms/inventory" },
       ],
     },
-    {
-      title: "Inventory",
-      icon: <SiFormstack />,
-      path: "/inventory",
-      // submenu: true,
-      // submenuItems: [
-      //   { title: "All Inventory", path: "/forms/categories" },
-      //   { title: "Restock", path: "/forms/all-products" },
-      // ],
-    },
+    // {
+    //   title: "Inventory",
+    //   icon: <SiFormstack />,
+    //   path: "/inventory",
+    //   // submenu: true,
+    //   // submenuItems: [
+    //   //   { title: "All Inventory", path: "/forms/categories" },
+    //   //   { title: "Restock", path: "/forms/all-products" },
+    //   // ],
+    // },
     {
       title: "Order Management",
       icon: <TbTruckDelivery />,
@@ -77,7 +78,7 @@ const Layout = ({ children }) => {
     },
     {
       title: "Analytics",
-      icon: <GiBookmark />,
+      icon: <BsBarChartLineFill />,
       path: "/analytics",
     },
     // { title: "Settings", path: "/manager", icon: <FcManager /> },
