@@ -320,7 +320,7 @@ const NewProducts = () => {
                       <td className="p-4 text-center">
                         {product.quantity + " " + product.unit}
                       </td>
-                      <td className="p-4 text-center">{product.phoneNumber}</td>
+                      <td className="p-4 text-center">{product?.vendor?.store}</td>
                       <td className="p-4 flex items-center justify-center">
                         <button
                           onClick={() => handleViewMore(product)}

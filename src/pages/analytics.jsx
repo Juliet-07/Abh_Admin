@@ -64,7 +64,7 @@ const Analytics = () => {
           </div>
         </div>
         <div className="w-full bg-white border border-[#CFCBCB] rounded-xl grid md:grid-cols-4 gap-4 p-4">
-          <div className="w-full md:w-[228px] h-[146px] rounded-2xl border border-l-2 border-l-[#08932E] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#08932E] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Active Users</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{customers.length + vendors.length}</p>
@@ -75,7 +75,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </div>
           </div>
-          <div className="w-full md:w-[228px] h-[146px] rounded-2xl border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Inactive Users</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">377</p>
@@ -86,7 +86,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </div>
           </div>
-          <div className="w-full md:w-[228px] h-[146px] rounded-2xl border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Customers</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{customers.length}</p>
@@ -100,7 +100,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </Link>
           </div>
-          <div className="w-full md:w-[228px] h-[146px] rounded-2xl border border-l-2 border-l-[#F58634] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#F58634] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Vendors</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{vendors.length}</p>

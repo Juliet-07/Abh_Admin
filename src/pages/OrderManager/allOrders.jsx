@@ -9,6 +9,7 @@ const AllOrders = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
+  const [activeTab, setActiveTab] = useState("All");
   // const [orders, setOrders] = useState([]);
 
   const formatDate = (dateString) => {
@@ -95,6 +96,11 @@ const AllOrders = () => {
   //   getOrders();
   // }, []);
 
+  const filteredOrders = orders.filter((order) => {
+    if (activeTab === "All") return true;
+    return order.orderStatus === activeTab;
+  });
+
   const handleViewMore = (order) => {
     console.log("handleViewDetails called with:", order);
     navigate("/orderDetails", { state: { order } });
@@ -146,15 +152,43 @@ const AllOrders = () => {
     }
   };
 
+  const tabs = [
+    "All",
+    "Pending",
+    "Processing",
+    "Ready to Ship",
+    "Shipped",
+    "Delivered",
+    "Returned",
+  ];
+
   return (
     <>
-      {orders.length > 0 ? (
-        <div className="w-full flex flex-col">
-          <div className="w-full md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
-            <p className="">All Orders</p>
-            <div></div>
+      <div className="w-full flex flex-col">
+        <div className="w-full md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+          <p className="">All Orders</p>
+          <div></div>
+        </div>
+        <div className="my-4 w-full p-3 overflow-x-auto font-primaryRegular">
+          <div className="flex gap-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                className={`px-4 py-2 rounded ${
+                  activeTab === tab
+                    ? "bg-[#359E52] text-white"
+                    : "bg-gray-200 text-sm"
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
-          <div className="my-10 w-full bg-white p-3">
+        </div>
+
+        {filteredOrders.length > 0 ? (
+          <div className="w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
@@ -170,7 +204,7 @@ const AllOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order, index) => {
+                  {filteredOrders.map((order, index) => {
                     const { bgColor, textColor, dotColor } = getStatusStyles(
                       order.orderStatus
                     );
@@ -181,13 +215,7 @@ const AllOrders = () => {
                       >
                         <td className="p-4 text-center">120381</td>
                         <td className="p-4 text-center">Jun 16, 2024</td>
-                        {/* <td className="p-4 text-center">
-                          {formatDate(order.createdAt)}
-                        </td> */}
-                        <td className="p-4 text-center">
-                          {/* {order.firstName + " " + order.lastName} */}
-                          {order.name}
-                        </td>
+                        <td className="p-4 text-center">{order.name}</td>
                         <td className="p-4 text-center">{order.address}</td>
                         <td className="p-4 text-center">
                           <div
@@ -229,17 +257,17 @@ const AllOrders = () => {
               </table>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center p-6">
-          <div className="text-xl font-primaryRegular">
-            No Orders To Display Yet
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center p-6">
+            <div className="text-xl font-primaryRegular">
+              No Orders To Display Yet
+            </div>
+            <div className="my-10 md:p-10">
+              <img src={Avatar} alt="no-new-vendor" className="w-full h-full" />
+            </div>
           </div>
-          <div className="my-10 md:p-10">
-            <img src={Avatar} alt="no-new-vendor" className="w-full h-full" />
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

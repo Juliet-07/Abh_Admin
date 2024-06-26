@@ -174,7 +174,7 @@ const AllProducts = () => {
                     <br />
                     <br />
                     <b>{selectedProduct.name}</b>
-                    <p>{selectedProduct.categoryId}</p>
+                    <p>{selectedProduct?.category?.name}</p>
                     <div className="flex flex-row gap-[10px]">
                       <b>SKU</b> <p>{selectedProduct.sku}</p>
                     </div>
@@ -208,7 +208,7 @@ const AllProducts = () => {
                   </div>
                 </div>
                 <br />
-                <div className="flex items-center justify-between mt-10 mb-4 font-primaryRegular">
+                <div className="flex items-center justify-between md:mt-10 mb-4 font-primaryRegular">
                   <div></div>
                   <button
                     onClick={handleDecline}
@@ -296,7 +296,9 @@ const AllProducts = () => {
                       <td className="p-4 text-center">
                         {product.quantity + " " + product.unit}
                       </td>
-                      <td className="p-4 text-center">{product.phoneNumber}</td>
+                      <td className="p-4 text-center">
+                        {product?.vendor?.store}
+                      </td>
                       <td className="p-4 flex items-center justify-center">
                         <button
                           onClick={() => handleViewMore(product)}
