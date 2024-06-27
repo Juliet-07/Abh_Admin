@@ -2,6 +2,7 @@ import React from "react";
 import PaginatedTable from "../components/paginatedTables";
 import BarchartComp from "../components/BarchartComp";
 import DashSlider from "../components/DashSlider";
+import LowStockPaginatedTable from "../components/LowstockTable";
 
 const Dashboard = () => {
   const [recentOrderInput, setROI] = React.useState("");
@@ -67,7 +68,7 @@ const Dashboard = () => {
             className=" flex flex-[18] min-w-[220px] h-[120px] border rounded-lg border-b-4 border-b-[teal] p-2 flex items-center justify-between bg-slate-50"
           >
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-37.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-39.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Pending Order</p>
@@ -79,7 +80,7 @@ const Dashboard = () => {
             className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50"
           >
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-38.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-41.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Processing Order</p>
@@ -91,7 +92,7 @@ const Dashboard = () => {
             className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50"
           >
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-40.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-42.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Completed Order</p>
@@ -103,7 +104,7 @@ const Dashboard = () => {
             className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-purple-500 p-2 flex items-center justify-between bg-slate-50"
           >
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-39.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-37.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Cancelled Order</p>
@@ -230,8 +231,9 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <PaginatedTable
+        <LowStockPaginatedTable
           tableHead={[
+            "ID",
             "Product",
             "SKU",
             "Group",
@@ -241,12 +243,12 @@ const Dashboard = () => {
             "Quantity",
           ]}
           tableData={[
-            { customer_name: "john doe", status: "shipped" },
-            { customer_name: "micheal abel", status: "shipped" },
-            { customer_name: "newton", status: "pending" },
-            { customer_name: "john doe", status: "pending" },
-            { customer_name: "john doe", status: "shipped" },
-            { customer_name: "mary", status: "shipped" },
+            { product_name: "Samusung SoundPal S8 Mini B", status: "shipped" },
+            { product_name: "JuBL Charge 5", status: "shipped" },
+            { product_name: "carrot", status: "pending" },
+            { product_name: "carbage", status: "pending" },
+            { product_name: "beer", status: "shipped" },
+            { product_name: "rice", status: "shipped" },
           ]}
           maxItems={4}
           searchText={LowStockInput}

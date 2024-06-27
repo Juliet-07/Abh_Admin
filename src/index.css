@@ -87,10 +87,19 @@ th{
   color: teal;
   border-radius: 10px;
 }
-/* 
-.slick-dots{
+
+.slick-dots  button:before{
   background-color: teal;
-} */
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  z-index: 1000;
+}
+
+.slick-dots li{
+  list-style: none;
+  /* z-index: -1; */
+}
 
 .slick-scrollbar{
   padding-right: 5px;
