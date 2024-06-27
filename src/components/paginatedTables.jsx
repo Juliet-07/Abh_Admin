@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import StatusComponent from "./StatusComp";
 
 const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
   const [itemOffset, setItemOffset] = useState(0);
@@ -68,7 +69,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
                       <div className="flex flex-row justify-center text-[13px]">
-                        Shipped{" "}
+                        <StatusComponent status={"Shipped"} />
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
@@ -127,7 +128,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
                         <div className="flex flex-row justify-center text-[13px]">
-                          Shipped{" "}
+                          <StatusComponent status={"Shipped"} />
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
