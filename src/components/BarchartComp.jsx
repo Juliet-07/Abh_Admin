@@ -9,18 +9,19 @@ const BarchartComp =  () => {
               id: "basic-bar"
             },
             xaxis: {
-              categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+              categories: ["Jan", "Feb", "Mar", "Apr", "May", "jun", "july", "Aug", "Sep", "Oct", "Nov", "Dec"]
             },
             plotOptions: {
                 bar: {
-                  borderRadius: 10
+                  borderRadius: 10,
+                  color: "teal"
                 }
               }
           },
           series: [
             {
               name: "series-1",
-              data: [30, 40, 45, 50, 49, 60, 70, 91]
+              data: [30, 40, 45, 50, 90, 60, 70, 40, 10, 0, 0, 0]
             }
           ]
         };
@@ -32,7 +33,7 @@ const BarchartComp =  () => {
             options={opts.options}
             series={opts.series}
             type="bar"
-            width="100%"
+            width="97%"
             height={400}
           />
         </div>

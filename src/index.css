@@ -85,6 +85,22 @@ th{
   justify-content: center;
   align-items: center;
   color: teal;
+  border-radius: 10px;
+}
+/* 
+.slick-dots{
+  background-color: teal;
+} */
+
+.slick-scrollbar{
+  padding-right: 5px;
+}
+
+.slick-scrollbar::-webkit-scrollbar{
+  width: 5px;
+  border-radius: 50px;
+  background: gainsboro;
+  /* padding-right: 5px; */
 }
 
 .prevBtn{
@@ -97,4 +113,5 @@ th{
   justify-content: center;
   align-items: center;
   color: teal;
+  border-radius: 10px;
 }

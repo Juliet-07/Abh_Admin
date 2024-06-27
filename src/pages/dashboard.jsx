@@ -1,6 +1,7 @@
 import React from "react";
 import PaginatedTable from "../components/paginatedTables";
 import BarchartComp from "../components/BarchartComp";
+import DashSlider from "../components/DashSlider";
 
 const Dashboard = () => {
   const [recentOrderInput, setROI] = React.useState("");
@@ -155,23 +156,64 @@ const Dashboard = () => {
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="flex flex-row items-center justify-between w-full">
-            <p className="font-bold text-lg">Low stock products</p>
+            <p className="font-bold text-lg">Sale History</p>
 
-            <div className="flex flex-1 max-w-[250px] h-[40px] rounded-[4px] gap-2 border-[1px] border-[gainsboro] p-3 items-center justify-center">
-              <div className="min-w-[25px] h-[25px] bg-[url(/svgs/svgexport-1.svg)] bg-no-repeat bg-center bg-contain" />
-              <input
-                type="text"
-                placeholder="Search by name"
-                onInput={(e) => setLSI(e.target.value)}
-                className="flex flex-1 outline-none border-none text-[16px]"
-              />
-            </div>
+            
           </div>
         </div>
         <BarchartComp />
         </div>
 
-      <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
+        <div className="w-[full] flex xl:flex-row xl:justify-between flex-col gap-4 ">
+        <div className="bg-white rounded-[0.5rem] p-4 flex flex-col flex-[45] min-h-[500px] items-center">
+        <div className="flex flex-row items-center gap-[10px] w-full">
+          <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
+          <div className="flex flex-row items-center justify-between w-full">
+            <p className="font-bold text-lg">Top 10 Most Rated Products</p>
+          </div>
+        </div>
+
+        <DashSlider />
+        </div>
+
+        <div className="bg-white rounded-[0.5rem] p-4 flex flex-col flex-[45] min-h-[500px]">
+        <div className="flex flex-row items-center gap-[10px]">
+          <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
+          <div className="flex flex-row items-center justify-between w-full">
+            <p className="font-bold text-lg">Popular Products</p>
+
+            
+          </div>
+        </div>
+        
+        <div className="w-full flex flex-1 mt-4 overflow-y-scroll max-h-[500px]  flex-col gap-[20px] slick-scrollbar">
+        {
+          ["", "", "", "", "", "", "", "", "", ""]
+          .map((product, index) => {
+            return (
+          <div className="w-full h-[50px] flex flex-row justify-between">
+            <div className="flex flex-row gap-4">
+            <div className="w-[50px] h-[50px]
+            bg-[url(/BrusselsSprouts.webp)]
+            bg-no-repeat bg-center bg-contain
+             border-[0.8px] border-[gainsboro] rounded-[10px]" />
+            <div>
+              <b>BrusselsSprouts</b>
+              <p>Grocery</p>
+            </div>
+            </div>
+
+            <b>$3.00</b>
+          </div>
+            )
+          })
+        }
+        </div>
+        </div>
+
+        </div>
+
+      <div className="bg-white rounded-[0.5rem] p-4 flex flex-col ">
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="flex flex-row items-center justify-between w-full">
