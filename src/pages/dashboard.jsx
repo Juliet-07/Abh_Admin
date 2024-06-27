@@ -3,6 +3,7 @@ import PaginatedTable from "../components/paginatedTables"
 
 const Dashboard = () => {
 
+  const [recentOrderInput, setROI] = React.useState("");
   
   return (
     <div className="w-full flex flex-col gap-10 font-primaryRegular">
@@ -113,11 +114,18 @@ const Dashboard = () => {
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center gap-[10px]">
-            <p className="font-bold text-lg">Recent Orders</p>
+          <div className="flex flex-row items-center justify-between w-full">
+            <p className="font-bold text-lg">Recent Orders</p> 
+
+            <div className="flex flex-1 max-w-[250px] h-[40px] rounded-[4px] gap-2 border-[1px] border-[gainsboro] p-3 items-center justify-center">
+              <div className="min-w-[25px] h-[25px] bg-[url(/svgs/svgexport-1.svg)] bg-no-repeat bg-center bg-contain"  /> 
+              <input type="text" placeholder="Search by name" onInput={(e)=> setROI(e.target.value)}
+              className="flex flex-1 outline-none border-none text-[16px]" />
+            </div>
           </div>
         </div>
-        <PaginatedTable tableData={["", "", "", "", "", ""]} maxItems={4} />
+        <PaginatedTable tableData={[{customer_name: "john doe", status: "shipped"}, {customer_name: "micheal abel", status: "shipped"}, {customer_name: "newton", status: "pending"}, {customer_name: "john doe", status: "pending"}, {customer_name: "john doe", status: "shipped"}, {customer_name: "mary", status: "shipped"}]} maxItems={4}
+         searchText={recentOrderInput} />
         </div>
 
         

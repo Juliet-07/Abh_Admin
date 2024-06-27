@@ -1,41 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import ReactPaginate from 'react-paginate';
+import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 
-const PaginatedTable = ({tableHead, tableData, maxItems }) => {
-    const [itemOffset, setItemOffset] = useState(0);
+const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
+  const [itemOffset, setItemOffset] = useState(0);
+  const [filteredItems, setFilteredItems] = useState([]);
 
-    
-    const endOffset = itemOffset + maxItems;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    const currentItems = tableData.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(tableData.length / maxItems);
-  
-    const handlePageClick = (event) => {
-      const newOffset = (event.selected * maxItems) % tableData.length;
-      console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`
-      );
-      setItemOffset(newOffset);
-    };
-  
-  
-    return (
-        <>
-        <div class="overflow-x-auto mt-[20px] mb-4">
-          <table class="table-auto w-full bg-white shadow-md rounded-lg">
-            <thead>
-              <tr class="bg-gray-50">
-                <th class="px-4 py-2 text-[14px]">Tracking Number</th>
-                <th class="px-4 py-2 text-[14px]">Customer</th>
-                <th class="px-4 py-2 text-[14px]">Products</th>
-                <th class="px-4 py-2 text-[14px]">Order Date</th>
-                <th class="px-4 py-2 text-[14px]">Total</th>
-                <th class="px-4 py-2 text-[14px]">Status</th>
-                <th class="px-4 py-2 text-[14px]">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems && currentItems.map((data, index) => {
+  const endOffset = itemOffset + maxItems;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = tableData.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(tableData.length / maxItems);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * maxItems) % tableData.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+
+  return (
+    <>
+      <div class="overflow-x-auto mt-[20px] mb-4">
+        <table class="table-auto w-full bg-white shadow-md rounded-lg">
+          <thead className="h-[50px]">
+            <tr class="bg-gray-50">
+              <th class="px-4 py-2 text-[14px]">Tracking Number</th>
+              <th class="px-4 py-2 text-[14px]">Customer</th>
+              <th class="px-4 py-2 text-[14px]">Products</th>
+              <th class="px-4 py-2 text-[14px]">Order Date</th>
+              <th class="px-4 py-2 text-[14px]">Total</th>
+              <th class="px-4 py-2 text-[14px]">Status</th>
+              <th class="px-4 py-2 text-[14px]">Actions {searchText}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {!searchText &&
+              currentItems &&
+              currentItems.map((data, index) => {
                 return (
                   <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
                     <td class="px-4 py-2 min-w-[100px]">
@@ -49,7 +50,7 @@ const PaginatedTable = ({tableHead, tableData, maxItems }) => {
                           <b className="text-[20px] text-[teal]">J</b>{" "}
                         </div>
                         <div className="flex flex-col">
-                          <b>John Doe </b>
+                          <b>{data.customer_name} </b>
                           <p>john@gmail.com</p>
                         </div>
                       </div>
@@ -87,11 +88,70 @@ const PaginatedTable = ({tableHead, tableData, maxItems }) => {
                   </tr>
                 );
               })}
-            </tbody>
-          </table>
-        </div>
+            {searchText &&
+              tableData &&
+              tableData.map((data, index) => {
+                if (
+                  data.customer_name
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())
+                )
+                  return (
+                    <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
+                      <td class="px-4 py-2 min-w-[100px]">
+                        <div className="flex flex-row justify-center">
+                          123456{" "}
+                        </div>
+                      </td>
+                      <td class="px-4 py-2 min-w-[100px]">
+                        <div className="flex flex-row justify-center gap-[10px]">
+                          <div className="w-[35px] h-[35px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
+                            <b className="text-[18px] text-[teal]">J</b>{" "}
+                          </div>
+                          <div className="flex flex-col">
+                            <b>{data.customer_name.toString()} </b>
+                            <p>john@gmail.com</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-2 min-w-[100px]">
+                        <div className="flex flex-row justify-center">
+                          Product{" "}
+                        </div>
+                      </td>
+                      <td class="px-4 py-2 min-w-[100px]">
+                        <div className="flex flex-row justify-center">
+                          2024-06-26{" "}
+                        </div>
+                      </td>
+                      <td class="px-4 py-2 min-w-[100px]">
+                        <div className="flex flex-row justify-center">
+                          $100.00{" "}
+                        </div>
+                      </td>
+                      <td class="px-4 py-2 min-w-[100px]">
+                        <div className="flex flex-row justify-center">
+                          Shipped{" "}
+                        </div>
+                      </td>
+                      <td class="px-4 py-2 min-w-[100px]">
+                        {" "}
+                        <div className="flex flex-row justify-center">
+                          <img
+                            src="/svgs/svgexport-44.svg"
+                            alt=""
+                            className="w-4 h-4 active:opacity-[0.5] cursor-pointer"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+              })}
+          </tbody>
+        </table>
+      </div>
 
-        <ReactPaginate
+      <ReactPaginate
         breakLabel="..."
         nextLabel="next >"
         onPageChange={handlePageClick}
@@ -113,7 +173,7 @@ const PaginatedTable = ({tableHead, tableData, maxItems }) => {
         renderOnZeroPageCount={null}
       />
       {/* </div> */}
-      </>
-    )
-}
+    </>
+  );
+};
 export default PaginatedTable;
