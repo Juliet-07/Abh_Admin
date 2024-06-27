@@ -3,6 +3,8 @@ import axios from "axios";
 import { MdCalendarMonth } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
+import BarchartComp from "../components/BarchartComp";
+import LinechartComp from "../components/LineChartComp";
 
 const Analytics = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -55,7 +57,7 @@ const Analytics = () => {
   }, []);
   return (
     <>
-      <div className="w-full grid gap-10 font-primaryRegular">
+      <div className="w-full flex flex-col gap-[10px] font-primaryRegular">
         <div className="w-full md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4">
           <p className="font-primaryBold md:text-xl">Analytics</p>
           <div className="flex items-center gap-4 text-gray-600">
@@ -63,8 +65,8 @@ const Analytics = () => {
             <MdCalendarMonth />
           </div>
         </div>
-        <div className="w-full bg-white border border-[#CFCBCB] rounded-xl grid md:grid-cols-4 gap-4 p-4">
-          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#08932E] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+        <div className="w-full bg-white border border-[#CFCBCB] rounded-xl flex flex-row flex-wrap  gap-1 p-2">
+          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl border border-l-2 border-l-[#08932E] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Active Users</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{customers.length + vendors.length}</p>
@@ -75,7 +77,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </div>
           </div>
-          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Inactive Users</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">377</p>
@@ -86,7 +88,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </div>
           </div>
-          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Customers</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{customers.length}</p>
@@ -100,7 +102,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </Link>
           </div>
-          <div className="w-full md:w-[228px] 2xl:w-[300px] h-[146px] rounded-2xl border border-l-2 border-l-[#F58634] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#F58634] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Vendors</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{vendors.length}</p>
@@ -115,8 +117,26 @@ const Analytics = () => {
             </Link>
           </div>
         </div>
-        <div>User Engagements</div>
-        <div>Commissions earned</div>
+     
+        <div className="bg-white rounded-[0.5rem] p-4 flex flex-col border-[1px] border-[gainsboro]">
+          <div className="flex flex-row items-center gap-[10px]">
+            <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
+            <div className="flex flex-row items-center justify-between w-full">
+              <p className="font-bold text-lg">User Engagements</p>
+            </div>
+          </div>
+          <LinechartComp />
+        </div>
+        <div className="bg-white rounded-[0.5rem] p-4 flex flex-col border-[1px] border-[gainsboro]">
+          <div className="flex flex-row items-center gap-[10px]">
+            <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
+            <div className="flex flex-row items-center justify-between w-full">
+              <p className="font-bold text-lg">Commission Earned</p>
+            </div>
+          </div>
+          <LinechartComp />
+        </div>
+        
         <div>ROI</div>
       </div>
     </>

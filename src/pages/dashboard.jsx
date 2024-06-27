@@ -255,7 +255,7 @@ const Dashboard = () => {
         />
       </div>
 
-      <div>Low Stock</div>
+      {/* <div>Low Stock</div> */}
     </div>
   );
 };
