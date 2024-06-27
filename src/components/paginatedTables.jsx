@@ -24,13 +24,9 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
         <table class="table-auto w-full bg-white shadow-md rounded-lg">
           <thead className="h-[50px]">
             <tr class="bg-gray-50">
-              <th class="px-4 py-2 text-[14px]">Tracking Number</th>
-              <th class="px-4 py-2 text-[14px]">Customer</th>
-              <th class="px-4 py-2 text-[14px]">Products</th>
-              <th class="px-4 py-2 text-[14px]">Order Date</th>
-              <th class="px-4 py-2 text-[14px]">Total</th>
-              <th class="px-4 py-2 text-[14px]">Status</th>
-              <th class="px-4 py-2 text-[14px]">Actions {searchText}</th>
+              {tableHead.map((data, index) => {
+                return <th class="px-4 py-2 text-[16px] min-w-[100px]">{data}</th>;
+              })}
             </tr>
           </thead>
           <tbody>
@@ -40,7 +36,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                 return (
                   <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
                     <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center">
+                      <div className="flex flex-row justify-center text-[13px]">
                         123456{" "}
                       </div>
                     </td>
@@ -49,35 +45,35 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                         <div className="w-[40px] h-[40px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
                           <b className="text-[20px] text-[teal]">J</b>{" "}
                         </div>
-                        <div className="flex flex-col">
-                          <b>{data.customer_name} </b>
-                          <p>john@gmail.com</p>
+                        <div className="flex flex-col ">
+                          <b className="text-[14px]">{data.customer_name} </b>
+                          <p className="text-[12px] text-[grey]">john@gmail.com</p>
                         </div>
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center">
+                      <div className="flex flex-row justify-center text-[13px]">
                         Product {index}{" "}
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center">
+                      <div className="flex flex-row justify-center text-[13px]">
                         2024-06-26{" "}
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center">
+                      <div className="flex flex-row justify-center text-[13px]">
                         $100.00{" "}
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center">
+                      <div className="flex flex-row justify-center text-[13px]">
                         Shipped{" "}
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
                       {" "}
-                      <div className="flex flex-row justify-center">
+                      <div className="flex flex-row justify-center text-[13px]">
                         <img
                           src="/svgs/svgexport-44.svg"
                           alt=""
@@ -99,7 +95,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                   return (
                     <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
                       <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center">
+                        <div className="flex flex-row justify-center text-[13px]">
                           123456{" "}
                         </div>
                       </td>
@@ -108,35 +104,35 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                           <div className="w-[35px] h-[35px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
                             <b className="text-[18px] text-[teal]">J</b>{" "}
                           </div>
-                          <div className="flex flex-col">
-                            <b>{data.customer_name.toString()} </b>
-                            <p>john@gmail.com</p>
-                          </div>
+                          <div className="flex flex-col ">
+                          <b className="text-[14px]">{data.customer_name} </b>
+                          <p className="text-[12px] text-[grey]">john@gmail.com</p>
+                        </div>
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center">
+                        <div className="flex flex-row justify-center text-[13px]">
                           Product{" "}
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center">
+                        <div className="flex flex-row justify-center text-[13px]">
                           2024-06-26{" "}
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center">
+                        <div className="flex flex-row justify-center text-[13px]">
                           $100.00{" "}
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center">
+                        <div className="flex flex-row justify-center text-[13px]">
                           Shipped{" "}
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
                         {" "}
-                        <div className="flex flex-row justify-center">
+                        <div className="flex flex-row justify-center text-[13px]">
                           <img
                             src="/svgs/svgexport-44.svg"
                             alt=""
@@ -147,6 +143,8 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                     </tr>
                   );
               })}
+
+            {!currentItems && <p>no result</p>}
           </tbody>
         </table>
       </div>
