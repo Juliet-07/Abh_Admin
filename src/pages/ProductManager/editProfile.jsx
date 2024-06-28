@@ -2,7 +2,7 @@ import React from 'react'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { useNavigate, useParams } from 'react-router-dom';
 
-const Profile = () => {
+const EditProfile = () => {
   let router = useNavigate();
   return (
     <div className='w-full flex flex-col items-center relative font-primaryRegular'>
@@ -16,21 +16,20 @@ const Profile = () => {
 
         </div>
          
-      <button className='bg-white border-none'>Edit</button>
+      {/* <button className='bg-white border-none'>Edit</button> */}
 
       </header>
       <br />
-        <div className='w-[100px]  h-[100px] rounded-[100px] bg-[url(/profileImg.png)] bg-center bg-cover'></div>
-        <p className='text-[grey] text-[16px] mt-[20px]'>Super Admin</p>
-        <b className='text-[20px]'>John Doe</b>
-        <p className='text-[grey] text-[16px]'>johndow@gmail.com</p>
-        <p className='text-[grey] text-[16px]'>+234805623233</p>
 
-
+      <div className='w-full flex flex-row gap-[20px]'>
+      <div className='w-[100px]  h-[100px] rounded-[100px] bg-[url(/profileImg.png)] bg-center bg-cover'></div>
+<div></div>
+      </div>
+       
       </div>
 
     </div>
   )
 }
 
-export default Profile
+export default EditProfile
