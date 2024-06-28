@@ -18,6 +18,7 @@ import Profile from "./pages/profile";
 import Notifications from "./pages/notifications";
 import Inventory from "./pages/ProductManager/inventory";
 import OrderDetails from "./pages/OrderManager/orderDetails";
+import UsersActivity from "./pages/UserManager/UserAcitvity";
 
 function DashboardRoute() {
   return (
@@ -42,6 +43,7 @@ function DashboardRoute() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/usersActivity/:type" element={<UsersActivity />} />
         </Routes>
       </Layout>
     </>

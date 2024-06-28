@@ -78,10 +78,15 @@ const Analytics = () => {
               <p className="font-bold">{customers.length + vendors.length}</p>
               <p className="text-xs text-[#08932E]">+21.1%</p>
             </div>
+               <Link
+              to="/usersActivity/active"
+              className="flex items-center gap-3 text-[#F58634]"
+            >
             <div className="flex items-center gap-3 text-[#08932E]">
-              <p>See Activity</p>
+              <p>See All</p>
               <IoIosArrowForward />
             </div>
+            </Link>
           </div>
           <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Inactive Users</p>
@@ -89,10 +94,15 @@ const Analytics = () => {
               <p className="font-bold">377</p>
               <p className="text-xs text-[#E74C3C]">-33.1%</p>
             </div>
+               <Link
+              to="/usersActivity/inactive"
+              className="flex items-center gap-3 text-[#F58634]"
+            >
             <div className="flex items-center gap-3 text-[#E74C3C]">
-              <p>See Activity</p>
+              <p>See All</p>
               <IoIosArrowForward />
             </div>
+            </Link>
           </div>
           <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Customers</p>
@@ -185,7 +195,9 @@ const Analytics = () => {
               <div className="w-full flex flex-row h-[150px] justify-between items-center">
                 <div className="flex flex-col gap-4 items-center justify-center ">
                   <div className="flex flex-row gap-[15px]">
-                    <div className="w-[30px] h-[30px] rounded-[4px] bg-black" />
+                    <div className="w-[30px] h-[30px] rounded-[4px] flex items-center justify-center bg-blue-100" >
+                    <img src="/svgs/phone.svg" width={15} height={15} alt="" />
+                      </div>
                     <p>Mobile</p>
                   </div>
                   <div style={{ width: 66, height: 66 }}>
@@ -199,7 +211,9 @@ const Analytics = () => {
                 </div>
                 <div className="flex flex-col gap-4 items-center">
                   <div className="flex flex-row gap-[15px]">
-                    <div className="w-[30px] h-[30px] rounded-[4px] bg-black" />
+                    <div className="w-[30px] h-[30px] rounded-[4px] flex items-center justify-center bg-pink-100" >
+                      <img src="/svgs/desktop.svg" width={15} height={15} alt="" />
+                       </div>
                     <p>Desktop</p>
                   </div>
                   <div style={{ width: 66, height: 66 }}>
