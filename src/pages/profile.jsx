@@ -16,7 +16,7 @@ const Profile = () => {
 
         </div>
          
-      <button className='bg-white border-none'>Edit</button>
+      <button onClick={()=> window.open("/editprofile/id", "_parent")} className='bg-white border-none'>Edit</button>
 
       </header>
       <br />
