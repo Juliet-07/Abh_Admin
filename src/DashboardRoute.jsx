@@ -20,6 +20,7 @@ import Inventory from "./pages/ProductManager/inventory";
 import OrderDetails from "./pages/OrderManager/orderDetails";
 import UsersActivity from "./pages/UserManager/UserAcitvity";
 import EditProfile from "./pages/ProductManager/editProfile";
+import Reports from "./pages/ProductManager/reports";
 
 function DashboardRoute() {
   return (
