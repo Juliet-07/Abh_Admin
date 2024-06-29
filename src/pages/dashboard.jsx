@@ -16,41 +16,41 @@ const Dashboard = () => {
           <p className="font-bold text-lg">Summary</p>
         </div>
 
-        <div className="flex md:flex-row flex-wrap xl:justify-between justify-start gap-6 flex-col mt-6 mb-2">
-          <div className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-[teal] p-2 flex items-center justify-between bg-slate-50">
+        <div className="grid md:grid-cols-4 gap-10 mt-6 mb-2">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-[teal] p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
               <img src="/svgs/svgexport-37.svg" alt="" className="w-8 h-8" />
             </div>
-            <div className="flex flex-col gap-2 items-end">
+            <div className="flex flex-col gap-2">
               <p className="text-sm"> Revenue</p>
-              <b className="text-2xl">$1,800</b>
+              <b>$1,800</b>
             </div>
           </div>
-          <div className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
               <img src="/svgs/svgexport-38.svg" alt="" className="w-8 h-8" />
             </div>
-            <div className="flex flex-col gap-2 items-end">
+            <div className="flex flex-col gap-2">
               <p className="text-sm"> Orders</p>
-              <b className="text-2xl">200</b>
+              <b>200</b>
             </div>
           </div>
-          <div className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-purple-500 p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-purple-500 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
               <img src="/svgs/svgexport-39.svg" alt="" className="w-8 h-8" />
             </div>
-            <div className="flex flex-col gap-2 items-end">
+            <div className="flex flex-col gap-2">
               <p className="text-sm"> Vendors</p>
-              <b className="text-2xl">52</b>
+              <b>52</b>
             </div>
           </div>
-          <div className=" flex flex-[18] min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
               <img src="/svgs/svgexport-40.svg" alt="" className="w-8 h-8" />
             </div>
-            <div className="flex flex-col gap-2 items-end">
+            <div className="flex flex-col gap-2">
               <p className="text-sm"> Customers</p>
-              <b className="text-2xl">104</b>
+              <b>104</b>
             </div>
           </div>
         </div>
@@ -158,61 +158,55 @@ const Dashboard = () => {
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="flex flex-row items-center justify-between w-full">
             <p className="font-bold text-lg">Sale History</p>
-
-            
           </div>
         </div>
         <BarchartComp />
-        </div>
+      </div>
 
-        <div className="w-[full] flex xl:flex-row xl:justify-between flex-col gap-4 ">
+      <div className="w-[full] flex xl:flex-row xl:justify-between flex-col gap-4 ">
         <div className="bg-white rounded-[0.5rem] p-4 flex flex-col flex-[45] min-h-[500px] items-center">
-        <div className="flex flex-row items-center gap-[10px] w-full">
-          <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center justify-between w-full">
-            <p className="font-bold text-lg">Top 10 Most Rated Products</p>
+          <div className="flex flex-row items-center gap-[10px] w-full">
+            <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
+            <div className="flex flex-row items-center justify-between w-full">
+              <p className="font-bold text-lg">Top 10 Most Rated Products</p>
+            </div>
           </div>
-        </div>
 
-        <DashSlider />
+          <DashSlider />
         </div>
 
         <div className="bg-white rounded-[0.5rem] p-4 flex flex-col flex-[45] min-h-[500px]">
-        <div className="flex flex-row items-center gap-[10px]">
-          <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center justify-between w-full">
-            <p className="font-bold text-lg">Popular Products</p>
-
-            
+          <div className="flex flex-row items-center gap-[10px]">
+            <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
+            <div className="flex flex-row items-center justify-between w-full">
+              <p className="font-bold text-lg">Popular Products</p>
+            </div>
           </div>
-        </div>
-        
-        <div className="w-full flex flex-1 mt-4 overflow-y-scroll max-h-[500px]  flex-col gap-[20px] slick-scrollbar">
-        {
-          ["", "", "", "", "", "", "", "", "", ""]
-          .map((product, index) => {
-            return (
-          <div className="w-full h-[50px] flex flex-row justify-between">
-            <div className="flex flex-row gap-4">
-            <div className="w-[50px] h-[50px]
+
+          <div className="w-full flex flex-1 mt-4 overflow-y-scroll max-h-[500px]  flex-col gap-[20px] slick-scrollbar">
+            {["", "", "", "", "", "", "", "", "", ""].map((product, index) => {
+              return (
+                <div className="w-full h-[50px] flex flex-row justify-between">
+                  <div className="flex flex-row gap-4">
+                    <div
+                      className="w-[50px] h-[50px]
             bg-[url(/BrusselsSprouts.webp)]
             bg-no-repeat bg-center bg-contain
-             border-[0.8px] border-[gainsboro] rounded-[10px]" />
-            <div>
-              <b>BrusselsSprouts</b>
-              <p>Grocery</p>
-            </div>
-            </div>
+             border-[0.8px] border-[gainsboro] rounded-[10px]"
+                    />
+                    <div>
+                      <b>BrusselsSprouts</b>
+                      <p>Grocery</p>
+                    </div>
+                  </div>
 
-            <b>$3.00</b>
+                  <b>$3.00</b>
+                </div>
+              );
+            })}
           </div>
-            )
-          })
-        }
         </div>
-        </div>
-
-        </div>
+      </div>
 
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col ">
         <div className="flex flex-row items-center gap-[10px]">

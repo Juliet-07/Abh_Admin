@@ -94,6 +94,7 @@ const MobileNavigation = () => {
       icon: <BsBarChartLineFill />,
       path: "/analytics",
     },
+    { title: "Reports", path: "/reports", icon: <FcManager /> },
     { title: "Notifications", path: "/notifications", icon: <FaBell /> },
   ];
 

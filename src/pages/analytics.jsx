@@ -71,40 +71,36 @@ const Analytics = () => {
             <MdCalendarMonth />
           </div>
         </div>
-        <div className="w-full bg-white border border-[#CFCBCB] rounded-xl flex flex-row flex-wrap  gap-1 p-2">
-          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl border border-l-2 border-l-[#08932E] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+        <div className="w-full bg-white border border-[#CFCBCB] rounded-xl grid md:grid-cols-4 gap-6 p-4">
+          <div className="min-w-[200px] h-[146px] rounded-2xl border border-l-2 border-l-[#08932E] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Active Users</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{customers.length + vendors.length}</p>
               <p className="text-xs text-[#08932E]">+21.1%</p>
             </div>
-               <Link
+            <Link
               to="/usersActivity/active"
-              className="flex items-center gap-3 text-[#F58634]"
+              className="flex items-center gap-3 text-[#08932E]"
             >
-            <div className="flex items-center gap-3 text-[#08932E]">
-              <p>See All</p>
+              <p>See Activity</p>
               <IoIosArrowForward />
-            </div>
             </Link>
           </div>
-          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="min-w-[200px] h-[146px] rounded-2xl border border-l-2 border-l-[#E74C3C] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Inactive Users</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">377</p>
               <p className="text-xs text-[#E74C3C]">-33.1%</p>
             </div>
-               <Link
+            <Link
               to="/usersActivity/inactive"
-              className="flex items-center gap-3 text-[#F58634]"
+              className="flex items-center gap-3 text-[#E74C3C]"
             >
-            <div className="flex items-center gap-3 text-[#E74C3C]">
-              <p>See All</p>
+              <p>See Activity</p>
               <IoIosArrowForward />
-            </div>
             </Link>
           </div>
-          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="min-w-[200px] h-[146px] rounded-2xl border border-l-2 border-l-[#155793] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Customers</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{customers.length}</p>
@@ -118,7 +114,7 @@ const Analytics = () => {
               <IoIosArrowForward />
             </Link>
           </div>
-          <div className="flex flex-1 min-w-[200px] h-[146px] rounded-2xl flex-wrap  border border-l-2 border-l-[#F58634] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
+          <div className="min-w-[200px] h-[146px] rounded-2xl border border-l-2 border-l-[#F58634] bg-white flex flex-col items-center justify-center gap-6 md:gap-4">
             <p>Total Vendors</p>
             <div className="flex items-center gap-3">
               <p className="font-bold">{vendors.length}</p>
@@ -133,7 +129,6 @@ const Analytics = () => {
             </Link>
           </div>
         </div>
-
         <div className="bg-white rounded-[0.5rem] p-4 flex  md:h-[300px] flex-col border-[1px] border-[gainsboro]">
           <div className="flex md:flex-row flex-col flex-1">
             <div className="flex flex-col flex-[70]">
@@ -147,7 +142,6 @@ const Analytics = () => {
                     </p>
                   </div>
                 </div>
-
               </div>
               <div className="h-[200px] w-full">
                 <br />
@@ -195,9 +189,14 @@ const Analytics = () => {
               <div className="w-full flex flex-row h-[150px] justify-between items-center">
                 <div className="flex flex-col gap-4 items-center justify-center ">
                   <div className="flex flex-row gap-[15px]">
-                    <div className="w-[30px] h-[30px] rounded-[4px] flex items-center justify-center bg-blue-100" >
-                    <img src="/svgs/phone.svg" width={15} height={15} alt="" />
-                      </div>
+                    <div className="w-[30px] h-[30px] rounded-[4px] flex items-center justify-center bg-blue-100">
+                      <img
+                        src="/svgs/phone.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                      />
+                    </div>
                     <p>Mobile</p>
                   </div>
                   <div style={{ width: 66, height: 66 }}>
@@ -211,9 +210,14 @@ const Analytics = () => {
                 </div>
                 <div className="flex flex-col gap-4 items-center">
                   <div className="flex flex-row gap-[15px]">
-                    <div className="w-[30px] h-[30px] rounded-[4px] flex items-center justify-center bg-pink-100" >
-                      <img src="/svgs/desktop.svg" width={15} height={15} alt="" />
-                       </div>
+                    <div className="w-[30px] h-[30px] rounded-[4px] flex items-center justify-center bg-pink-100">
+                      <img
+                        src="/svgs/desktop.svg"
+                        width={15}
+                        height={15}
+                        alt=""
+                      />
+                    </div>
                     <p>Desktop</p>
                   </div>
                   <div style={{ width: 66, height: 66 }}>
@@ -224,7 +228,7 @@ const Analytics = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-[0.5rem] p-4 flex flex-col border-[1px] border-[gainsboro]">
           <div className="flex flex-row items-center gap-[10px]">
             <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
@@ -248,7 +252,6 @@ const Analytics = () => {
                     </p>
                   </div>
                 </div>
-
               </div>
               <div className="h-[200px] w-full">
                 <br />

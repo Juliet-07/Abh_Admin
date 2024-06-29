@@ -14,13 +14,13 @@ import TrackOrders from "./pages/OrderManager/trackOrders";
 import AllOrders from "./pages/OrderManager/allOrders";
 import Transactions from "./pages/OrderManager/transactions";
 import Analytics from "./pages/analytics";
-import Profile from "./pages/profile";
+import Profile from "./pages/Profile/profile";
 import Notifications from "./pages/notifications";
 import Inventory from "./pages/ProductManager/inventory";
 import OrderDetails from "./pages/OrderManager/orderDetails";
 import UsersActivity from "./pages/UserManager/UserAcitvity";
-import EditProfile from "./pages/ProductManager/editProfile";
-import Reports from "./pages/ProductManager/reports";
+import EditProfile from "./pages/Profile/editProfile";
+import Reports from "./pages/reports";
 
 function DashboardRoute() {
   return (
@@ -43,11 +43,11 @@ function DashboardRoute() {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/editprofile" element={<EditProfile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/usersActivity/:type" element={<UsersActivity />} />
-          <Route path="/editprofile/:id" element={<EditProfile />} />
         </Routes>
       </Layout>
     </>
