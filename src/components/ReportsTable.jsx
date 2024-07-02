@@ -3,7 +3,12 @@ import ReactPaginate from "react-paginate";
 import StatusComponent from "./StatusComp";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 
-const UserActivityPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
+const ReportsPaginatedTable = ({
+  tableHead,
+  tableData,
+  maxItems,
+  searchText,
+}) => {
   const [itemOffset, setItemOffset] = useState(0);
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -27,7 +32,11 @@ const UserActivityPaginatedTable = ({ tableHead, tableData, maxItems, searchText
           <thead className="h-[50px]">
             <tr class="bg-gray-50">
               {tableHead.map((data, index) => {
-                return <th class="px-4 py-2 text-[14px] text-black min-w-[100px]">{data}</th>;
+                return (
+                  <th class="px-4 py-2 text-[14px] text-black min-w-[100px]">
+                    {data}
+                  </th>
+                );
               })}
             </tr>
           </thead>
@@ -37,27 +46,16 @@ const UserActivityPaginatedTable = ({ tableHead, tableData, maxItems, searchText
               currentItems.map((data, index) => {
                 return (
                   <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
-                    <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                      {data.pageName}
-                      </div>
-                    </td>
-                    <td class="px-4 py-2 min-w-[100px]">
-                    <div className="flex flex-row justify-center text-[13px]">
-                      50
-                      </div>
-                    </td>
-                    <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                        5m. 38s
-                      </div>
-                    </td>
-                    <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                        400
-                      </div>
-                    </td>
-                    
+                    {data.map((item, index) => {
+                      return (
+                        <td class="px-4 py-2 min-w-[100px]">
+                          <div className="flex flex-row justify-center text-[13px]">
+                            {/* {data} */}
+                            me
+                          </div>
+                        </td>
+                      );
+                    })}
                   </tr>
                 );
               })}
@@ -65,35 +63,21 @@ const UserActivityPaginatedTable = ({ tableHead, tableData, maxItems, searchText
               tableData &&
               tableData.map((data, index) => {
                 if (
-                  data.pageName
-                    .toLowerCase()
-                    .includes(searchText.toLowerCase())
+                  data[index].toLowerCase().includes(searchText.toLowerCase())
                 )
                   return (
                     <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
-                      <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center text-[13px]">
-                        {data.pageName}
-                        </div>
-                      </td>
-                      <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                      50
-                      </div>
-                      </td>
-                      <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                        400
-                      </div>
-                    </td>
-                    <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                        5m. 38s
-                      </div>
-                    </td>
-                      
-                      
-                    </tr>
+                    {data.map((item, index) => {
+                      return (
+                        <td class="px-4 py-2 min-w-[100px]">
+                          <div className="flex flex-row justify-center text-[13px]">
+                            {/* {data} */}
+                            me
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
                   );
               })}
 
@@ -104,8 +88,16 @@ const UserActivityPaginatedTable = ({ tableHead, tableData, maxItems, searchText
 
       <ReactPaginate
         breakLabel="..."
-        nextLabel={<div className="flex items-center text-[14px]">next <ChevronRightIcon width={15} height={15} /> </div>}
-        previousLabel={<p className="flex items-center text-[14px]"><ChevronLeftIcon width={15} height={15} /> prev</p>}
+        nextLabel={
+          <div className="flex items-center text-[14px]">
+            next <ChevronRightIcon width={15} height={15} />{" "}
+          </div>
+        }
+        previousLabel={
+          <p className="flex items-center text-[14px]">
+            <ChevronLeftIcon width={15} height={15} /> prev
+          </p>
+        }
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
@@ -127,4 +119,4 @@ const UserActivityPaginatedTable = ({ tableHead, tableData, maxItems, searchText
     </>
   );
 };
-export default UserActivityPaginatedTable;
+export default ReportsPaginatedTable;
