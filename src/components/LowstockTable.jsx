@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import StatusComponent from "./StatusComp";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 
 const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
   const [itemOffset, setItemOffset] = useState(0);
@@ -26,7 +27,7 @@ const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) 
           <thead className="h-[50px]">
             <tr class="bg-gray-50">
               {tableHead.map((data, index) => {
-                return <th class="px-4 py-2 text-[16px] min-w-[100px]">{data}</th>;
+                return <th class="px-4 py-2 text-[14px] text-black min-w-[100px]">{data}</th>;
               })}
             </tr>
           </thead>
@@ -162,11 +163,11 @@ const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) 
 
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel={<div className="flex items-center text-[14px]">next <ChevronRightIcon width={15} height={15} /> </div>}
+        previousLabel={<p className="flex items-center text-[14px]"><ChevronLeftIcon width={15} height={15} /> prev</p>}
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
-        previousLabel="< prev"
         pageClassName="page-item"
         pageLinkClassName="page-link"
         previousClassName="prevBtn"

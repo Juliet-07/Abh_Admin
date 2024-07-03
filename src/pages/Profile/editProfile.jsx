@@ -1,12 +1,102 @@
 import React from "react";
-import { ArrowLeftIcon } from "@heroicons/react/solid";
+import { ArrowLeftIcon, XIcon } from "@heroicons/react/solid";
 import { useNavigate, useParams } from "react-router-dom";
+import SuccessPopup from "../../components/SuccessPopup";
 
 const EditProfile = () => {
   let navigate = useNavigate();
+
+  const [showMessage, setPopup] = React.useState(false);
+  const [message, setmessage] = React.useState("Profile Updated");
+  const [showEmailupdate, setEmailupdate] = React.useState(false);
+  const [showOTP, setOTP] = React.useState(false);
+  
   return (
     <div className="w-full flex flex-col items-center relative font-primaryRegular">
       <br />
+      {showMessage && (
+        <SuccessPopup
+          message={message}
+          onClose={() => setPopup(false)}
+        />
+      )}
+      {showOTP && (
+        <div className="w-full flex flex-1 items-start gap-[10px] overflow-y-scroll justify-center h-[100vh] fixed top-[0px] left-[0px] bg-[#00000099] z-[1000] ">
+          <div className="w-[80%] max-w-[700px] mt-[60px] relative min-h-[300px] bg-white rounded-[8px] p-4 flex flex-col items-center justify-evenly ">
+            <XIcon
+              className="w-[30px] h-[30px] active:opacity-[0.5] absolute right-[10px] top-[10px] cursor-pointer"
+              color="red"
+              onClick={() => setOTP(false)}
+            />
+            <b className="text-black text-[18px]">Input OTP</b>
+            <br />
+            <div className="w-full flex flex-col">
+              <p>Enter OTP</p>
+              <br />
+              <div className="w-full flex flex-row gap-[5px]">
+                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
+                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
+                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
+                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
+              </div>
+              <br />
+              <p className="text-[orangered]">resend</p>
+            </div>
+          </div>
+        </div>
+      )}
+      {showEmailupdate && (
+        <div className="w-full flex flex-1 items-start gap-[10px] overflow-y-scroll justify-center h-[100vh] fixed top-[0px] left-[0px] bg-[#00000099] z-[1000] ">
+          <div className="w-[80%] max-w-[700px] mt-[60px] relative min-h-[300px] bg-white rounded-[8px] p-4 flex flex-col items-center justify-evenly ">
+            <XIcon
+              className="w-[30px] h-[30px] active:opacity-[0.5] absolute right-[10px] top-[10px] cursor-pointer"
+              color="red"
+              onClick={() => setEmailupdate(false)}
+            />
+            <b className="text-black text-[18px]">Change Email Address</b>
+            <br />
+
+            <div className="bg-[#18BBCC1F] w-full min-h-[16px] rounded-[8px] p-4">
+              <p>
+                Please enter your email address for account verification. We
+                will send a One Time Password to the email
+              </p>
+            </div>
+            <br />
+            <br />
+            <div className="flex flex-col w-full">
+              <p>Current Email address</p>
+              <input
+                type="text"
+                disabled
+                value={"  timcodes@gmail.com"}
+                className="w-full max-w-[500px] h-[50px] bg-white border-[1px] opacity-[0.8] "
+              />
+              <br />
+              <p>New Email address</p>
+              <input
+                type="text"
+                className="w-full max-w-[500px] h-[50px] bg-white border-[1px] "
+              />
+            </div>
+            <br />
+            <br />
+            <div className="w-full flex flex-row items-center gap-[20px] justify-center flex-wrap ">
+              <button onClick={()=> {
+                setEmailupdate(false);
+                setOTP(true)
+              }}
+              className="w-[180px] h-[40px] cursor-pointer active:opacity-[0.2] bg-green-500 rounded-[4px] text-white">
+                Update
+              </button>
+              <button className="w-[100px] h-[40px] cursor-pointer active:opacity-[0.2] bg-white border-[1px] rounded-[4px] text-black">
+                cancle
+              </button>
+            </div>
+            <br />
+          </div>
+        </div>
+      )}
       <div className="w-[90%] flex flex-col gap-[5px]  p-[40px]  max-w-[800px] bg-white rounded-[10px] min-h-[431px] flex relative">
         <header className="w-[90%] absolute top-0 flex  flex-row  items-center justify-between  h-[70px]">
           <div
@@ -37,7 +127,10 @@ const EditProfile = () => {
             <div className="flex flex-col flex-1 min-w-[250px]">
               <div className="flex items-center justify-between">
                 <p>Email</p>
-                <p className="text-green-400 cursor-pointer active:opacity-[0.2]">
+                <p
+                  className="text-green-400 cursor-pointer active:opacity-[0.2]"
+                  onClick={() => setEmailupdate(true)}
+                >
                   change
                 </p>
               </div>
@@ -54,7 +147,10 @@ const EditProfile = () => {
             </div>
 
             <div className="w-full flex items-center justify-center">
-              <button className="w-[200px] h-[40px] cursor-pointer active:opacity-[0.2] bg-green-400 rounded-[4px] text-white">
+              <button
+                onClick={() => setPopup(true)}
+                className="w-[200px] h-[40px] cursor-pointer active:opacity-[0.4] bg-green-400 rounded-[4px] text-white"
+              >
                 Update
               </button>
             </div>
