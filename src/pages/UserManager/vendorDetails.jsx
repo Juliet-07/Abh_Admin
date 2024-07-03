@@ -38,7 +38,7 @@ const VendorDetails = () => {
           textColor: "text-[#FB1010]",
           dotColor: "bg-[#FB1010]",
         };
-        case "pending":
+      case "pending":
         return {
           bgColor: "bg-[#FB1010]/[12%]",
           textColor: "text-[#FB1010]",
@@ -56,7 +56,7 @@ const VendorDetails = () => {
           textColor: "text-[#F58634]",
           dotColor: "bg-[#F58634]",
         };
-        case "declined":
+      case "declined":
         return {
           bgColor: "bg-[#F58634]/[12%]",
           textColor: "text-[#F58634]",
@@ -266,9 +266,12 @@ const VendorDetails = () => {
         </div>
       </div>
       <div className="my-10 w-full flex items-center justify-between">
-        <button className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg">
+        <Link
+          to="/allVendors"
+          className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg flex items-center justify-center"
+        >
           Back
-        </button>
+        </Link>
         <div className="flex gap-4">
           <button className="w-[123px] md:w-[186px] h-10 md:h-[46px] bg-[#F58634] text-white font-primarySemibold rounded-lg">
             Deactivate

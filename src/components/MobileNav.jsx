@@ -132,6 +132,7 @@ const MobileNavigation = () => {
           <NavLink
             to={menu.path}
             className={({ isActive }) => (isActive ? activeLink : normalLink)}
+            onClick={() => setNav(false)}
           >
             <li
               className={`flex items-center gap-x-2 cursor-pointer p-3 hover:text-[#359E52] hover:font-primaryBold rounded-md mt-2 ${
@@ -154,6 +155,7 @@ const MobileNavigation = () => {
                 className={({ isActive }) =>
                   isActive ? activeSubLink : normalLink
                 }
+                onClick={() => setNav(false)}
               >
                 <li className="flex items-center gap-x-2 cursor-pointer p-2 hover:text-[#359E52] hover:font-primaryRegular rounded-md">
                   <span className="text-sm font-medium">

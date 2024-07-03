@@ -106,43 +106,44 @@ const AllOrders = () => {
     navigate("/orderDetails", { state: { order } });
   };
 
-  const getStatusStyles = (status) => {
+  const getOrderStatusStyles = (status) => {
     switch (status.toLowerCase()) {
-      case "active":
+      case "pending":
         return {
-          bgColor: "bg-[#088D2D]/[12%]",
-          textColor: "text-[#088D2D]",
-          dotColor: "bg-[#088D2D]",
+          dotsColor: "bg-[#E3140F]",
         };
-      case "blocked":
+      case "shipped":
         return {
-          bgColor: "bg-[#FB1010]/[12%]",
-          textColor: "text-[#FB1010]",
-          dotColor: "bg-[#FB1010]",
+          dotsColor: "bg-[#08932E]",
+        };
+      case "ready to ship":
+        return {
+          dotsColor: "bg-[#FFA500]",
+        };
+      case "processing":
+        return {
+          dotsColor: "bg-[#081E93]",
+        };
+      default:
+        return {
+          dotsColor: "bg-gray-200",
+        };
+    }
+  };
+
+  const getPaymentStatusStyles = (status) => {
+    switch (status.toLowerCase()) {
+      case "paid":
+        return {
+          bgColor: "bg-[#08932E]/[12%]",
+          textColor: "text-[#08932E]",
+          dotColor: "bg-[#08932E]",
         };
       case "pending":
         return {
-          bgColor: "bg-[#FB1010]/[12%]",
-          textColor: "text-[#FB1010]",
-          dotColor: "bg-[#FB1010]",
-        };
-      case "inactive":
-        return {
-          bgColor: "bg-[#8A8D08]/[12%]",
-          textColor: "text-[#8A8D08]",
-          dotColor: "bg-[#8A8D08]",
-        };
-      case "declined":
-        return {
-          bgColor: "bg-[#8A8D08]/[12%]",
-          textColor: "text-[#8A8D08]",
-          dotColor: "bg-[#8A8D08]",
-        };
-      case "deactivated":
-        return {
-          bgColor: "bg-[#F58634]/[12%]",
-          textColor: "text-[#F58634]",
-          dotColor: "bg-[#F58634]",
+          bgColor: "bg-[#E3140F]/[12%]",
+          textColor: "text-[#E3140F]",
+          dotColor: "bg-[#E3140F]",
         };
       default:
         return {
@@ -205,9 +206,11 @@ const AllOrders = () => {
                 </thead>
                 <tbody>
                   {filteredOrders.map((order, index) => {
-                    const { bgColor, textColor, dotColor } = getStatusStyles(
+                    const { dotsColor } = getOrderStatusStyles(
                       order.orderStatus
                     );
+                    const { bgColor, textColor, dotColor } =
+                      getPaymentStatusStyles(order.paymentStatus);
                     return (
                       <tr
                         key={index}
@@ -231,14 +234,12 @@ const AllOrders = () => {
                         </td>
                         <td className="p-4 text-center">
                           <div
-                            className={`w-full h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
+                            className={`w-full h-10 p-3 flex items-center justify-center gap-[10px]`}
                           >
                             <div
-                              className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
+                              className={`w-[8px] h-[8px] ${dotsColor} rounded-[100px]`}
                             />
-                            <p className={`${textColor} text-xs`}>
-                              {order.orderStatus}
-                            </p>
+                            <p className="text-xs">{order.orderStatus}</p>
                           </div>
                         </td>
                         <td className="p-4 text-center">{order.items}</td>
@@ -247,7 +248,7 @@ const AllOrders = () => {
                             onClick={() => handleViewMore(order)}
                             className="text-[#359E52]"
                           >
-                            <FaEye size={20} />
+                            <FaEye size={14} />
                           </button>
                         </td>
                       </tr>

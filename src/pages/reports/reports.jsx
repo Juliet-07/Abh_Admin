@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { ArrowLeftIcon, DownloadIcon } from "@heroicons/react/outline";
 import ReportsPaginatedTable from "../../components/ReportsTable";
 
 const Reports = () => {
-  const [currentTab, setcurrentTab] = React.useState("Sales");
-  const [Search, setSearchText] = React.useState("");
-  const [Salesby, setSalesBy] = React.useState("category");
+  const [currentTab, setcurrentTab] = useState("Sales");
+  const [Search, setSearchText] = useState("");
+  const [Salesby, setSalesBy] = useState("category");
 
   return (
     <div className="font-primaryRegular">
       <br />
-      <div className="flex flex-row justify-between items-center">
-        <div className="w-full overflow-x-scroll">
+      <div className="w-full flex flex-col md:flex-row justify-between md:items-center gap-4">
+        <div className="w-full overflow-x-auto">
           <div className="flex flex-row flex-1 gap-[20px]">
             {[
               "Sales",
@@ -36,7 +37,10 @@ const Reports = () => {
           </div>
         </div>
 
-        <button>download</button>
+        <div className="bg-[#8BCB901F] w-full md:w-[197px] h-[40px] p-[10px] gap-[11px] flex flex-row items-center justify-center rounded-[6px] ">
+          <DownloadIcon width={14} height={14} color="#359E52" />
+          <p className=" text-[#359E52]">Download</p>
+        </div>
       </div>
       <br />
 
@@ -57,31 +61,31 @@ const Reports = () => {
       <br />
       <div className="w-full flex md:flex-row flex-col gap-4  md:justify-between flex-wrap">
         <div className="flex flex-row gap-[20px] flex-wrap">
-          <div className="flex flex-row items-center gap-[20px]">
-            <b>From</b>
+          <div className="w-full md:w-[238px] flex items-center gap-3 md:gap-[20px]">
+            <b className="text-sm">From</b>
             <input
               aria-label="Date"
               type="date"
-              className="h-[50px] p-4"
+              className="w-[80%] h-[50px] p-4"
               onChange={(date) => alert(date.target.value)}
             />
           </div>
-          <div className="flex flex-row items-center gap-[20px]">
-            <b>To</b>
+          <div className="w-full md:w-[238px] flex items-center gap-3 md:gap-[20px]">
+            <b className="text-sm">To</b>
             <input
               aria-label="Date"
               type="date"
-              className="h-[50px] p-4"
+              className="w-[80%] h-[50px] p-4"
               onChange={(date) => alert(date.target.value)}
             />
           </div>
         </div>
 
-        <div className="flex flex-row items-center gap-[20px] flex-1 max-w-[400px] min-w-[400px]">
-          <b className="flex flex-row ">Sales_by </b>
+        <div className="flex items-center gap-3 md:gap-[20px]">
+          <b className="text-sm">Sales by </b>
           <select
             onChange={(e) => setSalesBy(e.target.value)}
-            className="w-full max-w-[400px]  h-[50px] p-4 rounded-[10px] "
+            className="w-full md:w-[341px]  h-[50px] p-4 rounded-[10px] bg-white"
           >
             <option value="category">Category</option>
             <option value="product">Product</option>
@@ -152,14 +156,7 @@ const Reports = () => {
             searchText={Search}
             maxItems={10}
             tableData={[
-              [
-                "Date",
-                "Product ID",
-                "Product",
-                "Category",
-                "Total sales",
-                
-              ],
+              ["Date", "Product ID", "Product", "Category", "Total sales"],
             ]}
           />
         )}
