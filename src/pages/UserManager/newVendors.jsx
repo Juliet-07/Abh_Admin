@@ -222,11 +222,11 @@ const NewVendors = () => {
 
       {pendingVendors.length > 0 ? (
         <div className="w-full flex flex-col">
-          <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+          <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
             <p className="">New Vendors</p>
             <Link
               to="/createVendors"
-              className="text-white bg-[#359E52] text-base p-3 rounded-xl"
+              className="text-white bg-[#359E52] text-sm p-2 rounded-xl"
             >
               Create Vendor
             </Link>

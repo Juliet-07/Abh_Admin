@@ -81,7 +81,7 @@ const Layout = ({ children }) => {
       icon: <BsBarChartLineFill />,
       path: "/analytics",
     },
-    { title: "Reports", path: "/reports", icon: <FcManager /> },
+    // { title: "Reports", path: "/reports", icon: <FcManager /> },
   ];
 
   const activeLink =

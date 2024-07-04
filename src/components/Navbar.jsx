@@ -36,9 +36,9 @@ const Navbar = ({ onToggleSidebar }) => {
   };
 
   return (
-    <nav className="hidden md:flex items-center justify-between px-6 p-2 shadow-md bg-white">
+    <nav className="hidden md:flex items-center justify-between px-6 shadow-md bg-white">
       <div className="flex items-center">
-        <Logo className="w-[150px]" />
+        <Logo className="w-[120px]" />
       </div>
       {/* <div className="w-[80%] max-w-[500px] h-10 p-1 flex items-center rounded-md border border-green-500 font-primaryRegular">
         <input
