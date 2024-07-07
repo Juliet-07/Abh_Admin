@@ -217,7 +217,7 @@ const Dashboard = () => {
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col ">
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center justify-between w-full">
+          <div className="flex flex-row items-center justify-between w-full flex-wrap">
             <p className="font-bold text-lg">Low stock products</p>
 
             <div className="flex flex-1 max-w-[250px] h-[40px] rounded-[4px] gap-2 border-[1px] border-[gainsboro] p-3 items-center justify-center">
@@ -258,7 +258,7 @@ const Dashboard = () => {
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center justify-between w-full">
+          <div className="flex flex-row items-center justify-between w-full flex-wrap">
             <p className="font-bold text-lg">Top 10 Category with most products</p>
 
             <div className="flex flex-1 max-w-[250px] h-[40px] rounded-[4px] gap-2 border-[1px] border-[gainsboro] p-3 items-center justify-center">
@@ -299,7 +299,7 @@ const Dashboard = () => {
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center justify-between w-full">
+          <div className="flex flex-row items-center justify-between w-full flex-wrap">
             <p className="font-bold text-lg">Recent Withdrawals</p>
 
             <div className="flex flex-1 max-w-[250px] h-[40px] rounded-[4px] gap-2 border-[1px] border-[gainsboro] p-3 items-center justify-center">
