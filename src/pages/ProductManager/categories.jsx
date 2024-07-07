@@ -240,16 +240,16 @@ const Categories = () => {
 
       {categories.length > 0 ? (
         <div className="w-full flex flex-col">
-          <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
-            <p className="">Product Categories</p>
+          <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+            <p className=""> Categories</p>
             <div
               onClick={handleCreateCategory}
-              className="text-white bg-[#359E52] text-base p-3 rounded-xl cursor-pointer"
+              className="text-white bg-[#359E52] text-sm p-2 rounded-xl cursor-pointer"
             >
               Create Category
             </div>
           </div>
-          <div className="my-10 w-full bg-white p-3">
+          <div className="my-8 w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryBold text-sm">

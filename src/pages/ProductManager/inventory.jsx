@@ -160,7 +160,7 @@ const Inventory = () => {
 
       {products.length > 0 ? (
         <div className="w-full flex flex-col">
-          <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+          <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
             <p className="">Inventory ({products.length})</p>
           </div>
           <div className="my-10 w-full bg-white p-3">
@@ -216,9 +216,9 @@ const Inventory = () => {
                       <td className="p-4 flex items-center justify-center">
                         <button
                           onClick={() => handleViewMore(product)}
-                          className="w-10 h-10 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                          className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
                         >
-                          <FaEye size={20} />
+                          <FaEye size={16} />
                         </button>
                       </td>
                     </tr>

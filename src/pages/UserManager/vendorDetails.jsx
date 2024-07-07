@@ -38,7 +38,7 @@ const VendorDetails = () => {
           textColor: "text-[#FB1010]",
           dotColor: "bg-[#FB1010]",
         };
-        case "pending":
+      case "pending":
         return {
           bgColor: "bg-[#FB1010]/[12%]",
           textColor: "text-[#FB1010]",
@@ -56,7 +56,7 @@ const VendorDetails = () => {
           textColor: "text-[#F58634]",
           dotColor: "bg-[#F58634]",
         };
-        case "declined":
+      case "declined":
         return {
           bgColor: "bg-[#F58634]/[12%]",
           textColor: "text-[#F58634]",
@@ -74,7 +74,7 @@ const VendorDetails = () => {
   );
   return (
     <>
-      <div className="w-full h-[57px] md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+      <div className="w-full h-12 md:h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
         Vendor Details
       </div>
       <div className="my-6 w-full grid gap-10">
@@ -169,7 +169,8 @@ const VendorDetails = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-4 font-primaryRegular">
+        {/* Product Information */}
+        <div className="w-full bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-4 font-primaryRegular">
           <p className="font-bold">Product Information</p>
           <div className="flex items-center gap-10">
             <div>
@@ -183,8 +184,8 @@ const VendorDetails = () => {
           </div>
           <div>
             <p>Top Selling Products</p>
-            <div className="flex flex-col items-center justify-center md:grid md:grid-cols-4 gap-6 my-4">
-              <div className="w-[271px] md:w-[222.48px] h-[101px] md:h-[100.96px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
+            <div className="flex flex-col items-center justify-center md:grid md:grid-cols-4 gap-4 my-4">
+              <div className="w-full md:min-w-[232px] h-[100px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
                 <img src={Apples} />
                 <div className="text-sm">
                   <p>Apples</p>
@@ -195,7 +196,7 @@ const VendorDetails = () => {
                   <p className="font-primaryThin">Sold</p>
                 </div>
               </div>
-              <div className="w-[271px] md:w-[222.11px] h-[101px] md:h-[100.96px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
+              <div className="w-full md:min-w-[232px] h-[100px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
                 <img src={Mint} />
                 <div className="text-sm">
                   <p>Mint</p>
@@ -206,7 +207,7 @@ const VendorDetails = () => {
                   <p className="font-primaryThin">Sold</p>
                 </div>
               </div>
-              <div className="w-[271px] md:w-[228.11px] h-[101px] md:h-[100.96px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
+              <div className="w-full md:min-w-[232px] h-[100px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
                 <img src={Aquash} />
                 <div className="text-sm">
                   <p>Aquash</p>
@@ -217,7 +218,7 @@ const VendorDetails = () => {
                   <p className="font-primaryThin">Sold</p>
                 </div>
               </div>
-              <div className="w-[271px] md:w-[246.11px] h-[101px] md:h-[100.96px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
+              <div className="w-full md:min-w-[232px] h-[100px] border border-[#CFCBCB] rounded-lg flex items-center justify-center gap-4 px-2">
                 <img src={Pineapple} />
                 <div className="text-sm">
                   <p>Pineapples</p>
@@ -231,31 +232,32 @@ const VendorDetails = () => {
             </div>
           </div>
         </div>
+        {/* Performance Metrics */}
         <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-10 font-primaryRegular">
           <p className="font-bold">Performance Metrics</p>
           <div className="flex flex-col items-center justify-center md:grid md:grid-cols-4 gap-5 md:gap-10">
-            <div className="w-[271px] md:w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
+            <div className="w-full md:min-w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
               <div className="w-full flex items-center justify-between">
                 <p className="font-bold">4.5/5</p>
                 <img src={Rate} />
               </div>
               <p>Average ratings</p>
             </div>
-            <div className="w-[271px] md:w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
+            <div className="w-full md:min-w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
               <div className="w-full flex items-center justify-between">
                 <p className="font-bold">$2300</p>
                 <img src={Sales} />
               </div>
               <p>Total Sales</p>
             </div>
-            <div className="w-[271px] md:w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
+            <div className="w-full md:min-w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
               <div className="w-full flex items-center justify-between">
                 <p className="font-bold">2%</p>
                 <img src={Truck} />
               </div>
               <p>Return Rate</p>
             </div>
-            <div className="w-[271px] md:w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
+            <div className="w-full md:min-w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
               <div className="w-full flex items-center justify-between">
                 <p className="font-bold">0%</p>
                 <img src={Customer} />
@@ -266,16 +268,19 @@ const VendorDetails = () => {
         </div>
       </div>
       <div className="my-10 w-full flex items-center justify-between">
-        <button className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg">
+        <Link
+          to="/allVendors"
+          className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg flex items-center justify-center text-sm md:text-base"
+        >
           Back
-        </button>
+        </Link>
         <div className="flex gap-4">
-          <button className="w-[123px] md:w-[186px] h-10 md:h-[46px] bg-[#F58634] text-white font-primarySemibold rounded-lg">
+          <button className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#F58634] text-white font-primarySemibold rounded-lg text-sm md:text-base">
             Deactivate
           </button>
           <button
             button
-            className="w-[123px] md:w-[186px] h-10 md:h-[46px] bg-[#E3140F] text-white font-primarySemibold rounded-lg"
+            className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#E3140F] text-white font-primarySemibold rounded-lg text-sm md:text-base"
           >
             Block
           </button>

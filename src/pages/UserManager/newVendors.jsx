@@ -18,7 +18,7 @@ const NewVendors = () => {
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy");
   };
-  
+
   useEffect(() => {
     const getAllVendors = () => {
       axios
@@ -87,7 +87,7 @@ const NewVendors = () => {
       {showPreview && selectedVendor && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
           <div className="w-[90%] max-w-[800px] h-screen bg-white rounded-xl flex flex-col items-center justify-center overflow-y-auto">
-            <div className="w-full md:px-10 font-primaryRegular">
+            <div className="w-full px-6 md:px-10 font-primaryRegular">
               <div className="text-xl font-bold my-2 text-center">
                 Vendor Details
               </div>
@@ -155,19 +155,26 @@ const NewVendors = () => {
                   <p>{selectedVendor.cacRegistrationNumber}</p>
                 </div>
               </div>
-
-              <div className="flex gap-4 my-10">
+              <div className="w-full flex items-center justify-between">
+                <div className="flex gap-4 my-10">
+                  <button
+                    onClick={handleApprove}
+                    className="w-[99px] md:w-[186px] h-10 md:h-[46px] flex items-center justify-center text-white bg-[#4CBD6B] rounded-lg font-semibold"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={handleDecline}
+                    className="w-[99px] md:w-[186px] h-10 md:h-[46px] flex items-center justify-center text-white bg-[#E3140F] rounded-lg font-semibold"
+                  >
+                    Reject
+                  </button>
+                </div>
                 <button
-                  onClick={handleApprove}
-                  className="w-[99px] md:w-[186px] h-10 md:h-[46px] flex items-center justify-center text-white bg-[#4CBD6B] rounded-lg font-semibold"
+                  onClick={() => setPreview(false)}
+                  className="w-[99px] md:w-[186px] h-10 md:h-[46px] flex items-center justify-center text-black bg-slate-50 border rounded-lg font-semibold"
                 >
-                  Approve
-                </button>
-                <button
-                  onClick={handleDecline}
-                  className="w-[99px] md:w-[186px] h-10 md:h-[46px] flex items-center justify-center text-white bg-[#E3140F] rounded-lg font-semibold"
-                >
-                  Reject
+                  Cancel
                 </button>
               </div>
             </div>
@@ -215,11 +222,11 @@ const NewVendors = () => {
 
       {pendingVendors.length > 0 ? (
         <div className="w-full flex flex-col">
-          <div className="w-full h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+          <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
             <p className="">New Vendors</p>
             <Link
               to="/createVendors"
-              className="text-white bg-[#359E52] text-base p-3 rounded-xl"
+              className="text-white bg-[#359E52] text-sm p-2 rounded-xl"
             >
               Create Vendor
             </Link>

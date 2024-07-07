@@ -64,7 +64,7 @@ const Analytics = () => {
   return (
     <>
       <div className="w-full flex flex-col gap-[10px] font-primaryRegular">
-        <div className="w-full md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4">
+        <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4">
           <p className="font-primaryBold md:text-xl">Analytics</p>
           <div className="flex items-center gap-4 text-gray-600">
             <p className="font-primaryRegular text-sm">{getCurrentDate()}</p>

@@ -14,42 +14,42 @@ const CustomerDetails = () => {
     return <div>No details available</div>;
   }
 
-//   const getStatusStyles = (status) => {
-//     switch (status.toLowerCase()) {
-//       case "active":
-//         return {
-//           bgColor: "bg-[#088D2D]/[12%]",
-//           textColor: "text-[#088D2D]",
-//           dotColor: "bg-[#088D2D]",
-//         };
-//       case "blocked":
-//         return {
-//           bgColor: "bg-[#FB1010]/[12%]",
-//           textColor: "text-[#FB1010]",
-//           dotColor: "bg-[#FB1010]",
-//         };
-//       case "inactive":
-//         return {
-//           bgColor: "bg-[#8A8D08]/[12%]",
-//           textColor: "text-[#8A8D08]",
-//           dotColor: "bg-[#8A8D08]",
-//         };
-//       case "deactivated":
-//         return {
-//           bgColor: "bg-[#F58634]/[12%]",
-//           textColor: "text-[#F58634]",
-//           dotColor: "bg-[#F58634]",
-//         };
-//       default:
-//         return {
-//           bgColor: "bg-gray-200",
-//           textColor: "text-gray-800",
-//         };
-//     }
-//   };
-//   const { bgColor, textColor, dotColor } = getStatusStyles(
-//     customerDetails.status
-//   );
+  //   const getStatusStyles = (status) => {
+  //     switch (status.toLowerCase()) {
+  //       case "active":
+  //         return {
+  //           bgColor: "bg-[#088D2D]/[12%]",
+  //           textColor: "text-[#088D2D]",
+  //           dotColor: "bg-[#088D2D]",
+  //         };
+  //       case "blocked":
+  //         return {
+  //           bgColor: "bg-[#FB1010]/[12%]",
+  //           textColor: "text-[#FB1010]",
+  //           dotColor: "bg-[#FB1010]",
+  //         };
+  //       case "inactive":
+  //         return {
+  //           bgColor: "bg-[#8A8D08]/[12%]",
+  //           textColor: "text-[#8A8D08]",
+  //           dotColor: "bg-[#8A8D08]",
+  //         };
+  //       case "deactivated":
+  //         return {
+  //           bgColor: "bg-[#F58634]/[12%]",
+  //           textColor: "text-[#F58634]",
+  //           dotColor: "bg-[#F58634]",
+  //         };
+  //       default:
+  //         return {
+  //           bgColor: "bg-gray-200",
+  //           textColor: "text-gray-800",
+  //         };
+  //     }
+  //   };
+  //   const { bgColor, textColor, dotColor } = getStatusStyles(
+  //     customerDetails.status
+  //   );
   return (
     <>
       <div className="w-full h-[57px] md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
@@ -198,9 +198,12 @@ const CustomerDetails = () => {
         </div>
       </div>
       <div className="my-10 w-full flex items-center justify-between">
-        <button className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg">
+        <Link
+          to="/customers"
+          className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg flex items-center justify-center"
+        >
           Back
-        </button>
+        </Link>
         <div className="flex gap-4">
           <button
             button

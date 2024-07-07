@@ -34,7 +34,7 @@ const OrderDetails = () => {
           <ArrowLeftIcon
             width={20}
             height={20}
-            onClick={() => navigate("/dashboard/allOrders")}
+            onClick={() => navigate("/allOrders")}
           />
           <p>Order Details</p>
         </div>

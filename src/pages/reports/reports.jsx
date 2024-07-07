@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { ArrowLeftIcon, DownloadIcon } from "@heroicons/react/outline";
 import ReportsPaginatedTable from "../../components/ReportsTable";
 import SalesTab from "./tabs/sales";
 import InventoryTab from "./tabs/inventory";
@@ -9,8 +10,9 @@ import TransactionsTab from "./tabs/transaction";
 import { CloudDownloadIcon } from "@heroicons/react/solid";
 
 const Reports = () => {
-  const [currentTab, setcurrentTab] = React.useState("Sales");
-
+  const [currentTab, setcurrentTab] = useState("Sales");
+  const [Search, setSearchText] = useState("");
+  const [Salesby, setSalesBy] = useState("category");
 
   return (
     <div className="font-primaryRegular">
