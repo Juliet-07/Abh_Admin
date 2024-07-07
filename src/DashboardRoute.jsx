@@ -21,6 +21,8 @@ import OrderDetails from "./pages/OrderManager/orderDetails";
 import UsersActivity from "./pages/UserManager/UserAcitvity";
 import EditProfile from "./pages/Profile/editProfile";
 import Reports from "./pages/reports/reports";
+import ActiveUsers from "./components/userActivity/activeUsers";
+import InActiveUsers from "./components/userActivity/inactiveUsers";
 
 function DashboardRoute() {
   return (
@@ -47,7 +49,9 @@ function DashboardRoute() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/reports" element={<Reports />} />
-          <Route path="/usersActivity/:type" element={<UsersActivity />} />
+          {/* <Route path="/usersActivity/:type" element={<UsersActivity />} /> */}
+          <Route path="/usersActivity/active" element={<ActiveUsers />} />
+          <Route path="/usersActivity/inactive" element={<InActiveUsers />} />
         </Routes>
       </Layout>
     </>

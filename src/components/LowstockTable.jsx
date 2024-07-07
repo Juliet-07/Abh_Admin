@@ -44,9 +44,8 @@ const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) 
                     </td>
                     <td class="px-4 py-2 min-w-[300px]">
                       <div className="flex flex-row justify-left gap-[10px]">
-                        <div className="w-[35px] h-[35px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
-                          <b className="text-[18px] text-[teal]">J</b>{" "}
-                        </div>
+                      <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/BrusselsSprouts.webp)] bg-center bg-contain  flex items-center justify-center">
+                          </div>
                         <div className="flex flex-col ">
                         <b className="text-[14px] overflow-hidden flex-nowrap">{data.product_name} </b>
                       </div>
@@ -65,7 +64,7 @@ const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) 
                     <td class="px-4 py-2 min-w-[100px]">
                     <div className="flex flex-row justify-center gap-[10px]">
                         <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/Gadget-thumbnail.webp)] bg-center bg-contain  flex items-center justify-center">
-                          <b className="text-[18px] text-[teal]">J</b>{" "}
+                          
                         </div>
                         <div className="flex flex-col ">
                         <b className="text-[14px]">Gadget</b>
@@ -109,8 +108,7 @@ const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) 
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
                         <div className="flex flex-row justify-center gap-[10px]">
-                          <div className="w-[35px] h-[35px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
-                            <b className="text-[18px] text-[teal]">J</b>{" "}
+                        <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/BrusselsSprouts.webp)] bg-center bg-contain  flex items-center justify-center">
                           </div>
                           <div className="flex flex-col ">
                           <b className="text-[14px]">{data.product_name} </b>
@@ -130,7 +128,7 @@ const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) 
                       <td class="px-4 py-2 min-w-[100px]">
                       <div className="flex flex-row justify-center gap-[10px]">
                           <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/Gadget-thumbnail.webp)] bg-center bg-contain  flex items-center justify-center">
-                            {/* <b className="text-[18px] text-[teal]">J</b>{" "} */}
+                            {/*  */}
                           </div>
                           <div className="flex flex-col ">
                           <b className="text-[14px]">Gadget</b>

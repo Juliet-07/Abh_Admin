@@ -70,7 +70,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
                       <div className="flex flex-row justify-center text-[13px]">
-                        <StatusComponent status={"Shipped"} />
+                        <StatusComponent status={"Shipped"} className={""} />
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
@@ -129,7 +129,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
                         <div className="flex flex-row justify-center text-[13px]">
-                          <StatusComponent status={"Shipped"} />
+                          <StatusComponent status={"Shipped"} className={"bg-pink-100 text-pink-500"} />
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
