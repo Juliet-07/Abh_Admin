@@ -23,7 +23,7 @@ const Dashboard = () => {
           <p className="font-bold text-lg">Summary</p>
         </div>
 
-        <div className="flex flex-wrap gap-10 mt-6 mb-2">
+        <div className="grid md:grid-cols-4 gap-10 mt-6 mb-2">
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-[teal] p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
               <img src="/svgs/svgexport-37.svg" alt="" className="w-8 h-8" />
