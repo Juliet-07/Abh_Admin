@@ -19,6 +19,8 @@ const AllProducts = () => {
   const [showDecline, setDecline] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy");
@@ -66,8 +68,10 @@ const AllProducts = () => {
       .then((response) => {
         console.log("Vendor status updated:", response.data);
         // Update the state to reflect the change
-        setPendingProducts((prevProducts) =>
-          prevProducts.filter((product) => product.id !== productId)
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product.id === productId ? { ...product, status } : product
+          )
         );
       })
       .catch((error) => {
@@ -86,6 +90,7 @@ const AllProducts = () => {
     setPreview(false);
     setDecline(true);
   };
+
   const getStatusStyles = (status) => {
     switch (status.toLowerCase()) {
       case "approved":
@@ -119,6 +124,7 @@ const AllProducts = () => {
         };
     }
   };
+
   const CustomSlider = ({ settings, images }) => {
     return (
       <div className="slider-container px-4">
@@ -132,6 +138,18 @@ const AllProducts = () => {
       </div>
     );
   };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const paginatedProducts = products.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <>
       {showPreview &&
@@ -232,7 +250,25 @@ const AllProducts = () => {
             </p>
             <button
               onClick={() => setDecline(false)}
-              className="w-[186px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
+              className="w-[162px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
+            >
+              Okay
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showApproval && (
+        <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
+          <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
+            <CheckIcon color="green" height={50} width={50} />
+            <p className="text-center">
+              Product is <br />
+              approved!
+            </p>
+            <button
+              onClick={() => setApproval(false)}
+              className="w-[162px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
             >
               Okay
             </button>
@@ -244,12 +280,6 @@ const AllProducts = () => {
         <div className="w-full flex flex-col">
           <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
             <p className="">Products ({products.length})</p>
-            {/* <Link
-              to="/createVendors"
-              className="text-white bg-[#359E52] text-base p-3 rounded-xl"
-            >
-              Create Vendor
-            </Link> */}
           </div>
           <div className="my-10 w-full bg-white p-3">
             <div className="overflow-x-auto">
@@ -266,16 +296,16 @@ const AllProducts = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product, index) => (
+                  {paginatedProducts.map((product, index) => (
                     <tr
                       key={index}
                       className="border text-xs font-primaryMedium mb-4"
                     >
-                      <td className="p-4 text-center">
+                      <td className="min-w-[100px] md:w-0 p-2 text-left">
                         {formatDate(product.createdAt)}
                       </td>
                       <td className="p-4">
-                        <div className="flex flex-wrap items-center justify-center gap-3">
+                        <div className="flex items-center justify-center gap-2">
                           <div className="w-10 h-10">
                             <img
                               src={product.featured_image}
@@ -283,17 +313,19 @@ const AllProducts = () => {
                               alt=""
                             />
                           </div>
-                          <div className="grid gap-2">
-                            <p>{product.name}</p>
-                            <p>{product?.category?.name}</p>
+                          <div className="w-[100px] flex flex-col gap-2">
+                            <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                              {product.name}
+                            </p>
+                            <b>{product?.category?.name}</b>
                           </div>
                         </div>
                       </td>
                       <td className="p-4 text-center">{product.sku}</td>
-                      <td className="p-4 text-center">
+                      <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product.currency + " " + product.price}
                       </td>
-                      <td className="p-4 text-center">
+                      <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product.quantity + " " + product.unit}
                       </td>
                       <td className="p-4 text-center">
@@ -302,15 +334,30 @@ const AllProducts = () => {
                       <td className="p-4 flex items-center justify-center">
                         <button
                           onClick={() => handleViewMore(product)}
-                          className="w-10 h-10 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                          className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
                         >
-                          <FaEye size={20} />
+                          <FaEye size={14} />
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         </div>

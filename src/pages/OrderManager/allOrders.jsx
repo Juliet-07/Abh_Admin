@@ -166,7 +166,7 @@ const AllOrders = () => {
   return (
     <>
       <div className="w-full flex flex-col">
-        <div className="w-full md:h-20 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+        <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
           <p className="">All Orders</p>
           <div></div>
         </div>

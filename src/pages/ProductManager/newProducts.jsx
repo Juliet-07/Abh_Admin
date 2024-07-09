@@ -4,7 +4,7 @@ import Avatar from "../../assets/newVendor.png";
 import { CheckIcon } from "@heroicons/react/solid";
 import { FcCancel } from "react-icons/fc";
 import { format } from "date-fns";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaPen } from "react-icons/fa";
 import { XIcon } from "@heroicons/react/outline";
 import { Settings } from "../../components/SliderSettings";
 import Slider from "react-slick";
@@ -320,14 +320,28 @@ const NewProducts = () => {
                       <td className="p-4 text-center">
                         {product.quantity + " " + product.unit}
                       </td>
-                      <td className="p-4 text-center">{product?.vendor?.store}</td>
-                      <td className="p-4 flex items-center justify-center">
+                      <td className="p-4 text-center">
+                        {product?.vendor?.store}
+                      </td>
+                      <td className="p-4 flex items-center justify-center gap-6">
                         <button
+                          // onClick={() => handleViewMore(product)}
+                          className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                        >
+                          <FaPen size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleViewMore(product)}
+                          className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                        >
+                          <FaEye size={14} />
+                        </button>
+                        {/* <button
                           onClick={() => handleViewMore(product)}
                           className="w-10 h-10 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
                         >
                           <FaEye size={20} />
-                        </button>
+                        </button> */}
                       </td>
                     </tr>
                   ))}
