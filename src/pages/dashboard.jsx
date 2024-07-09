@@ -8,11 +8,11 @@ import { EyeIcon } from "@heroicons/react/solid";
 import StatusComponent from "../components/StatusComp";
 
 const Dashboard = () => {
-  const [recentOrderInput, setROI] = React.useState("");
-  const [LowStockInput, setLSI] = React.useState("");
-  const [TopTenInput, setTopTenInput] = React.useState("");
-  const [OrderStatus, setOrderStatus] = React.useState("weekly");
-  const [RecentTransactionInput, setRecentTransactionInput] = React.useState("");
+  const [recentOrderInput, setROI] = useState("");
+  const [LowStockInput, setLSI] = useState("");
+  const [TopTenInput, setTopTenInput] = useState("");
+  const [OrderStatus, setOrderStatus] = useState("weekly");
+  const [RecentTransactionInput, setRecentTransactionInput] = useState("");
 
   return (
     <div className="w-full flex flex-col gap-10 font-primaryRegular">
@@ -67,22 +67,25 @@ const Dashboard = () => {
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
         <div className="flex flex-row w-full items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
-          <div className="flex flex-row items-center justify-between flex flex-1">
-          <p className="font-bold text-lg">Order status</p>
-
-          <div className="flex flex-1 flex-row rounded-[40px] p-1 bg-[ghostwhite] h-[40px] py-4 flex items-center justify-between max-w-[250px]">
-          {
-            ["weekly", "monthly", "yearly"]
-            .map((status, index) => {
-              return (
-          <div onClick={()=> setOrderStatus(status)}
-          style={status == OrderStatus ? {background: "#009f7f3d", color: "teal"} : {}}
-          className="flex-row rounded-[50px]  p-1 px-2 text-[teal] text-[14px] cursor-pointer active:opacity-[0.5]">{status}</div>
-
-              )
-            })
-          }
-          </div>
+          <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
+            <p className="font-bold text-lg">Order status</p>
+            <div className="flex flex-1 flex-row rounded-[40px] p-1 bg-[ghostwhite] h-[40px] py-4 flex items-center justify-between max-w-[250px]">
+              {["Today", "Weekly", "Monthly", "Yearly"].map((status, index) => {
+                return (
+                  <div
+                    onClick={() => setOrderStatus(status)}
+                    style={
+                      status == OrderStatus
+                        ? { background: "#009f7f3d", color: "teal" }
+                        : {}
+                    }
+                    className="flex-row rounded-[50px]  p-1 px-2 text-black text-sm cursor-pointer active:opacity-[0.5]"
+                  >
+                    {status}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -170,7 +173,7 @@ const Dashboard = () => {
         <BarchartComp />
       </div>
       {/* Top Products */}
-      <div className="w-full flex xl:flex-row xl:justify-between flex-col gap-4 ">
+      {/* <div className="w-full flex xl:flex-row xl:justify-between flex-col gap-4 ">
         <div className="bg-white rounded-[0.5rem] p-4 flex flex-col flex-[45] min-h-[500px] items-center">
           <div className="flex flex-row items-center gap-[10px] w-full">
             <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
@@ -259,7 +262,9 @@ const Dashboard = () => {
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="flex flex-row items-center justify-between w-full flex-wrap">
-            <p className="font-bold text-lg">Top 10 Category with most products</p>
+            <p className="font-bold text-lg">
+              Top 10 Category with most products
+            </p>
 
             <div className="flex flex-1 max-w-[250px] h-[40px] rounded-[4px] gap-2 border-[1px] border-[gainsboro] p-3 items-center justify-center">
               <div className="min-w-[25px] h-[25px] bg-[url(/svgs/svgexport-1.svg)] bg-no-repeat bg-center bg-contain" />
@@ -273,24 +278,20 @@ const Dashboard = () => {
           </div>
         </div>
         <ReportsPaginatedTable
-          tableHead={[
-            "Category ID",
-            "Category Name",
-            "Shop",
-            "Product Count",
-          
-          ]}
-         // the data below is inserted as
-            // if this dummy data array [{}, {}]
-            // have this array contains [{id: "21351", name: "sample"}, {id: "21351", name: "sample2"}]
-            // when it is mapped here for the first item in the array
-            // dataFromAPI.map((items, index) => {
-            // return [ items.id, items.name] - this what will be rendered
-            // let me know if you don't understand :)
+          tableHead={["Category ID", "Category Name", "Shop", "Product Count"]}
+          // the data below is inserted as
+          // if this dummy data array [{}, {}]
+          // have this array contains [{id: "21351", name: "sample"}, {id: "21351", name: "sample2"}]
+          // when it is mapped here for the first item in the array
+          // dataFromAPI.map((items, index) => {
+          // return [ items.id, items.name] - this what will be rendered
+          // let me know if you don't understand :)
 
-            tableData={[{}, {},{}, {},{}, {},{}, {},{}, {},].map((items, index) => {
-              return ["#ID: 7", "Snacks", "Grocery Shop", "73", ];
-            })}
+          tableData={[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}].map(
+            (items, index) => {
+              return ["#ID: 7", "Snacks", "Grocery Shop", "73"];
+            }
+          )}
           maxItems={10}
           searchText={TopTenInput}
         />
@@ -323,37 +324,35 @@ const Dashboard = () => {
             "Status",
             "Actions",
           ]}
-           // the data below is inserted as
-            // if this dummy data array [{}, {}]
-            // have this array contains [{id: "21351", name: "sample"}, {id: "21351", name: "sample2"}]
-            // when it is mapped here for the first item in the array
-            // dataFromAPI.map((items, index) => {
-            // return [ items.id, items.name] - this what will be rendered
-            // let me know if you don't understand :)
+          // the data below is inserted as
+          // if this dummy data array [{}, {}]
+          // have this array contains [{id: "21351", name: "sample"}, {id: "21351", name: "sample2"}]
+          // when it is mapped here for the first item in the array
+          // dataFromAPI.map((items, index) => {
+          // return [ items.id, items.name] - this what will be rendered
+          // let me know if you don't understand :)
 
-            tableData={[{}, {}].map((items, index) => {
-              return [
-                "0270273",
-                "12351235",
-                "200",
-                "$21",
-                "22",
-                "58",
-                <div className="flex flex-row justify-center text-[13px]">
-                          <img
-                            src="/svgs/svgexport-44.svg"
-                            alt=""
-                            className="w-4 h-4 active:opacity-[0.5] cursor-pointer"
-                          />
-                        </div>
-                
-              ];
-            })}
+          tableData={[{}, {}].map((items, index) => {
+            return [
+              "0270273",
+              "12351235",
+              "200",
+              "$21",
+              "22",
+              "58",
+              <div className="flex flex-row justify-center text-[13px]">
+                <img
+                  src="/svgs/svgexport-44.svg"
+                  alt=""
+                  className="w-4 h-4 active:opacity-[0.5] cursor-pointer"
+                />
+              </div>,
+            ];
+          })}
           maxItems={4}
           searchText={RecentTransactionInput}
         />
-      </div>
-      {/* </div> */}
+      </div> */}
     </div>
   );
 };
