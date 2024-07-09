@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowLeftIcon, XIcon } from "@heroicons/react/solid";
 import { useNavigate, useParams } from "react-router-dom";
 import SuccessPopup from "../../components/SuccessPopup";
+import OTPInput from "otp-input-react";
 
 const EditProfile = () => {
   let navigate = useNavigate();
@@ -9,7 +10,8 @@ const EditProfile = () => {
   const [showMessage, setPopup] = React.useState(false);
   const [message, setmessage] = React.useState("Profile Updated");
   const [showEmailupdate, setEmailupdate] = React.useState(false);
-  const [showOTP, setOTP] = React.useState(false);
+  const [showOTPWindow, setOTPWindow] = React.useState(false);
+  const [OTP, setOTP] = React.useState("");
   
   return (
     <div className="w-full flex flex-col items-center relative font-primaryRegular">
@@ -20,27 +22,38 @@ const EditProfile = () => {
           onClose={() => setPopup(false)}
         />
       )}
-      {showOTP && (
+      {showOTPWindow && (
         <div className="w-full flex flex-1 items-start gap-[10px] overflow-y-scroll justify-center h-[100vh] fixed top-[0px] left-[0px] bg-[#00000099] z-[1000] ">
           <div className="w-[80%] max-w-[700px] mt-[60px] relative min-h-[300px] bg-white rounded-[8px] p-4 flex flex-col items-center justify-evenly ">
             <XIcon
               className="w-[30px] h-[30px] active:opacity-[0.5] absolute right-[10px] top-[10px] cursor-pointer"
               color="red"
-              onClick={() => setOTP(false)}
+              onClick={() => setOTPWindow(false)}
+              // onClick={() => setOTPWindow(false)}
             />
             <b className="text-black text-[18px]">Input OTP</b>
             <br />
             <div className="w-full flex flex-col">
               <p>Enter OTP</p>
               <br />
-              <div className="w-full flex flex-row gap-[5px]">
-                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
-                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
-                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
-                <input type="text" className="border-[1px] w-[50px] h-[50px]" />
-              </div>
+              <OTPInput value={OTP} onChange={setOTP} 
+              inputClassName={"border-[1px] w-[40px] h-[40px]"}
+              autoFocus OTPLength={6} otpType="number" disabled={false}  />
+              <br /> 
+              <p className="text-[orangered] cursor-pointer active:opacity-[0.5]">resend</p>
               <br />
-              <p className="text-[orangered]">resend</p>
+              <div className="w-full flex flex-row items-center gap-[20px] justify-center flex-wrap ">
+              <button onClick={()=> {
+                setEmailupdate(false);
+                setOTPWindow(false)
+                setOTP(false)
+                setPopup(true)
+              }}
+              className="w-[180px] h-[40px] cursor-pointer active:opacity-[0.2] bg-green-500 rounded-[4px] text-white">
+                Verify
+              </button>
+        
+            </div>
             </div>
           </div>
         </div>
@@ -84,7 +97,8 @@ const EditProfile = () => {
             <div className="w-full flex flex-row items-center gap-[20px] justify-center flex-wrap ">
               <button onClick={()=> {
                 setEmailupdate(false);
-                setOTP(true)
+                setOTPWindow(true)
+                setOTPWindow(true)
               }}
               className="w-[180px] h-[40px] cursor-pointer active:opacity-[0.2] bg-green-500 rounded-[4px] text-white">
                 Update

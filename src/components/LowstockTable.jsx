@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 import StatusComponent from "./StatusComp";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 
-const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
+const LowStockPaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
   const [itemOffset, setItemOffset] = useState(0);
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -36,26 +36,24 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
               currentItems &&
               currentItems.map((data, index) => {
                 return (
-                  <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
+                    <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
                     <td class="px-4 py-2 min-w-[100px]">
                       <div className="flex flex-row justify-center text-[13px]">
                         123456{" "}
                       </div>
                     </td>
-                    <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center gap-[10px]">
-                        <div className="w-[40px] h-[40px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
-                          <b className="text-[20px] text-[teal]">J</b>{" "}
-                        </div>
+                    <td class="px-4 py-2 min-w-[300px]">
+                      <div className="flex flex-row justify-left gap-[10px]">
+                      <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/BrusselsSprouts.webp)] bg-center bg-contain  flex items-center justify-center">
+                          </div>
                         <div className="flex flex-col ">
-                          <b className="text-[14px]">{data.customer_name} </b>
-                          <p className="text-[12px] text-[grey]">john@gmail.com</p>
-                        </div>
+                        <b className="text-[14px] overflow-hidden flex-nowrap">{data.product_name} </b>
+                      </div>
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
                       <div className="flex flex-row justify-center text-[13px]">
-                        Product {index}{" "}
+                        Product{" "}
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
@@ -64,23 +62,30 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
-                      <div className="flex flex-row justify-center text-[13px]">
-                        $100.00{" "}
+                    <div className="flex flex-row justify-center gap-[10px]">
+                        <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/Gadget-thumbnail.webp)] bg-center bg-contain  flex items-center justify-center">
+                          
+                        </div>
+                        <div className="flex flex-col ">
+                        <b className="text-[14px]">Gadget</b>
+                      </div>
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
                       <div className="flex flex-row justify-center text-[13px]">
-                        <StatusComponent status={"Shipped"} className={""} />
+                        <StatusComponent status={"Low in stock"} />
                       </div>
                     </td>
                     <td class="px-4 py-2 min-w-[100px]">
                       {" "}
                       <div className="flex flex-row justify-center text-[13px]">
-                        <img
-                          src="/svgs/svgexport-44.svg"
-                          alt=""
-                          className="w-4 h-4 active:opacity-[0.5] cursor-pointer"
-                        />
+                        $65.00
+                      </div>
+                    </td>
+                    <td class="px-4 py-2 min-w-[100px]">
+                      {" "}
+                      <div className="flex flex-row justify-center text-[13px]">
+                        5
                       </div>
                     </td>
                   </tr>
@@ -90,7 +95,7 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
               tableData &&
               tableData.map((data, index) => {
                 if (
-                  data.customer_name
+                  data.product_name
                     .toLowerCase()
                     .includes(searchText.toLowerCase())
                 )
@@ -103,12 +108,10 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
                         <div className="flex flex-row justify-center gap-[10px]">
-                          <div className="w-[35px] h-[35px] rounded-[100px] bg-[#009f7f1a] flex items-center justify-center">
-                            <b className="text-[18px] text-[teal]">J</b>{" "}
+                        <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/BrusselsSprouts.webp)] bg-center bg-contain  flex items-center justify-center">
                           </div>
                           <div className="flex flex-col ">
-                          <b className="text-[14px]">{data.customer_name} </b>
-                          <p className="text-[12px] text-[grey]">john@gmail.com</p>
+                          <b className="text-[14px]">{data.product_name} </b>
                         </div>
                         </div>
                       </td>
@@ -123,13 +126,18 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
-                        <div className="flex flex-row justify-center text-[13px]">
-                          $100.00{" "}
+                      <div className="flex flex-row justify-center gap-[10px]">
+                          <div className="w-[35px] h-[35px] rounded-[100px]  bg-[url(/Gadget-thumbnail.webp)] bg-center bg-contain  flex items-center justify-center">
+                            {/*  */}
+                          </div>
+                          <div className="flex flex-col ">
+                          <b className="text-[14px]">Gadget</b>
+                        </div>
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
                         <div className="flex flex-row justify-center text-[13px]">
-                          <StatusComponent status={"Shipped"} className={"bg-pink-100 text-pink-500"} />
+                          Shipped{" "}
                         </div>
                       </td>
                       <td class="px-4 py-2 min-w-[100px]">
@@ -176,4 +184,4 @@ const PaginatedTable = ({ tableHead, tableData, maxItems, searchText }) => {
     </>
   );
 };
-export default PaginatedTable;
+export default LowStockPaginatedTable;

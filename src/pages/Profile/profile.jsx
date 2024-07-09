@@ -8,7 +8,7 @@ const Profile = () => {
     <div className="w-full flex flex-col items-center relative font-primaryRegular">
       <br />
       <div className="w-[90%] flex flex-col gap-[5px]  p-[40px]  max-w-[800px] bg-white rounded-[10px] min-h-[431px] flex relative">
-        <header className="w-[90%] absolute top-0 flex  flex-row  items-center justify-between  h-[70px]">
+        <header className="w-full  flex  flex-row  items-center justify-between  h-[70px]">
           <div
             className="flex  flex-row gap-4 cursor-pointer active:opacity-[0.5]"
             onClick={() => navigate("/dashboard")}

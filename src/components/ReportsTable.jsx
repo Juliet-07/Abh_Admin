@@ -51,7 +51,8 @@ const ReportsPaginatedTable = ({
                         <td class="px-4 py-2 min-w-[100px]">
                           <div className="flex flex-row justify-center text-[13px]">
                             {/* {data} */}
-                            me
+                            {item}
+                            {/* me */}
                           </div>
                         </td>
                       );
@@ -60,10 +61,11 @@ const ReportsPaginatedTable = ({
                 );
               })}
             {searchText &&
-              tableData &&
+              tableData[0] &&
               tableData.map((data, index) => {
                 if (
-                  data[index].toLowerCase().includes(searchText.toLowerCase())
+                  data[1] &&
+                  data[1].toString().toLowerCase().includes(searchText.toLowerCase())
                 )
                   return (
                     <tr class="border-b border-[0 solid #e5e7eb] min-h-[60px] border-dotted ">
@@ -71,8 +73,8 @@ const ReportsPaginatedTable = ({
                       return (
                         <td class="px-4 py-2 min-w-[100px]">
                           <div className="flex flex-row justify-center text-[13px]">
-                            {/* {data} */}
-                            me
+                            {item}
+                            
                           </div>
                         </td>
                       );
@@ -81,7 +83,7 @@ const ReportsPaginatedTable = ({
                   );
               })}
 
-            {!currentItems && <p>no result</p>}
+            {!currentItems[0] && <p>no result</p>}
           </tbody>
         </table>
       </div>
