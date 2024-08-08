@@ -64,18 +64,18 @@ const OrderDetails = () => {
           {/* Details */}
           <div className="w-full bg-white flex flex-col font-primaryRegular">
             {/* order info price section */}
-            <div className="w-full flex gap-10 border-b border-[#CFCBCB] p-4">
-              <div className="flex flex-col items-center justify-center text-xs md:text-base">
+            <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-10 border-b border-[#CFCBCB] p-4">
+              <div className="flex flex-col items-center justify-center text-xs md:text-base flex-grow">
                 <p className="font-primarySemibold">
                   Order ID #{orderDetails.id}
                 </p>
                 <p>{orderDetails.date}</p>
               </div>
-              <div className="flex flex-col items-center justify-center text-xs md:text-base">
+              <div className="flex flex-col items-center justify-center text-xs md:text-base flex-grow">
                 <p>Total price</p>
                 <p className="font-primarySemibold">{orderDetails.price}</p>
               </div>
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center flex-grow">
                 <p className="text-sm md:text-base">Order status</p>
                 <div className="flex gap-4 items-center justify-center">
                   <div
@@ -88,7 +88,15 @@ const OrderDetails = () => {
                   </p>
                 </div>
               </div>
+              <div className="flex flex-col items-center justify-center flex-grow">
+                <p className="text-sm md:text-base">Vendor</p>
+                <div className="flex gap-4 items-center justify-center">
+                  <p className="text-[#359E52]">Michael Farasin</p>
+                  <p className="text-xs text-[#E7711A] ">See details</p>
+                </div>
+              </div>
             </div>
+
             {/*  order info delivery section*/}
             <div className="w-full flex gap-10 border-b border-[#CFCBCB] flex-wrap">
               {/* Customer */}

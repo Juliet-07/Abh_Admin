@@ -23,6 +23,8 @@ import EditProfile from "./pages/Profile/editProfile";
 import Reports from "./pages/reports/reports";
 import ActiveUsers from "./components/userActivity/activeUsers";
 import InActiveUsers from "./components/userActivity/inactiveUsers";
+import Subscribers from "./pages/DropShippers/subscribers";
+import AllDropShipping from "./pages/DropShippers/all-drop-shipping";
 
 function DashboardRoute() {
   return (
@@ -49,6 +51,8 @@ function DashboardRoute() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/subscribers" element={<Subscribers />} />
+          <Route path="/dropshipping" element={<AllDropShipping />} />
           {/* <Route path="/usersActivity/:type" element={<UsersActivity />} /> */}
           <Route path="/usersActivity/active" element={<ActiveUsers />} />
           <Route path="/usersActivity/inactive" element={<InActiveUsers />} />

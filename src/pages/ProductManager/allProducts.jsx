@@ -3,7 +3,7 @@ import axios from "axios";
 import Avatar from "../../assets/newVendor.png";
 import { CheckIcon } from "@heroicons/react/solid";
 import { FcCancel } from "react-icons/fc";
-import { format } from "date-fns";
+import moment from "moment";
 import { FaEye } from "react-icons/fa";
 import { XIcon } from "@heroicons/react/outline";
 import { Settings } from "../../components/SliderSettings";
@@ -23,7 +23,7 @@ const AllProducts = () => {
   const itemsPerPage = 6;
 
   const formatDate = (dateString) => {
-    return format(new Date(dateString), "MMMM dd, yyyy");
+    return moment(dateString).format("MMMM DD, YYYY");
   };
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const AllProducts = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setProducts(response.data.data.data);
+          console.log(response.data.data);
+          setProducts(response.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);

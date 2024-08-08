@@ -4,7 +4,7 @@ import axios from "axios";
 import Avatar from "../../assets/newVendor.png";
 import { CheckIcon } from "@heroicons/react/solid";
 import { FcCancel } from "react-icons/fc";
-import { format } from "date-fns";
+import moment from "moment";
 
 const NewVendors = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -16,7 +16,7 @@ const NewVendors = () => {
   const [pendingVendors, setPendingVendors] = useState([]);
 
   const formatDate = (dateString) => {
-    return format(new Date(dateString), "MMMM dd, yyyy");
+    return moment(dateString).format("MMMM DD, YYYY");
   };
 
   useEffect(() => {
@@ -29,8 +29,8 @@ const NewVendors = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setPendingVendors(response.data.data.data);
+          console.log(response.data.data.items);
+          setPendingVendors(response.data.data.items);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
@@ -71,13 +71,13 @@ const NewVendors = () => {
   };
 
   const handleApprove = () => {
-    manageVendorStatus(selectedVendor.id, "ACTIVE");
+    manageVendorStatus(selectedVendor._id, "ACTIVE");
     setPreview(false);
     setApproval(true);
   };
 
   const handleDecline = () => {
-    manageVendorStatus(selectedVendor.id, "DECLINED");
+    manageVendorStatus(selectedVendor._id, "DECLINED");
     setPreview(false);
     setDecline(true);
   };

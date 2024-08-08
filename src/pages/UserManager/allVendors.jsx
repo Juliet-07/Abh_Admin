@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../assets/newVendor.png";
 import axios from "axios";
-import { format } from "date-fns";
+import moment from "moment/moment";
 
 const AllVendors = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -11,7 +11,7 @@ const AllVendors = () => {
   const [vendors, setVendors] = useState([]);
 
   const formatDate = (dateString) => {
-    return format(new Date(dateString), "MMMM dd, yyyy");
+    return moment(dateString).format("MMMM DD, YYYY");
   };
 
   useEffect(() => {
@@ -24,8 +24,8 @@ const AllVendors = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setVendors(response.data.data.data);
+          console.log(response.data.data.items);
+          setVendors(response.data.data.items);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
@@ -66,7 +66,7 @@ const AllVendors = () => {
           textColor: "text-[#8A8D08]",
           dotColor: "bg-[#8A8D08]",
         };
-        case "declined":
+      case "declined":
         return {
           bgColor: "bg-[#8A8D08]/[12%]",
           textColor: "text-[#8A8D08]",

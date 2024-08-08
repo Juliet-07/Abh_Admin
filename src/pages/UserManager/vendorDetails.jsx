@@ -8,7 +8,7 @@ import Apples from "../../assets/apples.png";
 import Mint from "../../assets/mint.png";
 import Aquash from "../../assets/aquash.png";
 import Pineapple from "../../assets/pineapple.png";
-import { format } from "date-fns";
+import moment from "moment";
 
 const VendorDetails = () => {
   const location = useLocation();
@@ -21,7 +21,7 @@ const VendorDetails = () => {
   }
 
   const formatDate = (dateString) => {
-    return format(new Date(dateString), "MMMM dd, yyyy");
+    return moment(dateString).format("MMMM DD, YYYY");
   };
 
   const getStatusStyles = (status) => {
@@ -82,7 +82,8 @@ const VendorDetails = () => {
           <div className="p-4 grid gap-10 font-primaryRegular border border-[#CFCBCB]">
             <div className="w-full md:w-[369px] h-[120px] rounded-2xl p-3 bg-[#8BCB90]/[12%] flex items-center justify-between gap-4">
               <div className="bg-[#455A64] w-20 md:w-[100px] h-20 md:h-[100px] rounded-full text-white md:text-2xl font-primarySemibold flex items-center justify-center">
-                M
+                {vendorDetails.firstName[0].toUpperCase() +
+                  vendorDetails.lastName[0].toUpperCase()}
               </div>
               <div className="grid gap-2">
                 <p className="font-semibold md:text-xl">

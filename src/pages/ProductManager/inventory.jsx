@@ -30,8 +30,8 @@ const Inventory = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setProducts(response.data.data.data);
+          console.log(response.data.data);
+          setProducts(response.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);

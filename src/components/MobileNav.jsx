@@ -80,6 +80,15 @@ const MobileNavigation = () => {
     //   // ],
     // },
     {
+      title: "Drop-shippers",
+      icon: <FaUserTie />,
+      submenu: true,
+      submenuItems: [
+        { title: "All drop-shipping", path: "/dropshipping" },
+        { title: "Subscribers", path: "/subscribers" },
+      ],
+    },
+    {
       title: "Order Management",
       icon: <TbTruckDelivery />,
       submenu: true,
@@ -185,8 +194,9 @@ const MobileNavigation = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setVendors(response.data.data.data);
+          // console.log(response.data.data.data);
+          console.log(response.data.data.items)
+          setVendors(response.data.data.items);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
@@ -201,8 +211,8 @@ const MobileNavigation = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setPendingProducts(response.data.data.data);
+          console.log(response.data.data);
+          setPendingProducts(response.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);

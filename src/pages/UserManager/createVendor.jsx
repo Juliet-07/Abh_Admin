@@ -64,13 +64,13 @@ const CreateVendor = () => {
     const formData = new FormData();
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
-    formData.append("store", store);
-    formData.append("country", country);
-    formData.append("address", address);
-    formData.append("city", city);
-    formData.append("state", state);
     formData.append("email", email);
     formData.append("phoneNumber", phoneNumber);
+    formData.append("store", store);
+    formData.append("country", country);
+    formData.append("state", state);
+    formData.append("city", city);
+    formData.append("address", address);
     formData.append("alternatePhoneNumber", alternatePhoneNumber);
     formData.append("businessType", businessType);
     formData.append(
@@ -78,8 +78,8 @@ const CreateVendor = () => {
       nationalIdentificationNumber
     );
     formData.append("taxIdentificationNumber", taxIdentificationNumber);
-    formData.append("file", docx);
     formData.append("cacRegistrationNumber", cacRegistrationNumber);
+    formData.append("cacCertificate", docx);
     axios
       .post(url, formData, {
         headers: {
