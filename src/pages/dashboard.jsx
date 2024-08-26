@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import PaginatedTable from "../components/paginatedTables";
 import BarchartComp from "../components/BarchartComp";
 import DashSlider from "../components/DashSlider";
@@ -8,12 +9,54 @@ import { EyeIcon } from "@heroicons/react/solid";
 import StatusComponent from "../components/StatusComp";
 
 const Dashboard = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("adminToken");
   const [recentOrderInput, setROI] = useState("");
   const [LowStockInput, setLSI] = useState("");
   const [TopTenInput, setTopTenInput] = useState("");
   const [OrderStatus, setOrderStatus] = useState("weekly");
   const [RecentTransactionInput, setRecentTransactionInput] = useState("");
+  const [vendors, setVendors] = useState([]);
+  const [customers, setCustomers] = useState([]);
 
+  useEffect(() => {
+    const getAllVendors = () => {
+      axios
+        .get(`${apiURL}/vendors`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          // console.log(response.data.data.data);
+          console.log(response.data.data.items);
+          setVendors(response.data.data.items);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+    const getCustomers = () => {
+      axios
+        .get(`${apiURL}/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data);
+          setCustomers(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getAllVendors();
+    getCustomers();
+  }, []);
   return (
     <div className="w-full flex flex-col gap-10 font-primaryRegular">
       {/* App Summary */}
@@ -48,7 +91,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Vendors</p>
-              <b>52</b>
+              <b>{vendors.length}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50">
@@ -57,7 +100,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Customers</p>
-              <b>104</b>
+              <b>{customers.length}</b>
             </div>
           </div>
         </div>
@@ -69,7 +112,7 @@ const Dashboard = () => {
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
             <p className="font-bold text-lg">Order status</p>
-            <div className="flex flex-1 flex-row rounded-[40px] p-1 bg-[ghostwhite] h-[40px] py-4 flex items-center justify-between max-w-[250px]">
+            <div className="flex flex-1 flex-row rounded-[40px] p-1 bg-[ghostwhite] h-[40px] py-4 items-center justify-between max-w-[250px]">
               {["Today", "Weekly", "Monthly", "Yearly"].map((status, index) => {
                 return (
                   <div

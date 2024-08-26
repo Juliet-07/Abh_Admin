@@ -211,8 +211,8 @@ const MobileNavigation = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data);
-          setPendingProducts(response.data.data);
+          console.log(response.data.data.data);
+          setPendingProducts(response.data.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);

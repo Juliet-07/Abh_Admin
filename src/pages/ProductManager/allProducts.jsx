@@ -36,8 +36,8 @@ const AllProducts = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data);
-          setProducts(response.data.data);
+          console.log(response.data.data.data);
+          setProducts(response.data.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
@@ -284,14 +284,16 @@ const AllProducts = () => {
           <div className="my-10 w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
-                <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
+                <thead className="bg-[#F1F4F2] font-primaryMedium md:font-primaryBold text-xs md:text-sm">
                   <tr>
-                    <th className="text-center p-3">Date</th>
-                    <th className="text-center p-3">Product</th>
-                    <th className="text-center p-3">SKU</th>
-                    <th className="text-center p-3">Price</th>
+                    <th className="text-left p-3">Date</th>
+                    <th className="text-left p-3">Product</th>
+                    <th className="text-left p-3">Product Type</th>
+                    <th className="text-center p-3">Vendor's Price</th>
+                    <th className="text-center p-3">Sale's Price</th>
                     <th className="text-center p-3">Stock</th>
-                    <th className="text-center p-3">Shop Name</th>
+                    <th className="text-center p-3">Vendor</th>
+                    <th className="text-center p-3">Store</th>
                     <th className="text-center p-3">Action</th>
                   </tr>
                 </thead>
@@ -301,34 +303,38 @@ const AllProducts = () => {
                       key={index}
                       className="border text-xs font-primaryMedium mb-4"
                     >
-                      <td className="min-w-[100px] md:w-0 p-2 text-left">
+                      <td className="min-w-[100px] md:w-0 p-4 text-left">
                         {formatDate(product.createdAt)}
                       </td>
                       <td className="p-4">
-                        <div className="flex items-center justify-center gap-2">
-                          <div className="w-10 h-10">
-                            <img
-                              src={product.featured_image}
-                              className="rounded-full"
-                              alt=""
-                            />
+                        <div className="flex items-center gap-2">
+                          <div className="w-10 h-10 shadow-lg rounded border border-gray-200 flex items-center justify-center p-1">
+                            <img src={product.featured_image} alt="" />
                           </div>
-                          <div className="w-[100px] flex flex-col gap-2">
-                            <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                          <div className="w-full flex flex-col gap-2">
+                            <p className="text-ellipsis whitespace-nowrap">
                               {product.name}
                             </p>
                             <b>{product?.category?.name}</b>
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 text-center">{product.sku}</td>
-                      <td className="min-w-[100px] md:w-0 p-4 text-center">
+                      <td className="p-4 text-left">{product.productType}</td>
+                      <td className="min-w-[100px] md:w-0 p-4 text-left">
                         {product.currency + " " + product.price}
+                      </td>
+                      <td className="min-w-[100px] md:w-0 p-4 text-left">
+                        {product.currency + " " + product.sellingPrice}
                       </td>
                       <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product.quantity + " " + product.unit}
                       </td>
                       <td className="p-4 text-center">
+                        {product?.vendor?.firstName +
+                          " " +
+                          product?.vendor?.lastName}
+                      </td>
+                      <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product?.vendor?.store}
                       </td>
                       <td className="p-4 flex items-center justify-center">

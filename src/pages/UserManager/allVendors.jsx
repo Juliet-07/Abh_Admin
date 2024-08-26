@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../assets/newVendor.png";
 import axios from "axios";
-import moment from "moment/moment";
+import moment from "moment";
 
 const AllVendors = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -88,17 +88,17 @@ const AllVendors = () => {
 
   return (
     <>
+      <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+        <p className="">All Vendors</p>
+        <Link
+          to="/createVendors"
+          className="text-white bg-[#359E52] text-sm p-2 rounded-xl"
+        >
+          Create Vendor
+        </Link>
+      </div>
       {vendors.length > 0 ? (
         <div className="w-full flex flex-col">
-          <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
-            <p className="">All Vendors</p>
-            <Link
-              to="/createVendors"
-              className="text-white bg-[#359E52] text-sm p-2 rounded-xl"
-            >
-              Create Vendor
-            </Link>
-          </div>
           <div className="my-10 w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
@@ -124,7 +124,7 @@ const AllVendors = () => {
                         className="border text-xs font-primaryMedium mb-4"
                       >
                         <td className="p-4 text-center">
-                          {formatDate(vendor.createdAt)}
+                          {formatDate(vendor.created_at)}
                         </td>
                         <td className="p-4 text-center">
                           {vendor.firstName + " " + vendor.lastName}

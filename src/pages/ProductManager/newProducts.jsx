@@ -15,28 +15,33 @@ const NewProducts = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const token = localStorage.getItem("adminToken");
   const [showPreview, setPreview] = useState(false);
-  const [showApproval, setApproval] = useState(false);
-  const [showDecline, setDecline] = useState(false);
+  const [showApproveModal, setShowApproveModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [confirmApproval, setConfirmApproval] = useState(false);
+  const [confirmDecline, setConfirmDecline] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [pendingProducts, setPendingProducts] = useState([]);
+  const [comment, setComment] = useState("");
+  const [sellingPrice, setSellingPrice] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const formatDate = (dateString) => {
     return moment(dateString).format("MMMM DD, YYYY");
   };
 
-
   useEffect(() => {
     const getPendingProducts = () => {
       axios
-        .get(`${apiURL}/products?filter.status=PENDING`, {
+        .get(`${apiURL}/products?status=PENDING`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-type": "application/json; charset=UTF-8",
           },
         })
         .then((response) => {
-          console.log(response.data.data);
-          setPendingProducts(response.data.data);
+          console.log(response.data.data.data);
+          setPendingProducts(response.data.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
@@ -53,19 +58,20 @@ const NewProducts = () => {
 
   const manageProductStatus = (productId, status) => {
     const url = `${apiURL}/products/manage-product-status/${productId}`;
+    const payload = {
+      status: status,
+      comments: comment,
+      sellingPrice: parseInt(sellingPrice),
+    };
     axios
-      .put(
-        url,
-        { status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      )
+      .put(url, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
       .then((response) => {
-        console.log("Vendor status updated:", response.data);
+        console.log("Product status updated:", response.data);
         // Update the state to reflect the change
         setPendingProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== productId)
@@ -76,17 +82,30 @@ const NewProducts = () => {
       });
   };
 
-  const handleApprove = () => {
+  const handleApprove1 = () => {
     manageProductStatus(selectedProduct.id, "APPROVED");
     setPreview(false);
-    setApproval(true);
+    setConfirmApproval(true);
+  };
+
+  const handleDecline1 = () => {
+    manageProductStatus(selectedProduct.id, "DECLINED");
+    setPreview(false);
+    setConfirmDecline(true);
+  };
+
+  const handleApprove = () => {
+    setShowApproveModal(true);
+    setPreview(false);
+    // setConfirmApproval(true);
   };
 
   const handleDecline = () => {
-    manageProductStatus(selectedProduct.id, "DECLINED");
+    setShowRejectModal(true);
     setPreview(false);
-    setDecline(true);
+    // setConfirmDecline(true);
   };
+
   const getStatusStyles = (status) => {
     switch (status.toLowerCase()) {
       case "live":
@@ -133,6 +152,17 @@ const NewProducts = () => {
       </div>
     );
   };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(pendingProducts.length / itemsPerPage);
+
+  const paginatedProducts = pendingProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   return (
     <>
       {showPreview &&
@@ -227,7 +257,73 @@ const NewProducts = () => {
             </div>
           );
         })()}
-      {showApproval && (
+
+      {showApproveModal && (
+        <div className="w-full h-screen bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
+          <div className="w-[90%] max-w-[498px] bg-white rounded-xl p-6 flex flex-col gap-6">
+            <h2 className="text-xl font-semibold">Enter Selling Price</h2>
+            <input
+              type="text"
+              className="border p-2 rounded"
+              placeholder="Enter selling price"
+              value={sellingPrice}
+              onChange={(e) => setSellingPrice(e.target.value)}
+            />
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={() => setShowApproveModal(false)}
+                className="w-full h-[46px] rounded-[6px] bg-gray-300 text-black"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  manageProductStatus(selectedProduct._id, "APPROVED");
+                  setShowApproveModal(false);
+                  // setApproval(true);
+                }}
+                className="w-full h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showRejectModal && (
+        <div className="w-full h-screen bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
+          <div className="w-[90%] max-w-[498px] bg-white rounded-xl p-6 flex flex-col gap-6">
+            <h2 className="text-xl font-semibold">Reason for Rejection</h2>
+            <textarea
+              className="border p-2 rounded"
+              placeholder="Enter reason for rejection"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="w-full h-[46px] rounded-[6px] bg-gray-300 text-black"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  manageProductStatus(selectedProduct._id, "DECLINED");
+                  setShowRejectModal(false);
+                  // setDecline(true);
+                }}
+                className="w-full h-[46px] rounded-[6px] bg-[#E3140F] text-white"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmApproval && (
         <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
           <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
             <div className="w-[50px] h-[50px] rounded-[100px] border-[#08932E] border-2 flex flex-col items-center  justify-center">
@@ -247,7 +343,7 @@ const NewProducts = () => {
         </div>
       )}
 
-      {showDecline && (
+      {confirmDecline && (
         <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
           <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
             <FcCancel size={60} />
@@ -276,78 +372,85 @@ const NewProducts = () => {
               Create Vendor
             </Link> */}
           </div>
-          <div className="my-10 w-full bg-white p-3">
+          <div className="my-6 w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
                   <tr>
-                    <th className="text-center p-3">Date</th>
-                    <th className="text-center p-3">Product</th>
-                    <th className="text-center p-3">SKU</th>
-                    <th className="text-center p-3">Price</th>
+                    <th className="text-left p-3">Date</th>
+                    <th className="text-left p-3">Product</th>
+                    <th className="text-left p-3">Product Type</th>
+                    <th className="text-center p-3"> Price</th>
                     <th className="text-center p-3">Stock</th>
-                    <th className="text-center p-3">Shop Name</th>
+                    <th className="text-center p-3">Vendor</th>
+                    <th className="text-center p-3">Store</th>
                     <th className="text-center p-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {pendingProducts.map((product, index) => (
+                  {paginatedProducts.map((product, index) => (
                     <tr
                       key={index}
-                      className="border text-xs font-primaryMedium mb-4"
+                      className="border text-xs font-primaryMedium"
                     >
-                      <td className="p-4 text-center">
+                      <td className="min-w-[100px] md:w-0 p-4 text-left">
                         {formatDate(product.createdAt)}
                       </td>
                       <td className="p-4">
-                        <div className="flex flex-wrap items-center justify-center gap-3">
-                          <div className="w-10 h-10">
-                            <img
-                              src={product.featured_image}
-                              className="rounded-full"
-                              alt=""
-                            />
+                        <div className="flex items-center  gap-2">
+                          <div className="w-10 h-10 shadow-lg rounded border border-gray-200 flex items-center justify-center p-1">
+                            <img src={product.featured_image} alt="" />
                           </div>
-                          <div className="grid">
-                            <p>{product.name}</p>
-                            <p>{product?.category?.name}</p>
+                          <div className="w-full grid gap-2">
+                            <p className="text-ellipsis whitespace-nowrap">
+                              {product.name}
+                            </p>
+                            <b>{product?.category?.name}</b>
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 text-center">{product.sku}</td>
-                      <td className="p-4 text-center">
+                      <td className="p-4 text-left">{product.productType}</td>
+                      <td className="min-w-[100px] md:w-0 p-4 text-left">
                         {product.currency + " " + product.price}
                       </td>
-                      <td className="p-4 text-center">
+                      <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product.quantity + " " + product.unit}
+                      </td>
+                      <td className="p-4 text-center">
+                        {product?.vendor?.firstName +
+                          " " +
+                          product?.vendor?.lastName}
                       </td>
                       <td className="p-4 text-center">
                         {product?.vendor?.store}
                       </td>
-                      <td className="p-4 flex items-center justify-center gap-6">
-                        <button
-                          // onClick={() => handleViewMore(product)}
-                          className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
-                        >
-                          <FaPen size={14} />
-                        </button>
+                      <td className="p-4 flex items-center justify-center">
                         <button
                           onClick={() => handleViewMore(product)}
                           className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
                         >
                           <FaEye size={14} />
                         </button>
-                        {/* <button
-                          onClick={() => handleViewMore(product)}
-                          className="w-10 h-10 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
-                        >
-                          <FaEye size={20} />
-                        </button> */}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         </div>
