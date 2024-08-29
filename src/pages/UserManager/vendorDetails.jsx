@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import Rate from "../../assets/rate.svg";
 import Sales from "../../assets/sales.svg";
 import Truck from "../../assets/truck.svg";
@@ -11,10 +12,14 @@ import Pineapple from "../../assets/pineapple.png";
 import moment from "moment";
 
 const VendorDetails = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("adminToken");
   const location = useLocation();
   const vendorDetails = location.state && location.state.vendor;
   console.log("Details", vendorDetails);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState(vendorDetails.status);
 
   if (!vendorDetails) {
     return <div>No details available</div>;
@@ -72,8 +77,41 @@ const VendorDetails = () => {
   const { bgColor, textColor, dotColor } = getStatusStyles(
     vendorDetails.status
   );
+
+  const manageVendorStatus = (vendorId) => {
+    const url = `${apiURL}/vendors/block-status/${vendorId}`;
+    axios
+      .patch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+      .then((response) => {
+        console.log("Vendor status updated:", response.data);
+        setShowModal(true);
+      })
+      .catch((error) => {
+        console.error("Error updating vendor status:", error);
+      });
+  };
   return (
     <>
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center font-primaryRegular">
+          <div className="bg-white w-[186px] h-[46px] rounded-md text-center">
+            <p className="text-lg font-semibold">
+              Vendor status updated successfully!
+            </p>
+            <button
+              className="mt-4 bg-[#4CBD6B] text-white py-2 px-4 rounded"
+              onClick={() => setShowModal(false)}
+            >
+              Okay
+            </button>
+          </div>
+        </div>
+      )}
       <div className="w-full h-12 md:h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
         Vendor Details
       </div>
@@ -122,7 +160,7 @@ const VendorDetails = () => {
               <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
                 Data & Time Registered
               </div>
-              <p>{formatDate(vendorDetails.createdAt)}</p>
+              <p>{formatDate(vendorDetails.created_at)}</p>
             </div>
             <div>
               <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
@@ -130,7 +168,7 @@ const VendorDetails = () => {
               </div>
               <p>{vendorDetails.date}</p>
             </div>
-            <div className="my-4">Account Number: 0122122122</div>
+            <div className="my-4">Account Number: </div>
           </div>
           <div className="w-full md:w-[70%] flex flex-col gap-14 border border-[#CFCBCB] p-4 font-primaryRegular">
             {/* 1 */}
@@ -276,15 +314,23 @@ const VendorDetails = () => {
           Back
         </Link>
         <div className="flex gap-4">
-          <button className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#F58634] text-white font-primarySemibold rounded-lg text-sm md:text-base">
+          {/* <button className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#F58634] text-white font-primarySemibold rounded-lg text-sm md:text-base">
             Deactivate
-          </button>
+          </button> */}
           <button
+            className={`${
+              status === "deactivated" ? "bg-[#359E52]" : "bg-[#F58634]"
+            } w-[100px] md:w-[180px] h-10 md:h-[46px] text-white font-primarySemibold rounded-lg text-sm md:text-base`}
+            onClick={() => manageVendorStatus(vendorDetails._id)}
+          >
+            {status === "Inactive" ? "Activate" : "Deactivate"}
+          </button>
+          {/* <button
             button
             className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#E3140F] text-white font-primarySemibold rounded-lg text-sm md:text-base"
           >
             Block
-          </button>
+          </button> */}
         </div>
       </div>
     </>

@@ -82,28 +82,14 @@ const NewProducts = () => {
       });
   };
 
-  const handleApprove1 = () => {
-    manageProductStatus(selectedProduct.id, "APPROVED");
-    setPreview(false);
-    setConfirmApproval(true);
-  };
-
-  const handleDecline1 = () => {
-    manageProductStatus(selectedProduct.id, "DECLINED");
-    setPreview(false);
-    setConfirmDecline(true);
-  };
-
   const handleApprove = () => {
     setShowApproveModal(true);
     setPreview(false);
-    // setConfirmApproval(true);
   };
 
   const handleDecline = () => {
     setShowRejectModal(true);
     setPreview(false);
-    // setConfirmDecline(true);
   };
 
   const getStatusStyles = (status) => {
@@ -184,42 +170,54 @@ const NewProducts = () => {
                   color="red"
                   onClick={() => setPreview(false)}
                 />
-                <div className="w-full flex flex-row flex-wrap mt-[20px] min-h-1 gap-2 font-primaryRegular">
+                <div className="w-full flex flex-row flex-wrap mt-[10px] min-h-1 gap-10 font-primaryRegular">
                   <div className="w-full min-w-[300px] min-h-[200px] flex flex-[45] flex-col">
                     <p>{selectedProduct.id}</p>
                     <br />
                     <div
                       className="w-full h-[198px] bg-contain"
                       style={{
-                        background: `url(${selectedProduct.featured_image}) center no-repeat`,
+                        background: `url(${selectedProduct?.featured_image}) center no-repeat`,
                         backgroundSize: "contain",
                       }}
                     ></div>
                     <br />
                     <CustomSlider
                       settings={Settings}
-                      images={selectedProduct.images}
+                      images={selectedProduct?.images}
                     />
                   </div>
                   <div className="w-full min-w-[300px] flex flex-[55] flex-col">
                     <br />
                     <br />
-                    <b>{selectedProduct.name}</b>
-                    <p>{selectedProduct.categoryId}</p>
-                    <div className="flex flex-row gap-[10px]">
+                    <b>{selectedProduct?.name}</b>
+                    <p>{selectedProduct?.categoryId?.name}</p>
+                    {/* <div className="flex flex-row gap-[10px]">
                       <b>SKU</b> <p>{selectedProduct.sku}</p>
+                    </div> */}
+                    <br />
+                    <p>{selectedProduct?.description}</p>
+                    <br />
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Product Type</b>
+                      <p>{selectedProduct.productType}</p>
                     </div>
                     <br />
-                    <p>{selectedProduct.description}</p>
-                    <br />
-                    <b>
-                      {selectedProduct.currency + " " + selectedProduct.price}
-                    </b>
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Price</b>
+                      <p>
+                        {selectedProduct.currency +
+                          " " +
+                          selectedProduct?.price}
+                      </p>
+                    </div>
                     <br />
                     <div className="flex flex-row gap-[10px]">
                       <b>Quantity</b>
                       <p>
-                        {selectedProduct.quantity + " " + selectedProduct.unit}
+                        {selectedProduct?.quantity +
+                          " " +
+                          selectedProduct?.unit}
                       </p>
                     </div>
                     <br />
@@ -280,7 +278,7 @@ const NewProducts = () => {
                 onClick={() => {
                   manageProductStatus(selectedProduct._id, "APPROVED");
                   setShowApproveModal(false);
-                  // setApproval(true);
+                  setConfirmApproval(true);
                 }}
                 className="w-full h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
               >
@@ -312,7 +310,7 @@ const NewProducts = () => {
                 onClick={() => {
                   manageProductStatus(selectedProduct._id, "DECLINED");
                   setShowRejectModal(false);
-                  // setDecline(true);
+                  setConfirmDecline(true);
                 }}
                 className="w-full h-[46px] rounded-[6px] bg-[#E3140F] text-white"
               >
@@ -334,7 +332,7 @@ const NewProducts = () => {
               Live!
             </p>
             <button
-              onClick={() => setApproval(false)}
+              onClick={() => setConfirmApproval(false)}
               className="w-[186px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
             >
               Okay
@@ -352,7 +350,7 @@ const NewProducts = () => {
               rejected!
             </p>
             <button
-              onClick={() => setDecline(false)}
+              onClick={() => setConfirmDecline(false)}
               className="w-[186px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
             >
               Okay
@@ -405,7 +403,7 @@ const NewProducts = () => {
                             <p className="text-ellipsis whitespace-nowrap">
                               {product.name}
                             </p>
-                            <b>{product?.category?.name}</b>
+                            <b>{product?.categoryId?.name}</b>
                           </div>
                         </div>
                       </td>

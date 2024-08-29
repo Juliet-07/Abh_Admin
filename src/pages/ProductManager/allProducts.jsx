@@ -29,7 +29,7 @@ const AllProducts = () => {
   useEffect(() => {
     const getProducts = () => {
       axios
-        .get(`${apiURL}/products`, {
+        .get(`${apiURL}/products/admin-all`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-type": "application/json; charset=UTF-8",
@@ -105,13 +105,7 @@ const AllProducts = () => {
           textColor: "text-[#FB1010]",
           dotColor: "bg-[#FB1010]",
         };
-      case "inactive":
-        return {
-          bgColor: "bg-[#8A8D08]/[12%]",
-          textColor: "text-[#8A8D08]",
-          dotColor: "bg-[#8A8D08]",
-        };
-      case "deactivated":
+      case "declined":
         return {
           bgColor: "bg-[#F58634]/[12%]",
           textColor: "text-[#F58634]",
@@ -190,24 +184,47 @@ const AllProducts = () => {
                   </div>
                   <div className="w-full min-w-[300px] flex flex-[55] flex-col">
                     <br />
-                    <br />
-                    <b>{selectedProduct.name}</b>
-                    <p>{selectedProduct?.category?.name}</p>
                     <div className="flex flex-row gap-[10px]">
-                      <b>SKU</b> <p>{selectedProduct.sku}</p>
+                      <b>Product Name:</b>
+                      <p>{selectedProduct.name}</p>
                     </div>
                     <br />
-                    <p>{selectedProduct.description}</p>
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Product Category:</b>
+                      <p>{selectedProduct?.categoryId?.name}</p>
+                    </div>
                     <br />
-                    <b>
-                      {selectedProduct.currency + " " + selectedProduct.price}
-                    </b>
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Description:</b>
+                      <p>{selectedProduct?.description}</p>
+                    </div>
+                    <br />
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Price</b>
+                      <p>
+                        {selectedProduct.currency + " " + selectedProduct.price}
+                      </p>
+                    </div>
                     <br />
                     <div className="flex flex-row gap-[10px]">
                       <b>Quantity</b>
                       <p>
                         {selectedProduct.quantity + " " + selectedProduct.unit}
                       </p>
+                    </div>
+                    <br />
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Vendor Name</b>
+                      <p>
+                        {selectedProduct?.vendor?.firstName +
+                          " " +
+                          selectedProduct?.vendor?.lastName}
+                      </p>
+                    </div>
+                    <br />
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Vendor's Store</b>
+                      <p>{selectedProduct?.vendor?.store}</p>
                     </div>
                     <br />
                     <div className="flex items-center gap-3">
@@ -289,44 +306,61 @@ const AllProducts = () => {
                     <th className="text-left p-3">Date</th>
                     <th className="text-left p-3">Product</th>
                     <th className="text-left p-3">Product Type</th>
-                    <th className="text-center p-3">Vendor's Price</th>
-                    <th className="text-center p-3">Sale's Price</th>
-                    <th className="text-center p-3">Stock</th>
+                    <th className="text-left p-3">Vendor's Price</th>
+                    <th className="text-left p-3">Sale's Price</th>
+                    <th className="text-left p-3">Status</th>
+                    {/* <th className="text-center p-3">Stock</th>
                     <th className="text-center p-3">Vendor</th>
-                    <th className="text-center p-3">Store</th>
+                    <th className="text-center p-3">Store</th> */}
                     <th className="text-center p-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedProducts.map((product, index) => (
-                    <tr
-                      key={index}
-                      className="border text-xs font-primaryMedium mb-4"
-                    >
-                      <td className="min-w-[100px] md:w-0 p-4 text-left">
-                        {formatDate(product.createdAt)}
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-10 h-10 shadow-lg rounded border border-gray-200 flex items-center justify-center p-1">
-                            <img src={product.featured_image} alt="" />
+                  {paginatedProducts.map((product, index) => {
+                    const { bgColor, textColor, dotColor } = getStatusStyles(
+                      product.status
+                    );
+                    return (
+                      <tr
+                        key={index}
+                        className="border text-xs font-primaryMedium mb-4"
+                      >
+                        <td className="min-w-[100px] md:w-0 p-4 text-left">
+                          {formatDate(product.createdAt)}
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center gap-2">
+                            <div className="w-10 h-10 shadow-lg rounded border border-gray-200 flex items-center justify-center p-1">
+                              <img src={product.featured_image} alt="" />
+                            </div>
+                            <div className="w-full flex flex-col gap-2">
+                              <p className="text-ellipsis whitespace-nowrap">
+                                {product.name}
+                              </p>
+                              <b>{product?.categoryId?.name}</b>
+                            </div>
                           </div>
-                          <div className="w-full flex flex-col gap-2">
-                            <p className="text-ellipsis whitespace-nowrap">
-                              {product.name}
+                        </td>
+                        <td className="p-4 text-left">{product.productType}</td>
+                        <td className="min-w-[100px] p-4 text-left">
+                          {product.currency + " " + product.price}
+                        </td>
+                        <td className="min-w-[100px]  p-4 text-left">
+                          {product.currency + " " + product.sellingPrice}
+                        </td>
+                        <td className="min-w-[100px] md:w-0 p-4 text-left">
+                          <div
+                            className={`h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
+                          >
+                            <div
+                              className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
+                            />
+                            <p className={`${textColor} text-xs`}>
+                              {product.status}
                             </p>
-                            <b>{product?.category?.name}</b>
                           </div>
-                        </div>
-                      </td>
-                      <td className="p-4 text-left">{product.productType}</td>
-                      <td className="min-w-[100px] md:w-0 p-4 text-left">
-                        {product.currency + " " + product.price}
-                      </td>
-                      <td className="min-w-[100px] md:w-0 p-4 text-left">
-                        {product.currency + " " + product.sellingPrice}
-                      </td>
-                      <td className="min-w-[100px] md:w-0 p-4 text-center">
+                        </td>
+                        {/* <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product.quantity + " " + product.unit}
                       </td>
                       <td className="p-4 text-center">
@@ -336,17 +370,18 @@ const AllProducts = () => {
                       </td>
                       <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product?.vendor?.store}
-                      </td>
-                      <td className="p-4 flex items-center justify-center">
-                        <button
-                          onClick={() => handleViewMore(product)}
-                          className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
-                        >
-                          <FaEye size={14} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                      </td> */}
+                        <td className="p-4 flex items-center justify-center">
+                          <button
+                            onClick={() => handleViewMore(product)}
+                            className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                          >
+                            <FaEye size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
