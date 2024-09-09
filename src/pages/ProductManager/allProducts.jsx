@@ -20,7 +20,7 @@ const AllProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 7;
 
   const formatDate = (dateString) => {
     return moment(dateString).format("MMMM DD, YYYY");
@@ -298,7 +298,7 @@ const AllProducts = () => {
           <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
             <p className="">Products ({products.length})</p>
           </div>
-          <div className="my-10 w-full bg-white p-3">
+          <div className="my-4 w-full bg-white p-3">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryMedium md:font-primaryBold text-xs md:text-sm">
@@ -326,7 +326,7 @@ const AllProducts = () => {
                         className="border text-xs font-primaryMedium mb-4"
                       >
                         <td className="min-w-[100px] md:w-0 p-4 text-left">
-                          {formatDate(product.createdAt)}
+                          {formatDate(product.created_at)}
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">

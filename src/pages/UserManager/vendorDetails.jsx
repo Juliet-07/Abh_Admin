@@ -20,6 +20,7 @@ const VendorDetails = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState(vendorDetails.status);
+  const [loading, setLoading] = useState(false);
 
   if (!vendorDetails) {
     return <div>No details available</div>;
@@ -74,12 +75,14 @@ const VendorDetails = () => {
         };
     }
   };
+
   const { bgColor, textColor, dotColor } = getStatusStyles(
     vendorDetails.status
   );
 
   const manageVendorStatus = (vendorId) => {
     const url = `${apiURL}/vendors/block-status/${vendorId}`;
+    setLoading(true);
     axios
       .patch(url, {
         headers: {
@@ -90,21 +93,23 @@ const VendorDetails = () => {
       .then((response) => {
         console.log("Vendor status updated:", response.data);
         setShowModal(true);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error updating vendor status:", error);
+        setLoading(false);
       });
   };
   return (
     <>
       {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center font-primaryRegular">
-          <div className="bg-white w-[186px] h-[46px] rounded-md text-center">
-            <p className="text-lg font-semibold">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center font-primaryRegular p-4">
+          <div className="bg-white w-[186px] md:w-[500px] h-[46px] md:h-[120px] rounded-md text-center">
+            <p className="md:text-lg font-semibold my-4">
               Vendor status updated successfully!
             </p>
             <button
-              className="mt-4 bg-[#4CBD6B] text-white py-2 px-4 rounded"
+              className="my-2 bg-[#4CBD6B] text-white py-2 px-4 rounded"
               onClick={() => setShowModal(false)}
             >
               Okay
@@ -317,14 +322,41 @@ const VendorDetails = () => {
           {/* <button className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#F58634] text-white font-primarySemibold rounded-lg text-sm md:text-base">
             Deactivate
           </button> */}
-          <button
-            className={`${
-              status === "deactivated" ? "bg-[#359E52]" : "bg-[#F58634]"
-            } w-[100px] md:w-[180px] h-10 md:h-[46px] text-white font-primarySemibold rounded-lg text-sm md:text-base`}
-            onClick={() => manageVendorStatus(vendorDetails._id)}
-          >
-            {status === "Inactive" ? "Activate" : "Deactivate"}
-          </button>
+
+          {loading ? (
+            <button className="w-[100px] md:w-[180px] h-10 md:h-[46px] rounded-lg border bg-blue-400">
+              <svg
+                className="animate-spin h-6 w-6 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.963 7.963 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            </button>
+          ) : (
+            <button
+              className={`${
+                status === "INACTIVE" ? "bg-[#359E52]" : "bg-[#F58634]"
+              } w-[100px] md:w-[180px] h-10 md:h-[46px] text-white font-primarySemibold rounded-lg text-sm md:text-base`}
+              onClick={() => manageVendorStatus(vendorDetails._id)}
+            >
+              {status === "INACTIVE" ? "Activate" : "Deactivate"}
+            </button>
+          )}
+
           {/* <button
             button
             className="w-[100px] md:w-[180px] h-10 md:h-[46px] bg-[#E3140F] text-white font-primarySemibold rounded-lg text-sm md:text-base"

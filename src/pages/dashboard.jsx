@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PaginatedTable from "../components/paginatedTables";
 import BarchartComp from "../components/BarchartComp";
@@ -7,6 +7,8 @@ import LowStockPaginatedTable from "../components/LowstockTable";
 import ReportsPaginatedTable from "../components/ReportsTable";
 import { EyeIcon } from "@heroicons/react/solid";
 import StatusComponent from "../components/StatusComp";
+import { FcCancel } from "react-icons/fc";
+import { GrCompliance } from "react-icons/gr";
 
 const Dashboard = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -73,7 +75,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Revenue</p>
-              <b>$1,800</b>
+              <b>₦1,800</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50">
@@ -87,7 +89,7 @@ const Dashboard = () => {
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-purple-500 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-39.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-40.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Vendors</p>
@@ -96,7 +98,7 @@ const Dashboard = () => {
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-40.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-41.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Customers</p>
@@ -133,7 +135,7 @@ const Dashboard = () => {
         </div>
 
         <div className="grid md:grid-cols-4 gap-10 mt-6 mb-2">
-          <div className="min-w-[220px] h-[120px] border rounded-lg border-b-4 border-b-[teal] p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border rounded-lg border-b-4 border-b-red-600 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
               <img src="/svgs/svgexport-39.svg" alt="" className="w-8 h-8" />
             </div>
@@ -142,27 +144,27 @@ const Dashboard = () => {
               <b className="text-2xl">100</b>
             </div>
           </div>
-          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-blue-600 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-41.svg" alt="" className="w-8 h-8" />
+              <img src="/svgs/svgexport-42.svg" alt="" className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Processing Order</p>
               <b className="text-2xl">0</b>
             </div>
           </div>
-          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-green-600 p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-42.svg" alt="" className="w-8 h-8" />
+              <GrCompliance size={30} className="w-8 h-8 text-green-500" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Completed Order</p>
               <b className="text-2xl">0</b>
             </div>
           </div>
-          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-purple-500 p-2 flex items-center justify-between bg-slate-50">
+          <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-black p-2 flex items-center justify-between bg-slate-50">
             <div className="w-14 h-14 flex items-center justify-center bg-slate-100 rounded-md">
-              <img src="/svgs/svgexport-37.svg" alt="" className="w-8 h-8" />
+              <FcCancel size={30} className="w-8 h-8" />
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Cancelled Order</p>

@@ -392,7 +392,7 @@ const NewProducts = () => {
                       className="border text-xs font-primaryMedium"
                     >
                       <td className="min-w-[100px] md:w-0 p-4 text-left">
-                        {formatDate(product.createdAt)}
+                        {formatDate(product.created_at)}
                       </td>
                       <td className="p-4">
                         <div className="flex items-center  gap-2">
