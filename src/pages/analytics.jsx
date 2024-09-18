@@ -50,8 +50,8 @@ const Analytics = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
-          setVendors(response.data.data.data);
+          console.log(response.data.data.items);
+          setVendors(response.data.data.items);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);

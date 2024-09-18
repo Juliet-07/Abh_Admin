@@ -277,7 +277,7 @@ const VendorDetails = () => {
           </div>
         </div>
         {/* Performance Metrics */}
-        <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-10 font-primaryRegular">
+        {/* <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-10 font-primaryRegular">
           <p className="font-bold">Performance Metrics</p>
           <div className="flex flex-col items-center justify-center md:grid md:grid-cols-4 gap-5 md:gap-10">
             <div className="w-full md:min-w-[216px] h-[104px] border border-[#CFCBCB] rounded-lg p-4">
@@ -309,7 +309,7 @@ const VendorDetails = () => {
               <p>Customer Compliance</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="my-10 w-full flex items-center justify-between">
         <Link

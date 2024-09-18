@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
           path: "/newProducts",
         },
         { title: "All Products", path: "/allProducts" },
-        { title: "Inventory", path: "/inventory" },
+        // { title: "Inventory", path: "/inventory" },
         // { title: "Draft Products", path: "/forms/low-out-of-stock" },
         // { title: "Discount", path: "/forms/inventory" },
       ],
@@ -67,6 +67,16 @@ const Layout = ({ children }) => {
     //   // ],
     // },
     {
+      title: "Order Management",
+      icon: <TbTruckDelivery />,
+      submenu: true,
+      submenuItems: [
+        { title: "All Orders", path: "/allOrders" },
+        // { title: "Track Orders", path: "/tracker" },
+        { title: "Transactions", path: "/transactions" },
+      ],
+    },
+    {
       title: "Drop-shippers",
       icon: <FaUserTie />,
       submenu: true,
@@ -75,16 +85,7 @@ const Layout = ({ children }) => {
         { title: "Subscribers", path: "/subscribers" },
       ],
     },
-    {
-      title: "Order Management",
-      icon: <TbTruckDelivery />,
-      submenu: true,
-      submenuItems: [
-        { title: "All Orders", path: "/allOrders" },
-        { title: "Track Orders", path: "/tracker" },
-        { title: "Transactions", path: "/transactions" },
-      ],
-    },
+
     {
       title: "Analytics",
       icon: <BsBarChartLineFill />,
@@ -178,7 +179,7 @@ const Layout = ({ children }) => {
         })
         .then((response) => {
           // console.log(response.data.data.data);
-          console.log(response.data.data.items)
+          console.log(response.data.data.items);
           setVendors(response.data.data.items);
         })
         .catch((error) => {

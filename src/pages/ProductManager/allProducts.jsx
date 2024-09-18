@@ -209,12 +209,20 @@ const AllProducts = () => {
                     <div className="flex flex-row gap-[10px]">
                       <b>Quantity</b>
                       <p>
-                        {selectedProduct.quantity + " " + selectedProduct.unit}
+                        {selectedProduct.quantity -
+                          selectedProduct.soldQuantity +
+                          " " +
+                          selectedProduct.unit}
                       </p>
                     </div>
                     <br />
                     <div className="flex flex-row gap-[10px]">
-                      <b>Vendor Name</b>
+                      <b>Size</b>
+                      <p>{selectedProduct.size}</p>
+                    </div>
+                    <br />
+                    <div className="flex flex-row gap-[10px]">
+                      <b>Vendor's Name</b>
                       <p>
                         {selectedProduct?.vendor?.firstName +
                           " " +
