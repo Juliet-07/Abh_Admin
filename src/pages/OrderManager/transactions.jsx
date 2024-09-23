@@ -11,16 +11,18 @@ const Transactions = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
   const [activeTab, setActiveTab] = useState("All");
-  // const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(false);
   const [showPreview, setPreview] = useState(false);
   const [updatePreview, setUpdatePreview] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy");
   };
 
-  const transactions = [
+  const transactions1 = [
     {
       totalPrice: "$5,000",
       productPrice: "$500",
@@ -95,26 +97,25 @@ const Transactions = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   const getOrders = () => {
-  //     axios
-  //       .get(`${apiURL}/vendors`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-type": "application/json; charset=UTF-8",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         console.log(response.data.data.data);
-  //         setVendors(response.data.data.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching vendors:", error);
-  //       });
-  //   };
-
-  //   getOrders();
-  // }, []);
+  useEffect(() => {
+    const getTransactions = () => {
+      axios
+        .get(`${apiURL}/transaction`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data, "Checking transactions");
+          setTransactions(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+    getTransactions();
+  }, []);
 
   const filteredTransactions = transactions.filter((transaction) => {
     if (activeTab === "All") return true;
@@ -171,6 +172,20 @@ const Transactions = () => {
     setPreview(true);
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+
+  const paginatedTransactionTable = filteredTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const extractFiveDigits = (id) => {
+    return id.substring(0, 5);
+  };
   return (
     <>
       {showPreview &&
@@ -239,7 +254,10 @@ const Transactions = () => {
                     ? "bg-[#359E52] text-white"
                     : "bg-gray-200 text-sm"
                 }`}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setCurrentPage(1);
+                }}
               >
                 {tab}
               </button>
@@ -253,9 +271,9 @@ const Transactions = () => {
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
                   <tr>
-                    <th className="text-center p-3">Order ID</th>
+                    <th className="text-center p-3">ID</th>
                     <th className="text-center p-3">Date</th>
-                    <th className="text-center p-3">Total Proce</th>
+                    <th className="text-center p-3">Total Price</th>
                     <th className="text-center p-3">Product Price</th>
                     <th className="text-center p-3">Delivery Fee</th>
                     <th className="text-center p-3">Taxable Amount</th>
@@ -266,24 +284,29 @@ const Transactions = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredTransactions.map((order, index) => {
+                  {paginatedTransactionTable.map((order, index) => {
                     const { dotsColor } = getVendorStatusStyles(order.status);
                     const { bgColor, textColor, dotColor } =
-                      getPaymentStatusStyles(order.paymentStatus);
+                      // getPaymentStatusStyles(order.paymentStatus);
+                      getPaymentStatusStyles(order.status);
                     return (
                       <tr
                         key={index}
                         className="border text-xs font-primaryMedium mb-4"
                       >
-                        <td className="p-4 text-center">120381</td>
-                        <td className="p-4 text-center">Jun 26, 2024</td>
-                        <td className="p-4 text-center">{order.totalPrice}</td>
+                        <td className="p-4 text-center">
+                          {extractFiveDigits(order._id)}
+                        </td>
+                        <td className="p-4 text-center">
+                          {formatDate(order.created_at)}
+                        </td>
+                        <td className="p-4 text-center">₦ {order.totalProductAmount}</td>
                         <td className="p-4 text-center">
                           {order.productPrice}
                         </td>
-                        <td className="p-4 text-center">{order.deliveryFee}</td>
-                        <td className="p-4 text-center">{order.tax}</td>
-                        <td className="p-4 text-center">{order.gateway}</td>
+                        <td className="p-4 text-center">₦ {order.shippingFee}</td>
+                        <td className="p-4 text-center">₦ {order.vat}</td>
+                        <td className="p-4 text-center">{order.paymentGateway}</td>
                         <td className="p-4 text-center">
                           <div
                             className={`w-full h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
@@ -292,7 +315,8 @@ const Transactions = () => {
                               className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
                             />
                             <p className={`${textColor} text-xs`}>
-                              {order.paymentStatus}
+                              {/* {order.paymentStatus} */}
+                              {order.status}
                             </p>
                           </div>
                         </td>
@@ -326,6 +350,21 @@ const Transactions = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         ) : (

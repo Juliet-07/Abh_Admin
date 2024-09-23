@@ -10,95 +10,43 @@ const AllOrders = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
   const [activeTab, setActiveTab] = useState("All");
-  // const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy");
   };
 
-  const orders = [
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Pending",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Processing",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Pending",
-      orderStatus: "Pending",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Pending",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Processing",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Pending",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Pending",
-      items: "10",
-    },
-    {
-      name: "Michael Ade",
-      address: "7, Kingsway, Otawa, NY",
-      paymentStatus: "Paid",
-      orderStatus: "Pending",
-      items: "10",
-    },
-  ];
+  useEffect(() => {
+    const getOrders = () => {
+      axios
+        .get(`${apiURL}/dashboard/orders`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setOrders(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
 
-  // useEffect(() => {
-  //   const getOrders = () => {
-  //     axios
-  //       .get(`${apiURL}/vendors`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-type": "application/json; charset=UTF-8",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         console.log(response.data.data.data);
-  //         setVendors(response.data.data.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching vendors:", error);
-  //       });
-  //   };
+    getOrders();
+  }, []);
 
-  //   getOrders();
-  // }, []);
+  const filteredOrders1 = orders.filter((order) => {
+    if (activeTab === "All") return true;
+    return order.deliveryStatus === activeTab;
+  });
 
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "All") return true;
-    return order.orderStatus === activeTab;
+    return order.deliveryStatus?.toLowerCase() === activeTab.toLowerCase();
   });
 
   const handleViewMore = (order) => {
@@ -107,49 +55,52 @@ const AllOrders = () => {
   };
 
   const getOrderStatusStyles = (status) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return {
-          dotsColor: "bg-[#E3140F]",
-        };
-      case "shipped":
-        return {
-          dotsColor: "bg-[#08932E]",
-        };
-      case "ready to ship":
-        return {
-          dotsColor: "bg-[#FFA500]",
-        };
-      case "processing":
-        return {
-          dotsColor: "bg-[#081E93]",
-        };
-      default:
-        return {
-          dotsColor: "bg-gray-200",
-        };
+    // Check if status is defined and is a string
+    if (typeof status === "string") {
+      switch (status.toLowerCase()) {
+        case "pending":
+          return { dotsColor: "bg-[#E3140F]" };
+        case "shipped":
+          return { dotsColor: "bg-[#9747FF]" };
+        case "ready":
+          return { dotsColor: "bg-[#FFA500]" };
+        case "processing":
+          return { dotsColor: "bg-[#081E93]" };
+        case "delivered":
+          return { dotsColor: "bg-[#08932E]" };
+        case "returned":
+          return { dotsColor: "bg-[#DFE30F]" };
+        default:
+          return { dotsColor: "bg-gray-200" };
+      }
+    } else {
+      // Fallback if status is undefined or not a string
+      return { dotsColor: "bg-gray-200" };
     }
   };
 
   const getPaymentStatusStyles = (status) => {
-    switch (status.toLowerCase()) {
-      case "paid":
-        return {
-          bgColor: "bg-[#08932E]/[12%]",
-          textColor: "text-[#08932E]",
-          dotColor: "bg-[#08932E]",
-        };
-      case "pending":
-        return {
-          bgColor: "bg-[#E3140F]/[12%]",
-          textColor: "text-[#E3140F]",
-          dotColor: "bg-[#E3140F]",
-        };
-      default:
-        return {
-          bgColor: "bg-gray-200",
-          textColor: "text-gray-800",
-        };
+    // Check if status is defined and is a string
+    if (typeof status === "string") {
+      switch (status.toLowerCase()) {
+        case "paid":
+          return {
+            bgColor: "bg-[#08932E]/[12%]",
+            textColor: "text-[#08932E]",
+            dotColor: "bg-[#08932E]",
+          };
+        case "pending":
+          return {
+            bgColor: "bg-[#E3140F]/[12%]",
+            textColor: "text-[#E3140F]",
+            dotColor: "bg-[#E3140F]",
+          };
+        default:
+          return { bgColor: "bg-gray-200", textColor: "text-gray-800" };
+      }
+    } else {
+      // Fallback if status is undefined or not a string
+      return { bgColor: "bg-gray-200", textColor: "text-gray-800" };
     }
   };
 
@@ -157,12 +108,26 @@ const AllOrders = () => {
     "All",
     "Pending",
     "Processing",
-    "Ready to Ship",
+    "Ready",
     "Shipped",
     "Delivered",
     "Returned",
   ];
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+
+  const paginatedOrderTable = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const extractFiveDigits = (id) => {
+    return id.substring(0, 5); // Extract the first 5 characters
+  };
   return (
     <>
       <div className="w-full flex flex-col">
@@ -180,7 +145,10 @@ const AllOrders = () => {
                     ? "bg-[#359E52] text-white"
                     : "bg-gray-200 text-sm"
                 }`}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setCurrentPage(1);
+                }}
               >
                 {tab}
               </button>
@@ -197,7 +165,6 @@ const AllOrders = () => {
                     <th className="text-center p-3">Order ID</th>
                     <th className="text-center p-3">Date</th>
                     <th className="text-center p-3">Customer Name</th>
-                    <th className="text-center p-3">Address</th>
                     <th className="text-center p-3">Payment Status</th>
                     <th className="text-center p-3">Order Status</th>
                     <th className="text-center p-3">Items</th>
@@ -205,21 +172,28 @@ const AllOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredOrders.map((order, index) => {
+                  {paginatedOrderTable.map((order, index) => {
                     const { dotsColor } = getOrderStatusStyles(
-                      order.orderStatus
+                      order.deliveryStatus
                     );
                     const { bgColor, textColor, dotColor } =
-                      getPaymentStatusStyles(order.paymentStatus);
+                      getPaymentStatusStyles(order.status);
                     return (
                       <tr
                         key={index}
                         className="border text-xs font-primaryMedium mb-4"
                       >
-                        <td className="p-4 text-center">120381</td>
-                        <td className="p-4 text-center">Jun 16, 2024</td>
-                        <td className="p-4 text-center">{order.name}</td>
-                        <td className="p-4 text-center">{order.address}</td>
+                        <td className="p-4 text-center">
+                          {extractFiveDigits(order._id)}
+                        </td>
+                        <td className="p-4 text-center">
+                          {formatDate(order.created_at)}
+                        </td>
+                        <td className="p-4 text-center">
+                          {order?.userId?.firstName +
+                            " " +
+                            order?.userId?.lastName}
+                        </td>
                         <td className="p-4 text-center">
                           <div
                             className={`w-full h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
@@ -228,7 +202,7 @@ const AllOrders = () => {
                               className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
                             />
                             <p className={`${textColor} text-xs`}>
-                              {order.paymentStatus}
+                              {order.status}
                             </p>
                           </div>
                         </td>
@@ -239,10 +213,12 @@ const AllOrders = () => {
                             <div
                               className={`w-[8px] h-[8px] ${dotsColor} rounded-[100px]`}
                             />
-                            <p className="text-xs">{order.orderStatus}</p>
+                            <p className="text-xs">{order.deliveryStatus}</p>
                           </div>
                         </td>
-                        <td className="p-4 text-center">{order.items}</td>
+                        <td className="p-4 text-center">
+                          {order?.products?.length}
+                        </td>
                         <td className="p-4 text-center">
                           <button
                             onClick={() => handleViewMore(order)}
@@ -256,6 +232,21 @@ const AllOrders = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         ) : (

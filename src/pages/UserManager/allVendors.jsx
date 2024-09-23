@@ -9,6 +9,8 @@ const AllVendors = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
   const [vendors, setVendors] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   const formatDate = (dateString) => {
     return moment(dateString).format("MMMM DD, YYYY");
@@ -86,6 +88,17 @@ const AllVendors = () => {
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(vendors.length / itemsPerPage);
+
+  const paginatedUserTable = vendors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <>
       <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
@@ -114,7 +127,7 @@ const AllVendors = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {vendors.map((vendor, index) => {
+                  {paginatedUserTable.map((vendor, index) => {
                     const { bgColor, textColor, dotColor } = getStatusStyles(
                       vendor.status
                     );
@@ -159,6 +172,21 @@ const AllVendors = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         </div>

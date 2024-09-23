@@ -67,7 +67,7 @@ const OrderDetails = () => {
             <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-10 border-b border-[#CFCBCB] p-4">
               <div className="flex flex-col items-center justify-center text-xs md:text-base flex-grow">
                 <p className="font-primarySemibold">
-                  Order ID #{orderDetails.id}
+                  Order ID #{orderDetails._id}
                 </p>
                 <p>{orderDetails.date}</p>
               </div>
@@ -80,11 +80,11 @@ const OrderDetails = () => {
                 <div className="flex gap-4 items-center justify-center">
                   <div
                     className={`w-2 h-2 rounded-[100px] ${getOrderStatusColor(
-                      orderDetails.orderStatus
+                      orderDetails.deliveryStatus
                     )}`}
                   />
                   <p className="text-sm md:text-base font-primarySemibold">
-                    {orderDetails.orderStatus}
+                    {orderDetails.deliveryStatus}
                   </p>
                 </div>
               </div>

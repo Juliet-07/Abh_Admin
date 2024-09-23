@@ -8,6 +8,12 @@ const Customers = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
   const [customers, setCustomers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  const formatDate = (dateString) => {
+    return moment(dateString).format("MMMM DD, YYYY");
+  };
 
   useEffect(() => {
     const getCustomers = () => {
@@ -35,40 +41,16 @@ const Customers = () => {
     navigate("/customerDetails", { state: { customer } });
   };
 
-  const getStatusStyles = (status) => {
-    // switch (status.toLowerCase()) {
-    switch (status) {
-      case "active":
-        return {
-          bgColor: "bg-[#088D2D]/[12%]",
-          textColor: "text-[#088D2D]",
-          dotColor: "bg-[#088D2D]",
-        };
-      case "blocked":
-        return {
-          bgColor: "bg-[#FB1010]/[12%]",
-          textColor: "text-[#FB1010]",
-          dotColor: "bg-[#FB1010]",
-        };
-      case "inactive":
-        return {
-          bgColor: "bg-[#8A8D08]/[12%]",
-          textColor: "text-[#8A8D08]",
-          dotColor: "bg-[#8A8D08]",
-        };
-      case "deactivated":
-        return {
-          bgColor: "bg-[#F58634]/[12%]",
-          textColor: "text-[#F58634]",
-          dotColor: "bg-[#F58634]",
-        };
-      default:
-        return {
-          bgColor: "bg-gray-200",
-          textColor: "text-gray-800",
-        };
-    }
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
+
+  const totalPages = Math.ceil(customers.length / itemsPerPage);
+
+  const paginatedUserTable = customers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
@@ -92,7 +74,7 @@ const Customers = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {customers.map((customer, index) => {
+                  {paginatedUserTable.map((customer, index) => {
                     // const { bgColor, textColor, dotColor } = getStatusStyles(
                     //   customer.status
                     // );
@@ -136,6 +118,21 @@ const Customers = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         </div>

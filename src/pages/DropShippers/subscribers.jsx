@@ -1,98 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { format } from "date-fns";
 
 const Subscribers = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const navigate = useNavigate();
+  const token = localStorage.getItem("adminToken");
+  const [activeTab, setActiveTab] = useState("All");
+  const [subscribersData, setSubscribersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const subscribersData = [
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Ayo Julius",
-      plan: "Weekly",
-      amount: "₦ 1500.00",
-      status: "Inactive",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Mary Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-    {
-      date: "Aug 2, 2024",
-      name: "Toyosi Ayo",
-      plan: "Daily",
-      amount: "₦ 500.00",
-      status: "Active",
-      expirationDate: "22/11/2024 11:02 PM",
-    },
-  ];
+
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "MMMM dd, yyyy");
+  };
+
+  useEffect(() => {
+    const getSubscribers = () => {
+      axios
+        .get(`${apiURL}/dashboard/subscribers`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data, "Checking Subscibers");
+          setSubscribersData(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendors:", error);
+        });
+    };
+
+    getSubscribers();
+  }, []);
+
+  const dailySubscribers = subscribersData.filter(
+    (subscriber) => subscriber.plan === "DAILY"
+  );
+  const weeklySubscribers = subscribersData.filter(
+    (subscriber) => subscriber.plan === "WEEKLY"
+  );
+  const monthlySubscribers = subscribersData.filter(
+    (subscriber) => subscriber.plan === "MONTHLY"
+  );
+
+  const calculateTotalAmount = (subscribers) => {
+    return subscribers.reduce(
+      (total, subscriber) => total + Number(subscriber.amount),
+      0
+    );
+  };
 
   const renderStatus = (status) => {
     const statusColor = status === "Active" ? "bg-green-500" : "bg-red-500";
@@ -118,12 +78,12 @@ const Subscribers = () => {
     <>
       <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold my-4">
         <p className=""> Subscribers</p>
-        <button className="bg-[#8BCB90]/[12%] text-[#359E52] p-2">
+        {/* <button className="bg-[#8BCB90]/[12%] text-[#359E52] p-2">
           Download
-        </button>
+        </button> */}
       </div>
       {/* Filter Section */}
-      <div className="overflow-x-auto">
+      {/* <div className="overflow-x-auto">
         <div className="flex gap-4 md:gap-10 my-4 md:my-6 font-primaryRegular min-w-[450px]">
           <button className="bg-[#F58634] text-white p-2 border border-[#969899]/[40%] text-xs md:text-sm rounded">
             Today
@@ -152,29 +112,37 @@ const Subscribers = () => {
             </svg>
           </button>
         </div>
-      </div>
+      </div> */}
 
       <div className="overflow-x-auto my-10 font-primaryRegular">
         <div className="grid grid-cols-4 gap-10 min-w-[800px]">
           <div className="w-full p-4 flex flex-col items-center justify-center gap-4 bg-white shadow border-t-2 border-t-[#359E52] text-[#359E52]">
             <p>Total Subscribers</p>
-            <p className="text-xl font-semibold">₦ 88,200.00</p>
-            <p>Total users: 12.1k</p>
+            <p className="text-xl font-semibold">
+              ₦ {calculateTotalAmount(subscribersData).toFixed(2)}
+            </p>
+            <p>Total users: {subscribersData.length}</p>
           </div>
           <div className="w-full flex flex-col items-center justify-center gap-4 p-4 bg-white shadow">
             <p>Daily Subscribers</p>
-            <p className="text-xl font-semibold">₦ 8,200.00</p>
-            <p>Total users: 1.1k</p>
+            <p className="text-xl font-semibold">
+              ₦ {calculateTotalAmount(dailySubscribers).toFixed(2)}
+            </p>
+            <p>Total users: {dailySubscribers.length}</p>
           </div>
           <div className="w-full flex flex-col items-center justify-center gap-4 p-4 bg-white shadow">
             <p>Weekly Subscribers</p>
-            <p className="text-xl font-semibold">₦ 88,200.00</p>
-            <p>Total users: 12.1k</p>
+            <p className="text-xl font-semibold">
+              ₦ {calculateTotalAmount(weeklySubscribers).toFixed(2)}
+            </p>
+            <p>Total users: {weeklySubscribers.length}</p>
           </div>
           <div className="w-full p-4 flex flex-col items-center justify-center gap-4 bg-white shadow">
             <p>Monthly Subscribers</p>
-            <p className="text-xl font-semibold">₦ 88,200.00</p>
-            <p>Total users: 12.1k</p>
+            <p className="text-xl font-semibold">
+              ₦ {calculateTotalAmount(monthlySubscribers).toFixed(2)}
+            </p>
+            <p>Total users: {monthlySubscribers.length}</p>
           </div>
         </div>
       </div>
@@ -194,17 +162,19 @@ const Subscribers = () => {
           <tbody>
             {paginatedTable.map((subscriber, index) => (
               <tr key={index} className="border-t text-xs">
-                <td className="p-4">{subscriber.date}</td>
+                <td className="p-4">{formatDate(subscriber.created_at)}</td>
                 <td className="p-4 flex items-center">
                   <div className="w-8 h-8 rounded-full bg-[#096FA0] flex items-center justify-center text-white mr-2">
-                    {subscriber.name.charAt(0)}
+                    {subscriber?.userId?.firstName.charAt(0)}
                   </div>
-                  {subscriber.name}
+                  {subscriber?.userId?.firstName +
+                    " " +
+                    subscriber?.userId?.lastName}
                 </td>
                 <td className="p-4">{subscriber.plan}</td>
-                <td className="p-4">{subscriber.amount}</td>
+                <td className="p-4">₦ {subscriber.amount}</td>
                 <td className="p-4">{renderStatus(subscriber.status)}</td>
-                <td className="p-4">{subscriber.expirationDate}</td>
+                <td className="p-4">{formatDate(subscriber.endDate)}</td>
               </tr>
             ))}
           </tbody>
