@@ -72,6 +72,9 @@ const NewProducts = () => {
       })
       .then((response) => {
         console.log("Product status updated:", response.data);
+        if (response.data.success === true) {
+          setConfirmApproval(true);
+        }
         // Update the state to reflect the change
         setPendingProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== productId)
@@ -278,7 +281,7 @@ const NewProducts = () => {
                 onClick={() => {
                   manageProductStatus(selectedProduct._id, "APPROVED");
                   setShowApproveModal(false);
-                  setConfirmApproval(true);
+                  // setConfirmApproval(true);
                 }}
                 className="w-full h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
               >
