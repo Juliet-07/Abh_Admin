@@ -10,7 +10,7 @@ const AllDropShipping = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
   const [activeTab, setActiveTab] = useState("New");
-  // const [orders, setOrders] = useState([]);
+  const [dropshipping, setDropshipping] = useState([]);
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy");
@@ -68,26 +68,26 @@ const AllDropShipping = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   const getOrders = () => {
-  //     axios
-  //       .get(`${apiURL}/vendors`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-type": "application/json; charset=UTF-8",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         console.log(response.data.data.data);
-  //         setVendors(response.data.data.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching vendors:", error);
-  //       });
-  //   };
+  useEffect(() => {
+    const getDropshipping = () => {
+      axios
+        .get(`${apiURL}/dashboard/drop-shipping`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.data.data);
+          setDropshipping(response.data.data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching dropshipping data:", error);
+        });
+    };
 
-  //   getOrders();
-  // }, []);
+    getDropshipping();
+  }, []);
 
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "New") return true;

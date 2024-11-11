@@ -18,13 +18,12 @@ const Dashboard = () => {
   const [TopTenInput, setTopTenInput] = useState("");
   const [OrderStatus, setOrderStatus] = useState("weekly");
   const [RecentTransactionInput, setRecentTransactionInput] = useState("");
-  const [vendors, setVendors] = useState([]);
-  const [customers, setCustomers] = useState([]);
+  const [statistics, setStatistics] = useState({});
 
   useEffect(() => {
-    const getAllVendors = () => {
+    const statistics = () => {
       axios
-        .get(`${apiURL}/vendors`, {
+        .get(`${apiURL}/dashboard/statistic`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-type": "application/json; charset=UTF-8",
@@ -32,32 +31,14 @@ const Dashboard = () => {
         })
         .then((response) => {
           // console.log(response.data.data.data);
-          console.log(response.data.data.items);
-          setVendors(response.data.data.items);
+          console.log(response.data.data, "Statistics");
+          setStatistics(response.data.data);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
         });
     };
-    const getCustomers = () => {
-      axios
-        .get(`${apiURL}/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        })
-        .then((response) => {
-          console.log(response.data.data);
-          setCustomers(response.data.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching vendors:", error);
-        });
-    };
-
-    getAllVendors();
-    getCustomers();
+    statistics();
   }, []);
   return (
     <div className="w-full flex flex-col gap-10 font-primaryRegular">
@@ -75,7 +56,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Revenue</p>
-              <b>₦1,800</b>
+              <b>₦ {statistics.revenue}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50">
@@ -84,7 +65,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Orders</p>
-              <b>200</b>
+              <b>{statistics.orders}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-purple-500 p-2 flex items-center justify-between bg-slate-50">
@@ -93,7 +74,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Vendors</p>
-              <b>{vendors.length}</b>
+              <b>{statistics.vendors}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-pink-500 p-2 flex items-center justify-between bg-slate-50">
@@ -102,7 +83,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Customers</p>
-              <b>{customers.length}</b>
+              <b>{statistics.customers}</b>
             </div>
           </div>
         </div>
@@ -114,7 +95,7 @@ const Dashboard = () => {
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
             <p className="font-bold text-lg">Order status</p>
-            <div className="flex flex-1 flex-row rounded-[40px] p-1 bg-[ghostwhite] h-[40px] py-4 items-center justify-between max-w-[250px]">
+            {/* <div className="flex flex-1 flex-row rounded-[40px] p-1 bg-[ghostwhite] h-[40px] py-4 items-center justify-between max-w-[250px]">
               {["Today", "Weekly", "Monthly", "Yearly"].map((status, index) => {
                 return (
                   <div
@@ -130,7 +111,7 @@ const Dashboard = () => {
                   </div>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -141,7 +122,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Pending Order</p>
-              <b className="text-2xl">100</b>
+              <b className="text-2xl">{statistics?.today?.pending}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-blue-600 p-2 flex items-center justify-between bg-slate-50">
@@ -150,7 +131,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Processing Order</p>
-              <b className="text-2xl">0</b>
+              <b className="text-2xl">{statistics?.today?.processing}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-green-600 p-2 flex items-center justify-between bg-slate-50">
@@ -159,7 +140,7 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Completed Order</p>
-              <b className="text-2xl">0</b>
+              <b className="text-2xl">{statistics?.today?.delivered}</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-black p-2 flex items-center justify-between bg-slate-50">
@@ -168,14 +149,14 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2 items-end">
               <p className="text-sm"> Cancelled Order</p>
-              <b className="text-2xl">0</b>
+              <b className="text-2xl">{statistics?.today?.declined}</b>
             </div>
           </div>
         </div>
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
+      {/* <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">
         <div className="flex flex-row items-center gap-[10px]">
           <div className="w-[3.5px] h-[30px] bg-[teal] ml-[-12px] rounded-r-[8px]"></div>
           <div className="flex flex-row items-center justify-between w-full">
@@ -205,7 +186,7 @@ const Dashboard = () => {
           maxItems={4}
           searchText={recentOrderInput}
         />
-      </div>
+      </div> */}
 
       {/* Sales Chart */}
       <div className="bg-white rounded-[0.5rem] p-4 flex flex-col">

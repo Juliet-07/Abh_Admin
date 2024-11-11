@@ -155,12 +155,12 @@ const VendorDetails = () => {
                 <p className={`${textColor} text-xs`}>{vendorDetails.status}</p>
               </div>
             </div>
-            <div>
+            {/* <div>
               <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
                 Last Interaction
               </div>
               <p>2 days ago</p>
-            </div>
+            </div> */}
             <div>
               <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
                 Data & Time Registered
@@ -214,7 +214,7 @@ const VendorDetails = () => {
           </div>
         </div>
         {/* Product Information */}
-        <div className="w-full bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-4 font-primaryRegular">
+        {/* <div className="w-full bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-4 font-primaryRegular">
           <p className="font-bold">Product Information</p>
           <div className="flex items-center gap-10">
             <div>
@@ -275,7 +275,7 @@ const VendorDetails = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Performance Metrics */}
         {/* <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-10 font-primaryRegular">
           <p className="font-bold">Performance Metrics</p>

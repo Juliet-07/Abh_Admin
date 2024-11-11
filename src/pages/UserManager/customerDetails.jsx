@@ -61,7 +61,8 @@ const CustomerDetails = () => {
           <div className="p-4 grid gap-10 font-primaryRegular border border-[#CFCBCB]">
             <div className="w-full md:w-[369px] h-[120px] rounded-2xl p-3 bg-[#8BCB90]/[12%] flex items-center justify-between gap-4">
               <div className="bg-[#455A64] w-20 md:w-[100px] h-20 md:h-[100px] rounded-full text-white md:text-2xl font-primarySemibold flex items-center justify-center">
-                M
+                {customerDetails.firstName[0].toUpperCase() +
+                  customerDetails.lastName[0].toUpperCase()}
               </div>
               <div className="grid gap-2">
                 <p className="font-semibold md:text-xl">
@@ -87,12 +88,12 @@ const CustomerDetails = () => {
                 </p>
               </div>
             </div> */}
-            <div>
+            {/* <div>
               <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
                 Last Interaction
               </div>
               <p>2 days ago</p>
-            </div>
+            </div> */}
           </div>
           <div className="w-full md:w-[70%] flex flex-col gap-14 border border-[#CFCBCB] p-4 font-primaryRegular">
             {/* 1 */}
@@ -118,7 +119,7 @@ const CustomerDetails = () => {
           </div>
         </div>
         {/* Order History */}
-        <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-4 font-primaryRegular">
+        {/* <div className="bg-white border border-[#CFCBCB] p-4 rounded-xl flex flex-col gap-4 font-primaryRegular">
           <div className="w-full flex items-center justify-between">
             <p className="font-bold">Order History</p>
             <div></div>
@@ -195,7 +196,7 @@ const CustomerDetails = () => {
             </div>
           </div>
           <hr />
-        </div>
+        </div> */}
       </div>
       <div className="my-10 w-full flex items-center justify-between">
         <Link

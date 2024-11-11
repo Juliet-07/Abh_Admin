@@ -94,16 +94,16 @@ const MobileNavigation = () => {
       icon: <FaUserTie />,
       submenu: true,
       submenuItems: [
-        { title: "All drop-shipping", path: "/dropshipping" },
+        // { title: "All drop-shipping", path: "/dropshipping" },
         { title: "Subscribers", path: "/subscribers" },
       ],
     },
 
-    {
-      title: "Analytics",
-      icon: <BsBarChartLineFill />,
-      path: "/analytics",
-    },
+    // {
+    //   title: "Analytics",
+    //   icon: <BsBarChartLineFill />,
+    //   path: "/analytics",
+    // },
     { title: "Reports", path: "/reports", icon: <FcManager /> },
     { title: "Notifications", path: "/notifications", icon: <FaBell /> },
   ];
