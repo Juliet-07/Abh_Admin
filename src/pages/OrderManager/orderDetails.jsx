@@ -27,6 +27,37 @@ const OrderDetails = () => {
     }
   };
 
+  const getPaymentStatusStyles = (status) => {
+    if (typeof status === "string") {
+      switch (status.toLowerCase()) {
+        case "paid":
+          return {
+            bgColor: "bg-[#08932E]/[12%]",
+            textColor: "text-[#08932E]",
+            dotColor: "bg-[#08932E]",
+          };
+        case "pending":
+          return {
+            bgColor: "bg-[#E3140F]/[12%]",
+            textColor: "text-[#E3140F]",
+            dotColor: "bg-[#E3140F]",
+          };
+        default:
+          return {
+            bgColor: "bg-gray-200",
+            textColor: "text-gray-800",
+            dotColor: "bg-gray-800",
+          };
+      }
+    } else {
+      return { bgColor: "bg-gray-200", textColor: "text-gray-800" };
+    }
+  };
+
+  function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <>
       <header className="w-full h-[70px] bg-white flex flex-row items-center justify-between p-4 font-primaryRegular">
@@ -44,12 +75,12 @@ const OrderDetails = () => {
           <button className="h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435] hidden md:block">
             Change status
           </button>
-          <div className="bg-[#8BCB901F] md:w-[197px] w-[40px] h-[40px] p-[10px] gap-[11px] flex flex-row items-center justify-center rounded-[6px] ">
+          {/* <div className="bg-[#8BCB901F] md:w-[197px] w-[40px] h-[40px] p-[10px] gap-[11px] flex flex-row items-center justify-center rounded-[6px] ">
             <DownloadIcon width={14} height={14} color="#359E52" />
             <p className="text-[16px] text-[#359E52] hidden md:flex">
               Download invoice
             </p>
-          </div>
+          </div> */}
         </div>
       </header>
       <div className="w-full my-4 md:my-6 flex flex-col">
@@ -67,13 +98,18 @@ const OrderDetails = () => {
             <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-10 border-b border-[#CFCBCB] p-4">
               <div className="flex flex-col items-center justify-center text-xs md:text-base flex-grow">
                 <p className="font-primarySemibold">
-                  Order ID #{orderDetails._id}
+                  Order ID{" "}
+                  <span className="font-primaryRegular text-sm">
+                    {orderDetails._id}
+                  </span>
                 </p>
                 <p>{orderDetails.date}</p>
               </div>
               <div className="flex flex-col items-center justify-center text-xs md:text-base flex-grow">
                 <p>Total price</p>
-                <p className="font-primarySemibold">{orderDetails.price}</p>
+                <p className="font-primarySemibold">
+                  ₦{orderDetails.totalAmount.toLocaleString()}
+                </p>
               </div>
               <div className="flex flex-col items-center justify-center flex-grow">
                 <p className="text-sm md:text-base">Order status</p>
@@ -88,13 +124,13 @@ const OrderDetails = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-center flex-grow">
+              {/* <div className="flex flex-col items-center justify-center flex-grow">
                 <p className="text-sm md:text-base">Vendor</p>
                 <div className="flex gap-4 items-center justify-center">
                   <p className="text-[#359E52]">Michael Farasin</p>
                   <p className="text-xs text-[#E7711A] ">See details</p>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/*  order info delivery section*/}
@@ -110,15 +146,21 @@ const OrderDetails = () => {
                 <div className="grid gap-4">
                   <div className="flex gap-3 text-sm">
                     <p className="font-primarySemibold">Full Name:</p>
-                    <p>{orderDetails.name}</p>
+                    <p>
+                      {orderDetails?.personalInfo?.firstName +
+                        " " +
+                        orderDetails?.personalInfo?.lastName}
+                    </p>
                   </div>
                   <div className="flex gap-3 text-sm">
                     <p className="font-primarySemibold">Email:</p>
-                    <p>mathewjones@gmail.com</p>
+                    <p>{orderDetails?.personalInfo?.email}</p>
                   </div>
                   <div className="flex flex-row gap-[10px] w-full">
                     <p className="text-sm font-semibold">Phone:</p>
-                    <p className="text-sm">234-812-411-777-01</p>
+                    <p className="text-sm">
+                      {orderDetails?.personalInfo?.phoneNumber}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -133,15 +175,32 @@ const OrderDetails = () => {
                 <div className="grid gap-4">
                   <div className="flex gap-3 items-center">
                     <p className="text-sm font-primarySemibold">Payment:</p>
-                    <div className="min-w-[66px] h-[35px] bg-[#08932E14] p-3 flex items-center justify-center gap-3">
-                      <div className="w-2 h-2 bg-[#08932E] rounded-[100px]" />
-                      <p className="text-[#08932E] text-xs">Paid</p>
-                    </div>
+                    {orderDetails.status && (
+                      <div
+                        className={`min-w-[66px] h-[35px] p-3 flex items-center justify-center gap-3 ${
+                          getPaymentStatusStyles(orderDetails.status).bgColor
+                        }`}
+                      >
+                        <div
+                          className={`w-2 h-2 rounded-[100px] ${
+                            getPaymentStatusStyles(orderDetails.status).dotColor
+                          }`}
+                        />
+                        <p
+                          className={`${
+                            getPaymentStatusStyles(orderDetails.status)
+                              .textColor
+                          } text-xs`}
+                        >
+                          {orderDetails.status}
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex gap-3 text-sm">
+                  {/* <div className="flex gap-3 text-sm">
                     <p className="font-primarySemibold">Delivery:</p>
                     <p>Deliver before tuesday 05/12/2023</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* Delivery Info */}
@@ -155,21 +214,30 @@ const OrderDetails = () => {
                 <div className="grid gap-4">
                   <div className="flex gap-3 text-sm">
                     <p className="font-primarySemibold">City:</p>
-                    <p>Lagos</p>
+                    <p>{orderDetails?.shippingAddress?.city}</p>
                   </div>
                   <div className="flex gap-3 text-sm">
                     <p className="font-primarySemibold">State:</p>
-                    <p>New york</p>
+                    <p>{orderDetails?.shippingAddress?.state}</p>
                   </div>
                   <div className="flex gap-3 text-sm">
                     <p className="font-primarySemibold">Address:</p>
-                    <p>{orderDetails.address}</p>
+                    <p>{orderDetails?.shippingAddress?.street}</p>
+                  </div>
+                  <div className="flex gap-3 text-sm">
+                    <p className="font-primarySemibold">Shipping Fee:</p>
+                    <p>
+                      ₦
+                      {formatNumber(
+                        orderDetails?.shippingFee + orderDetails?.vat
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
             {/* Product Info */}
-            <div className="w-full flex items-center flex-wrap p-4 gap-4">
+            {/* <div className="w-full flex items-center flex-wrap p-4 gap-4">
               <div className="w-[175px] border border-[#CFCBCB] h-[120px] rounded-lg"></div>
               <div className="flex items-center  gap-10">
                 <div className="flex flex-col items-center">
@@ -185,6 +253,39 @@ const OrderDetails = () => {
                   <p className="text-xs">$230</p>
                 </div>
               </div>
+            </div> */}
+
+            <div className="w-full grid p-4 gap-10">
+              {orderDetails?.products.map((product) => (
+                <div className="flex flex-wrap gap-4">
+                  <div className="w-[175px] border border-[#CFCBCB] h-[120px] rounded-lg">
+                    <img
+                      src={product.productId.featured_image}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex items-center gap-10">
+                    <div className="flex flex-col items-center">
+                      <b className="text-sm">{product.productId.name}</b>
+                      <p className="text-xs"></p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <b className="text-sm">QTY</b>
+                      <p className="text-xs">{product.quantity}</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <b className="text-sm">Total Price of Products</b>
+                      <p className="text-xs">
+                        {product.productId.currency +
+                          " " +
+                          (
+                            product.productId.price * product.quantity
+                          ).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

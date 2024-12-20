@@ -32,7 +32,7 @@ const Categories = () => {
   };
 
   const handleAddField = () => {
-    if (subCategoryFields.length < 5) {
+    if (subCategoryFields.length < 10) {
       setSubCategoryFields([...subCategoryFields, { value: "" }]);
     }
   };
@@ -209,7 +209,7 @@ const Categories = () => {
       <ToastContainer />
       {(showAddCategory || showEditCategoryPreview) && (
         <div className="w-full h-screen bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
-          <div className="w-[90%] max-w-[498px] bg-white rounded-xl flex flex-col items-center p-6 gap-6">
+          <div className="w-[90%] max-w-[498px] bg-white rounded-xl flex flex-col items-center p-6 gap-6 max-h-[80vh] overflow-y-auto">
             <h2 className="text-lg font-primaryBold">
               {showAddCategory ? "Add Category" : "Edit Category"}
             </h2>

@@ -56,7 +56,8 @@ const Dashboard = () => {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-sm"> Revenue</p>
-              <b>₦ {statistics.revenue}</b>
+              {/* <b>₦ {(statistics?.revenue || 0).toLocaleString()}</b> */}
+              <b>₦0</b>
             </div>
           </div>
           <div className="min-w-[220px] h-[120px] border border-[#CFCBCB] rounded-lg border-b-4 border-b-indigo-500 p-2 flex items-center justify-between bg-slate-50">

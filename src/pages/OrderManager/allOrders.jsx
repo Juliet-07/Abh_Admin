@@ -190,9 +190,9 @@ const AllOrders = () => {
                           {formatDate(order.created_at)}
                         </td>
                         <td className="p-4 text-center">
-                          {order?.userId?.firstName +
+                          {order?.personalInfo?.firstName +
                             " " +
-                            order?.userId?.lastName}
+                            order?.personalInfo?.lastName}
                         </td>
                         <td className="p-4 text-center">
                           <div
