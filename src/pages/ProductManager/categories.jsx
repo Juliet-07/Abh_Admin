@@ -26,6 +26,8 @@ const Categories = () => {
   const [featuredImage, setFeaturedImage] = useState(null);
   const [featuredImageFile, setFeaturedImageFile] = useState(null);
   const [showEditCategoryPreview, setShowEditCategoryPreview] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy");
@@ -193,8 +195,8 @@ const Categories = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data.items);
-          setCategories(response.data.data.items);
+          console.log(response.data, "categories");
+          setCategories(response.data.data.items.reverse());
         })
         .catch((error) => {
           console.error("Error fetching categories:", error);
@@ -203,6 +205,17 @@ const Categories = () => {
 
     getCategories();
   }, [apiURL, token]);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(categories.length / itemsPerPage);
+
+  const paginatedTable = categories.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
@@ -393,7 +406,7 @@ const Categories = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categories.map((category) => (
+                  {paginatedTable.map((category) => (
                     <tr
                       key={category._id}
                       className="border-b text-xs font-primaryMedium mb-4"
@@ -460,6 +473,21 @@ const Categories = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-8 rounded mx-1 p-2 ${
+                    currentPage === index + 1
+                      ? "bg-[#359E52] text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
             </div>
           </div>
         </div>
