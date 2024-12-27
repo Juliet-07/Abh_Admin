@@ -20,7 +20,7 @@ const AllProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 8;
 
   const formatDate = (dateString) => {
     return moment(dateString).format("MMMM DD, YYYY");
@@ -52,43 +52,27 @@ const AllProducts = () => {
     setPreview(true);
   };
 
-  const manageProductStatus = (productId, status) => {
-    const url = `${apiURL}/products/manage-product-status/${productId}`;
+  const handleDelete = (productId) => {
+    const url = `${apiURL}/products/${productId}`;
     axios
-      .put(
-        url,
-        { status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      )
+      .delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
       .then((response) => {
-        console.log("Vendor status updated:", response.data);
+        console.log("Product deleted:", response.data);
+        alert(response.data.data);
+        setPreview(false);
         // Update the state to reflect the change
         setProducts((prevProducts) =>
-          prevProducts.map((product) =>
-            product.id === productId ? { ...product, status } : product
-          )
+          prevProducts.filter((product) => product.id !== productId)
         );
       })
       .catch((error) => {
         console.error("Error updating vendor status:", error);
       });
-  };
-
-  const handleApprove = () => {
-    manageProductStatus(selectedProduct.id, "APPROVED");
-    setPreview(false);
-    setApproval(true);
-  };
-
-  const handleDecline = () => {
-    manageProductStatus(selectedProduct.id, "DECLINED");
-    setPreview(false);
-    setDecline(true);
   };
 
   const getStatusStyles = (status) => {
@@ -254,7 +238,7 @@ const AllProducts = () => {
                 <div className="flex items-center justify-between md:mt-10 mb-4 font-primaryRegular">
                   <div></div>
                   <button
-                    onClick={handleDecline}
+                    onClick={() => handleDelete(selectedProduct._id)}
                     className="md:w-[186px] w-[99px] h-[46px] bg-[#E3140F] text-white rounded-md font-bold"
                   >
                     Delete
@@ -264,42 +248,6 @@ const AllProducts = () => {
             </div>
           );
         })()}
-
-      {showDecline && (
-        <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
-          <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
-            <FcCancel size={60} />
-            <p className="text-center">
-              Product is <br />
-              rejected!
-            </p>
-            <button
-              onClick={() => setDecline(false)}
-              className="w-[162px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
-            >
-              Okay
-            </button>
-          </div>
-        </div>
-      )}
-
-      {showApproval && (
-        <div className="w-full h-screen  bg-[#000000a8] z-50 fixed top-0 inset-0 flex flex-col items-center justify-center font-primaryRegular">
-          <div className="w-[90%] max-w-[498px] h-[344px] bg-white rounded-xl flex flex-col items-center  justify-center gap-6">
-            <CheckIcon color="green" height={50} width={50} />
-            <p className="text-center">
-              Product is <br />
-              approved!
-            </p>
-            <button
-              onClick={() => setApproval(false)}
-              className="w-[162px] h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
-            >
-              Okay
-            </button>
-          </div>
-        </div>
-      )}
 
       {products.length > 0 ? (
         <div className="w-full flex flex-col">
@@ -394,19 +342,63 @@ const AllProducts = () => {
               </table>
             </div>
             <div className="flex justify-end mt-4 mb-2 font-primaryMedium">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                  className={`w-8 rounded mx-1 p-2 ${
-                    currentPage === index + 1
-                      ? "bg-[#359E52] text-white"
-                      : "bg-gray-200 text-black"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, index) => {
+                const isHidden =
+                  index + 1 < currentPage - 2 || index + 1 > currentPage + 2;
+
+                return (
+                  <React.Fragment key={index + 1}>
+                    {/* Show first page and ellipsis */}
+                    {index + 1 === 1 && index + 1 < currentPage - 2 && (
+                      <>
+                        <button
+                          onClick={() => handlePageChange(1)}
+                          className={`w-8 rounded mx-1 p-2 ${
+                            currentPage === 1
+                              ? "bg-[#359E52] text-white"
+                              : "bg-gray-200 text-black"
+                          }`}
+                        >
+                          1
+                        </button>
+                        <span className="mx-2">...</span>
+                      </>
+                    )}
+
+                    {/* Main pagination logic */}
+                    {!isHidden && (
+                      <button
+                        onClick={() => handlePageChange(index + 1)}
+                        className={`w-8 rounded mx-1 p-2 ${
+                          currentPage === index + 1
+                            ? "bg-[#359E52] text-white"
+                            : "bg-gray-200 text-black"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    )}
+
+                    {/* Show last page and ellipsis */}
+                    {index + 1 === totalPages &&
+                      index + 1 > currentPage + 2 && (
+                        <>
+                          <span className="mx-2">...</span>
+                          <button
+                            onClick={() => handlePageChange(totalPages)}
+                            className={`w-8 rounded mx-1 p-2 ${
+                              currentPage === totalPages
+                                ? "bg-[#359E52] text-white"
+                                : "bg-gray-200 text-black"
+                            }`}
+                          >
+                            {totalPages}
+                          </button>
+                        </>
+                      )}
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
         </div>

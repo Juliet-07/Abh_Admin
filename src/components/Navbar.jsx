@@ -49,12 +49,12 @@ const Navbar = ({ onToggleSidebar }) => {
         <FiSearch width={16} height={16} color="#37343566" />
       </div> */}
       <div className="flex items-center px-4">
-        <Link
+        {/* <Link
           to="/notifications"
           className="text-gray-700 mx-2 focus:outline-none"
         >
           <FaBell size={20} />
-        </Link>
+        </Link> */}
         <Menu as="div" className="relative ml-3">
           <div>
             <MenuButton className="flex rounded-full text-sm focus:outline-none">

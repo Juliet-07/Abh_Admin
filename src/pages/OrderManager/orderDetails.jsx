@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeftIcon, DownloadIcon } from "@heroicons/react/outline";
 import { IoIosPerson } from "react-icons/io";
 import { TbTruckDelivery, TbPackage } from "react-icons/tb";
+import { toast, ToastContainer } from "react-toastify";
+import { XIcon } from "@heroicons/react/solid";
 
 const OrderDetails = () => {
+  const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const token = localStorage.getItem("adminToken");
   const location = useLocation();
+  const navigate = useNavigate();
   const orderDetails = location.state && location.state.order;
   console.log("detailing", orderDetails);
-  const navigate = useNavigate();
+  const [changeStatusPreview, setChangeStatusPreview] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!orderDetails) {
     return <div>No details available</div>;
+  }
+
+  function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   const getOrderStatusColor = (status) => {
@@ -54,12 +65,86 @@ const OrderDetails = () => {
     }
   };
 
-  function formatNumber(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  const extractFiveDigits = (id) => {
+    return id.substring(0, 5); // Extract the first 5 characters
+  };
+
+  const manageOrderStatus = (orderId, status) => {
+    setLoading(true);
+    const url = `${apiURL}/vendors-dashboard/accept-orders/${orderId}`;
+    axios
+      .put(
+        url,
+        { deliveryStatus: status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Order status updated:", response.data);
+        if (response.data.success === true) {
+          toast.success("Order successfully accepted");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating order status:", error);
+        toast.error("Error updating order status");
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const handleDelivered = () => {
+    manageOrderStatus(orderDetails._id, "DELIVERED");
+    setChangeStatusPreview(false);
+  };
+
+  const handleReturned = () => {
+    manageOrderStatus(orderDetails._id, "RETURNED");
+    setChangeStatusPreview(false);
+  };
 
   return (
     <>
+      <ToastContainer />
+      {changeStatusPreview && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 font-primaryRegular">
+          <div className="bg-white rounded-lg p-6 w-[90%] max-w-md ">
+            <div className="flex justify-between items-center">
+              <div></div>{" "}
+              <XIcon
+                width={20}
+                height={20}
+                color="red"
+                onClick={() => setChangeStatusPreview(false)}
+                className="cursor-pointer"
+              />
+            </div>
+            <div className="flex justify-center items-center font-primarySemibold text-lg">
+              Change Status
+            </div>
+            <div className="grid grid-cols-2 gap-6 my-6">
+              <button
+                onClick={handleDelivered}
+                className="p-2 border rounded flex items-center justify-center"
+              >
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
+                Delivered
+              </button>
+              <button
+                onClick={handleReturned}
+                className="p-2 border rounded flex items-center justify-center"
+              >
+                <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2" />
+                Returned
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="w-full h-[70px] bg-white flex flex-row items-center justify-between p-4 font-primaryRegular">
         <div className="flex flex-row gap-6 cursor-pointer">
           <ArrowLeftIcon
@@ -72,9 +157,12 @@ const OrderDetails = () => {
 
         <div className="flex flex-row gap-6">
           {/* button pops up when action has been taken on order (Accept or Cancel) */}
-          <button className="h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435] hidden md:block">
+          {/* <button
+            onClick={() => setChangeStatusPreview(true)}
+            className="hidden md:block h-[40px] w-[150px] rounded-[6px] bg-none text-[#373435] border-[1px] border-[#373435]"
+          >
             Change status
-          </button>
+          </button> */}
           {/* <div className="bg-[#8BCB901F] md:w-[197px] w-[40px] h-[40px] p-[10px] gap-[11px] flex flex-row items-center justify-center rounded-[6px] ">
             <DownloadIcon width={14} height={14} color="#359E52" />
             <p className="text-[16px] text-[#359E52] hidden md:flex">
@@ -100,7 +188,7 @@ const OrderDetails = () => {
                 <p className="font-primarySemibold">
                   Order ID{" "}
                   <span className="font-primaryRegular text-sm">
-                    {orderDetails._id}
+                    {extractFiveDigits(orderDetails._id)}
                   </span>
                 </p>
                 <p>{orderDetails.date}</p>

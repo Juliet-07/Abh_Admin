@@ -16,16 +16,16 @@ const Profile = () => {
             <ArrowLeftIcon width={20} height={20} /> <b>Profile</b>
           </div>
 
-          <Link to="/editProfile" className="bg-white border-none">
+          {/* <Link to="/editProfile" className="bg-white border-none">
             Edit
-          </Link>
+          </Link> */}
         </header>
         <br />
         <div className="w-[100px]  h-[100px] rounded-[100px] bg-[url(/profileImg.png)] bg-center bg-cover"></div>
         <p className="text-[grey] text-[16px] mt-[20px]">Super Admin</p>
-        <b className="text-[20px]">John Doe</b>
-        <p className="text-[grey] text-[16px]">johndow@gmail.com</p>
-        <p className="text-[grey] text-[16px]">+234805623233</p>
+        <b className="text-[20px]">Godwin Enamudu</b>
+        <p className="text-[grey] text-[16px]">godwin@abhmarkets.com</p>
+        <p className="text-[grey] text-[16px]">+2347061131509</p>
       </div>
     </div>
   );

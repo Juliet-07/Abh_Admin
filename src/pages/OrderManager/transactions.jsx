@@ -100,7 +100,7 @@ const Transactions = () => {
   useEffect(() => {
     const getTransactions = () => {
       axios
-        .get(`${apiURL}/transaction`, {
+        .get(`${apiURL}/transactions/trx`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-type": "application/json; charset=UTF-8",
@@ -141,7 +141,7 @@ const Transactions = () => {
 
   const getPaymentStatusStyles = (status) => {
     switch (status.toLowerCase()) {
-      case "successful":
+      case "paid":
         return {
           bgColor: "bg-[#08932E]/[12%]",
           textColor: "text-[#08932E]",
@@ -271,7 +271,7 @@ const Transactions = () => {
               <table className="min-w-full bg-white font-primaryRegular">
                 <thead className="bg-[#F1F4F2] font-primaryBold text-sm">
                   <tr>
-                    <th className="text-center p-3">ID</th>
+                    {/* <th className="text-center p-3">ID</th> */}
                     <th className="text-center p-3">Date</th>
                     <th className="text-center p-3">Total Price</th>
                     <th className="text-center p-3">Product Price</th>
@@ -285,7 +285,7 @@ const Transactions = () => {
                 </thead>
                 <tbody>
                   {paginatedTransactionTable.map((order, index) => {
-                    const { dotsColor } = getVendorStatusStyles(order.status);
+                    const { dotsColor } = getVendorStatusStyles("Pending");
                     const { bgColor, textColor, dotColor } =
                       // getPaymentStatusStyles(order.paymentStatus);
                       getPaymentStatusStyles(order.status);
@@ -294,15 +294,15 @@ const Transactions = () => {
                         key={index}
                         className="border text-xs font-primaryMedium mb-4"
                       >
-                        <td className="p-4 text-center">
+                        {/* <td className="p-4 text-center">
                           {extractFiveDigits(order._id)}
-                        </td>
+                        </td> */}
                         <td className="p-4 text-center">
                           {formatDate(order.created_at)}
                         </td>
                         <td className="p-4 text-center">₦ {order.totalProductAmount}</td>
                         <td className="p-4 text-center">
-                          {order.productPrice}
+                        ₦ {order.amount}
                         </td>
                         <td className="p-4 text-center">₦ {order.shippingFee}</td>
                         <td className="p-4 text-center">₦ {order.vat}</td>
@@ -327,7 +327,8 @@ const Transactions = () => {
                             <div
                               className={`w-[8px] h-[8px] ${dotsColor} rounded-[100px]`}
                             />
-                            <p className="text-xs">{order.status}</p>
+                            {/* <p className="text-xs">{order.status}</p> */}
+                            <p className="text-xs">Pending</p>
                           </div>
                         </td>
 
