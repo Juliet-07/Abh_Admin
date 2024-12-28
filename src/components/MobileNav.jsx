@@ -104,8 +104,8 @@ const MobileNavigation = () => {
     //   icon: <BsBarChartLineFill />,
     //   path: "/analytics",
     // },
-    { title: "Reports", path: "/reports", icon: <FcManager /> },
-    { title: "Notifications", path: "/notifications", icon: <FaBell /> },
+    // { title: "Reports", path: "/reports", icon: <FcManager /> },
+    // { title: "Notifications", path: "/notifications", icon: <FaBell /> },
   ];
 
   const activeLink =
@@ -231,7 +231,9 @@ const MobileNavigation = () => {
         <div onClick={handleNav} className="mr-3">
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
-        <Logo className="w-[130px]" />
+        <Link to="/dashboard">
+          <Logo className="w-[130px]" />
+        </Link>
       </div>
 
       {/* Mobile hamburger */}
