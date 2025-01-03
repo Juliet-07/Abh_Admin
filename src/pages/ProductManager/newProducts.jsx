@@ -269,7 +269,16 @@ const NewProducts = () => {
               placeholder="Enter selling price"
               value={sellingPrice}
               onChange={(e) => setSellingPrice(e.target.value)}
+              required
             />
+            {!sellingPrice && (
+              <p className="text-red-500 text-sm">Selling price is required.</p>
+            )}
+            {isNaN(sellingPrice) && sellingPrice && (
+              <p className="text-red-500 text-sm">
+                Please enter a valid number.
+              </p>
+            )}
             <div className="flex justify-between gap-4">
               <button
                 onClick={() => setShowApproveModal(false)}
@@ -283,7 +292,13 @@ const NewProducts = () => {
                   setShowApproveModal(false);
                   // setConfirmApproval(true);
                 }}
-                className="w-full h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
+                // className="w-full h-[46px] rounded-[6px] bg-[#4CBD6B] text-white"
+                disabled={!sellingPrice}
+                className={`w-full h-[46px] rounded-[6px] ${
+                  !sellingPrice
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#4CBD6B] text-white"
+                }`}
               >
                 Submit
               </button>
