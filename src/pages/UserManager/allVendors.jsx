@@ -17,6 +17,7 @@ const AllVendors = () => {
   };
 
   useEffect(() => {
+    let data;
     const getAllVendors = () => {
       axios
         .get(`${apiURL}/vendors`, {
@@ -27,7 +28,12 @@ const AllVendors = () => {
         })
         .then((response) => {
           console.log(response.data.data.items);
-          setVendors(response.data.data.items);
+          data = response.data.data.items;
+          const sortedVendors = data.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          );
+          // setVendors(data.reverse());
+          setVendors(sortedVendors);
         })
         .catch((error) => {
           console.error("Error fetching vendors:", error);
