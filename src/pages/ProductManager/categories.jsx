@@ -34,7 +34,7 @@ const Categories = () => {
   };
 
   const handleAddField = () => {
-    if (subCategoryFields.length < 10) {
+    if (subCategoryFields.length < 100) {
       setSubCategoryFields([...subCategoryFields, { value: "" }]);
     }
   };
