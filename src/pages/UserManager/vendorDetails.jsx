@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Rate from "../../assets/rate.svg";
@@ -9,7 +9,10 @@ import Apples from "../../assets/apples.png";
 import Mint from "../../assets/mint.png";
 import Aquash from "../../assets/aquash.png";
 import Pineapple from "../../assets/pineapple.png";
+import { UserIcon, XIcon } from "@heroicons/react/outline";
 import moment from "moment";
+import { toast, ToastContainer } from "react-toastify";
+import DropdownComponent from "../../components/StateSelection";
 
 const VendorDetails = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -19,12 +22,46 @@ const VendorDetails = () => {
   console.log("Details", vendorDetails);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [showPreview, setPreview] = useState(false);
   const [status, setStatus] = useState(vendorDetails.status);
   const [loading, setLoading] = useState(false);
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [town, setTown] = useState("");
+  const [townId, setTownId] = useState("");
 
   if (!vendorDetails) {
     return <div>No details available</div>;
   }
+
+  const initialBusinessDetails = {
+    address: "",
+    phoneNumber: "",
+    alternatePhoneNumber: "",
+    email: "",
+    businessType: "",
+  };
+
+  const [businessDetails, setBusinessDetails] = useState(
+    initialBusinessDetails
+  );
+
+  const { address, phoneNumber, alternatePhoneNumber, email, businessType } =
+    useState(businessDetails);
+
+  const handleBusinessInfoChange = (e) => {
+    const { name, value } = e.target;
+    setBusinessDetails({ ...businessDetails, [name]: value });
+  };
+
+  const handleStateInfo = useCallback((data) => {
+    console.log({ data });
+    setState(data.state);
+    setCity(data.cityName);
+    setTown(data.town);
+    setTownId(data.townId);
+    // console.log(city, "checking state");
+  }, []);
 
   const formatDate = (dateString) => {
     return moment(dateString).format("MMMM DD, YYYY");
@@ -100,8 +137,43 @@ const VendorDetails = () => {
         setLoading(false);
       });
   };
+
+  const editBusinessInfo = async () => {
+    setLoading(true);
+    const url = `${apiURL}/vendors/update-profile`;
+    const payload = {
+      address: address,
+      phoneNumber: phoneNumber,
+      alternatePhoneNumber: alternatePhoneNumber,
+      email: email,
+      businessType: businessType,
+      state: state,
+      city: city,
+      town: town,
+      townId: townId.toString(),
+    };
+    try {
+      const response = await axios.patch(url, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      console.log(response, "response");
+      if (response.status === 200) {
+        toast.success(response.data.data);
+        setPreview(false);
+      }
+    } catch (error) {
+      console.error("Error in API call:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
+      <ToastContainer />
       {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center font-primaryRegular p-4">
           <div className="bg-white w-[186px] md:w-[500px] h-[46px] md:h-[120px] rounded-md text-center">
@@ -117,66 +189,239 @@ const VendorDetails = () => {
           </div>
         </div>
       )}
-      <div className="w-full h-12 md:h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
+
+      {showPreview && (
+        <div className="w-full h-[100vh] overflow-y-scroll bg-[#000000a8] fixed z-[100] top-0 left-0 flex flex-col items-center font-primaryRegular">
+          <div className="w-[90%] max-w-[679px] relative bg-white rounded-[10px] p-5 my-[5vh]">
+            <b className="text-[16px] w-full text-center flex justify-center">
+              Edit Business Info
+            </b>
+            <XIcon
+              width={20}
+              height={20}
+              className="absolute right-[20px] top-[20px] cursor-pointer active:opacity-5"
+              color="red"
+              onClick={() => setPreview(false)}
+            />
+            <div className="w-full flex flex-row flex-wrap min-h-1 gap-2 mt-4"></div>
+
+            {/* <p className="text-[16px] w-full">Shop Residing Country</p>
+            <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+              <input
+                type="text"
+                name=""
+                id=""
+                style={{ outline: "none" }}
+                className="flex w-full border-none"
+              />
+            </div> */}
+            <br />
+            <p className="text-[16px] w-full">Shop Address</p>
+            <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+              <input
+                type="text"
+                name="address"
+                value={address}
+                onChange={handleBusinessInfoChange}
+                id=""
+                style={{ outline: "none" }}
+                className="flex w-full border-none"
+              />
+            </div>
+            <br />
+            {/* <div className="md:flex md:flex-row w-full gap-4">
+              <div className="flex flex-col w-full">
+                <p className="text-[16px] w-full">City</p>
+                <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name=""
+                    id=""
+                    style={{ outline: "none" }}
+                    className="flex w-full border-none"
+                  />
+                </div>
+              </div>
+              <br />
+              <div className="flex flex-col w-full">
+                <p className="text-[16px] w-full">State</p>
+                <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name=""
+                    id=""
+                    style={{ outline: "none" }}
+                    className="flex w-full border-none"
+                  />
+                </div>
+              </div>
+            </div> */}
+            <DropdownComponent onForm={handleStateInfo} />
+            <br />
+            <div className="md:flex flex-row w-full gap-4">
+              <div className="flex flex-col w-full">
+                <p className="text-[16px] w-full">Business Phone Number</p>
+                <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={handleBusinessInfoChange}
+                    id=""
+                    style={{ outline: "none" }}
+                    className="flex w-full border-none"
+                  />
+                </div>
+              </div>
+              <br />
+              <div className="flex flex-col w-full">
+                <p className="text-[16px] w-full">Alternate Phone Number</p>
+                <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name="alternatePhoneNumber"
+                    value={alternatePhoneNumber}
+                    onChange={handleBusinessInfoChange}
+                    id=""
+                    style={{ outline: "none" }}
+                    className="flex w-full border-none"
+                  />
+                </div>
+              </div>
+            </div>
+            <br />
+            <div className="md:flex flex-row w-full gap-4">
+              <div className="flex flex-col w-full">
+                <p className="text-[16px] w-full">Business Email</p>
+                <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name="email"
+                    value={email}
+                    onChange={handleBusinessInfoChange}
+                    id=""
+                    style={{ outline: "none" }}
+                    className="flex w-full border-none"
+                  />
+                </div>
+              </div>
+              <br />
+              <div className="flex flex-col w-full">
+                <p className="text-[16px] w-full">Business Type</p>
+                <div className="w-full h-10 border mt-2 p-2 bg-white border-[#CFCBCB] flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name="businessType"
+                    value={businessType}
+                    onChange={handleBusinessInfoChange}
+                    id=""
+                    style={{ outline: "none" }}
+                    className="flex w-full border-none"
+                  />
+                </div>
+              </div>
+            </div>
+            <br />
+
+            <div className="w-full flex items-center justify-between my-6">
+              <div>
+                <button
+                  onClick={editBusinessInfo}
+                  className="md:w-[186px] w-[99px]  h-[46px] bg-[#4CBD6B] text-white rounded-[6px]"
+                >
+                  Edit
+                </button>
+              </div>
+
+              <button
+                onClick={() => {
+                  setPreview(false);
+                }}
+                className="md:w-[186px] w-[99px]  h-[46px] bg-white text-[grey] border-[1px] rounded-[6px]"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="w-full h-12 md:h-14 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
         Vendor Details
+        {/* <button onClick={() => setPreview(true)} className="text-white bg-[#359E52] text-sm p-2 rounded-xl">
+          Edit Vendor Details
+        </button> */}
       </div>
-      <div className="my-6 w-full grid gap-10">
+      <div className="w-full my-4">
         <div className="w-full bg-white rounded-xl p-4 gap-6 flex flex-col md:flex-row md:items-stretch justify-between">
-          <div className="p-4 grid gap-10 font-primaryRegular border border-[#CFCBCB]">
-            <div className="w-full md:w-[369px] h-[120px] rounded-2xl p-3 bg-[#8BCB90]/[12%] flex items-center justify-between gap-4">
-              <div className="bg-[#455A64] w-20 md:w-[100px] h-20 md:h-[100px] rounded-full text-white md:text-2xl font-primarySemibold flex items-center justify-center">
+          {/* 1st Half */}
+          <div className="p-4 font-primaryRegular border border-[#CFCBCB]">
+            {/* Header info */}
+            <div className="w-full md:w-[400px] h-[120px] rounded-2xl p-2 bg-[#8BCB90]/[12%] flex items-center justify-between gap-2">
+              <div className="bg-[#455A64] w-10 md:w-14 h-10 md:h-14 text-white rounded-full md:text-2xl font-primarySemibold flex items-center justify-center">
                 {vendorDetails.firstName[0].toUpperCase() +
                   vendorDetails.lastName[0].toUpperCase()}
               </div>
-              <div className="grid gap-2">
-                <p className="font-semibold md:text-xl">
+              <div className="grid gap-2 text-sm md:text-lg">
+                <p className="font-primarySemibold">
                   {vendorDetails.firstName + " " + vendorDetails.lastName}
                 </p>
                 <p>{vendorDetails.email}</p>
                 <p>{vendorDetails.phoneNumber}</p>
               </div>
             </div>
-            <div>
-              <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
-                Shop Name
+            {/* Other Info */}
+            <div className="grid gap-5 my-4">
+              <div>
+                <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
+                  Shop Name
+                </div>
+                <p>{vendorDetails.store}</p>
               </div>
-              <p>{vendorDetails.store}</p>
-            </div>
-            <div>
-              <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
-                Status
-              </div>
-              <div
-                className={`h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
-              >
+              <div>
+                <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
+                  Status
+                </div>
                 <div
-                  className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
-                />
-                <p className={`${textColor} text-xs`}>{vendorDetails.status}</p>
+                  className={`h-10 ${bgColor} p-3 flex items-center justify-center gap-[10px]`}
+                >
+                  <div
+                    className={`w-[8px] h-[8px] ${dotColor} rounded-[100px]`}
+                  />
+                  <p className={`${textColor} text-xs`}>
+                    {vendorDetails.status}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
+                  Data & Time Registered
+                </div>
+                <p>{formatDate(vendorDetails.created_at)}</p>
+              </div>
+              <div>
+                <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
+                  Bank Account Details
+                </div>
+              </div>
+              <div className="grid gap-4 text-sm md:text-lg">
+                <div>
+                  <b>Account Number:</b> {vendorDetails?.accountNumber}
+                </div>
+                <div>
+                  <b>Account Name:</b> {vendorDetails?.accountName}
+                </div>
+                <div>
+                  <b>Bank Name:</b> {vendorDetails?.bankName}
+                </div>
               </div>
             </div>
-            {/* <div>
-              <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
-                Last Interaction
-              </div>
-              <p>2 days ago</p>
-            </div> */}
-            <div>
-              <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
-                Data & Time Registered
-              </div>
-              <p>{formatDate(vendorDetails.created_at)}</p>
-            </div>
-            <div>
-              <div className="py-2 border-b border-b-[#CFCBCB] mb-2">
-                Bank Account Details
-              </div>
-              <p>{vendorDetails.date}</p>
-            </div>
-            <div className="my-4">Account Number: </div>
           </div>
-          <div className="w-full md:w-[70%] flex flex-col gap-14 border border-[#CFCBCB] p-4 font-primaryRegular">
+
+          {/* 2nd Half */}
+          <div className="w-full md:w-[70%] flex flex-col gap-5 border border-[#CFCBCB] p-4 font-primaryRegular">
             {/* 1 */}
+            {/* 4 */}
             <div className="grid gap-2 border-b border-b-[#CFCBCB] py-2">
               <p>Alternate Phone Number</p>
               <p>{vendorDetails.alternatePhoneNumber}</p>
@@ -188,13 +433,35 @@ const VendorDetails = () => {
             </div>
             {/* 3 */}
             <div className="grid gap-2 border-b border-b-[#CFCBCB] py-2">
-              <p>Business Type</p>
-              <p>{vendorDetails.businessType}</p>
+              <p>Shop Address</p>
+              <p>{vendorDetails.address}</p>
+            </div>
+            <div className="flex flex-col md:flex-row w-full md:gap-4">
+              <div className="flex flex-col w-full">
+                <p>State</p>
+                <div className="border-b border-[#CFCBCB] py-2">
+                  {vendorDetails?.state}
+                </div>
+              </div>
+              <br />
+              <div className="flex flex-col w-full">
+                <p>City</p>
+                <div className="border-b border-[#CFCBCB] py-2">
+                  {vendorDetails?.city}
+                </div>
+              </div>
+              <br />
+              <div className="flex flex-col w-full">
+                <p>Town</p>
+                <div className="border-b border-[#CFCBCB] py-2">
+                  {vendorDetails?.town}
+                </div>
+              </div>
             </div>
             {/* 4 */}
             <div className="grid gap-2 border-b border-b-[#CFCBCB] py-2">
-              <p>Shop Address</p>
-              <p>{vendorDetails.address}</p>
+              <p>Business Type</p>
+              <p>{vendorDetails.businessType}</p>
             </div>
             {/* 5 */}
             <div className="grid gap-2 border-b border-b-[#CFCBCB] py-2">
@@ -311,7 +578,7 @@ const VendorDetails = () => {
           </div>
         </div> */}
       </div>
-      <div className="my-10 w-full flex items-center justify-between">
+      <div className="my-2 w-full flex items-center justify-between">
         <Link
           to="/allVendors"
           className="w-[99px] md:w-[137px] h-10 md:h-[44px] border border-[#CFCBCB] font-primarySemibold rounded-lg flex items-center justify-center text-sm md:text-base"
