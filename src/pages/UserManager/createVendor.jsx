@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import DropdownComponent from "../../components/StateSelection";
 
 const CreateVendor = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -10,6 +11,10 @@ const CreateVendor = () => {
   const [docx, setDocx] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [town, setTown] = useState("");
+  const [townId, setTownId] = useState("");
 
   const initialValues = {
     firstName: "",
@@ -37,8 +42,8 @@ const CreateVendor = () => {
     phoneNumber,
     store,
     country,
-    state,
-    city,
+    // state,
+    // city,
     address,
     alternatePhoneNumber,
     businessType,
@@ -58,6 +63,15 @@ const CreateVendor = () => {
     setDocx(docx);
   };
 
+  const handleStateInfo = useCallback((data) => {
+    console.log({ data });
+    setState(data.state);
+    setCity(data.cityName);
+    setTown(data.town);
+    setTownId(data.townId);
+    console.log(city, "checking state");
+  }, []);
+
   const handleCreateVendor = () => {
     setLoading(true);
     const url = `${apiURL}/vendors`;
@@ -70,6 +84,8 @@ const CreateVendor = () => {
     formData.append("country", country);
     formData.append("state", state);
     formData.append("city", city);
+    formData.append("town", town);
+    formData.append("townId", townId);
     formData.append("address", address);
     formData.append("alternatePhoneNumber", alternatePhoneNumber);
     formData.append("businessType", businessType);
@@ -80,6 +96,10 @@ const CreateVendor = () => {
     formData.append("taxIdentificationNumber", taxIdentificationNumber);
     formData.append("cacRegistrationNumber", cacRegistrationNumber);
     formData.append("cacCertificate", docx);
+    formData.append("accountName", "");
+    formData.append("accountNumber", "");
+    formData.append("bankName", "");
+
     axios
       .post(url, formData, {
         headers: {
@@ -92,6 +112,9 @@ const CreateVendor = () => {
           setSuccessMessage("Vendor created successfully!");
           setCreateVendorDetails(initialValues);
           setDocx({});
+          setState("");
+          setCity("");
+          setTown("");
         }
         console.log(response, "response from creating data");
       })
@@ -173,7 +196,7 @@ const CreateVendor = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex flex-wrap -mx-3 mb-4">
+            {/* <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full md:w-1/3 px-3 mb-4 md:mb-0">
                 <label
                   className="tracking-wide font-medium mb-2"
@@ -225,7 +248,8 @@ const CreateVendor = () => {
                   onChange={handleChange}
                 />
               </div>
-            </div>
+            </div> */}
+            <DropdownComponent onForm={handleStateInfo} />
             <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                 <label
