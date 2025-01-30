@@ -4,17 +4,21 @@ import Avatar from "../../assets/newVendor.png";
 import { CheckIcon } from "@heroicons/react/solid";
 import { FcCancel } from "react-icons/fc";
 import moment from "moment";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaPenAlt } from "react-icons/fa";
 import { XIcon } from "@heroicons/react/outline";
 import { Settings } from "../../components/SliderSettings";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AllProducts = () => {
   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
   const token = localStorage.getItem("adminToken");
   const [showPreview, setPreview] = useState(false);
+  const [showPricePreview, setShowPricePreview] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showApproval, setApproval] = useState(false);
   const [showDecline, setDecline] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -50,6 +54,38 @@ const AllProducts = () => {
   const handleViewMore = (product) => {
     setSelectedProduct(product);
     setPreview(true);
+  };
+
+  const handleEditSalesPrice = (product) => {
+    setSelectedProduct(product);
+    setShowPricePreview(true);
+  };
+
+  const handleUpdatePrice = () => {
+    setLoading(true);
+    const url = `${apiURL}/products/manage-product-status/${selectedProduct._id}`;
+    const payload = {
+      status: "APPROVED",
+      sellingPrice: parseInt(selectedProduct.sellingPrice),
+    };
+    axios
+      .put(url, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+      .then(() => {
+        toast.success("Product price updated successfully!");
+        setShowPricePreview(false);
+      })
+      .catch((error) => {
+        console.error("Error deleting product:", error);
+        toast.error("Failed to update product.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleDelete = (productId) => {
@@ -117,6 +153,11 @@ const AllProducts = () => {
     );
   };
 
+  const closePricePopup = () => {
+    setShowPricePreview(false);
+    setSelectedProduct(null);
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -130,6 +171,7 @@ const AllProducts = () => {
 
   return (
     <>
+      <ToastContainer />
       {showPreview &&
         selectedProduct &&
         (() => {
@@ -249,6 +291,88 @@ const AllProducts = () => {
           );
         })()}
 
+      {showPricePreview && selectedProduct && (
+        <div className="w-full h-screen bg-[#503e3ea8] z-[1000] fixed top-0 left-0 flex flex-col items-center justify-center font-primaryRegular">
+          <div className="w-[90%] max-w-[550px] relative bg-white p-6 rounded-[10px] flex flex-col">
+            <XIcon
+              width={20}
+              height={20}
+              onClick={closePricePopup}
+              color="red"
+              className="absolute active:opacity-5 right-[20px] top-[20px] cursor-pointer"
+            />
+            <b className="md:text-xl text-center">Edit Selling Price</b>
+            <p className="py-2 text-xs md:text-base">
+              ID {selectedProduct?.categoryId?._id}
+            </p>
+            <div className="w-full flex flex-col md:flex-row items-center gap-4">
+              <div className="w-[234px] h-[198px]">
+                <img
+                  src={selectedProduct?.featured_image}
+                  // className="w-[234px] h-[198px]"
+                />
+              </div>
+              <div className="grid gap-3 md:gap-6 text-left">
+                <div>
+                  <b>{selectedProduct?.name}</b>
+                  <p>{selectedProduct?.categoryId?.name}</p>
+                </div>
+
+                <div>
+                  <label className="font-primaryRegular text-sm">
+                    Selling Price
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full h-[46px] p-2 border rounded mt-2"
+                    value={selectedProduct?.sellingPrice}
+                    onChange={(e) =>
+                      setSelectedProduct({
+                        ...selectedProduct,
+                        sellingPrice: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full mt-6">
+              <button
+                onClick={handleUpdatePrice}
+                className="w-full h-[46px] rounded-lg bg-[#4CBD6B] text-white flex items-center justify-center"
+                // disabled={loading}
+              >
+                {loading ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.963 7.963 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Update"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {products.length > 0 ? (
         <div className="w-full flex flex-col">
           <div className="w-full h-16 bg-white border border-[#CFCBCB] border-l-8 border-l-[#359E52] rounded-xl flex items-center justify-between p-4 md:text-xl font-primarySemibold">
@@ -327,14 +451,30 @@ const AllProducts = () => {
                       <td className="min-w-[100px] md:w-0 p-4 text-center">
                         {product?.vendor?.store}
                       </td> */}
-                        <td className="p-4 flex items-center justify-center">
+                        <td className="text-center">
+                          <div className="flex items-center justify-evenly">
+                            <button
+                              onClick={() => handleEditSalesPrice(product)}
+                              className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                            >
+                              <FaPenAlt size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleViewMore(product)}
+                              className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
+                            >
+                              <FaEye size={14} />
+                            </button>
+                          </div>
+                        </td>
+                        {/* <td className="p-4 flex items-center justify-center">
                           <button
                             onClick={() => handleViewMore(product)}
                             className="w-8 h-8 rounded-full border border-gray-300 text-[#359E52] flex items-center justify-center"
                           >
                             <FaEye size={14} />
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     );
                   })}
